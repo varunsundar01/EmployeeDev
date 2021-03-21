@@ -33,22 +33,14 @@
 </template>
 
 <script>
-import { reactive } from "vue";
+import { useStore } from "vuex";
 export default {
   props: ["isSecondary", "isPrimary", "id", "inputType", "placeholder"],
   emits: ["enteredInput"],
   setup() {
-    const process = reactive({
-      problem: "",
-      solution: "",
-      implementation: "",
-    });
+    const store = useStore();
     function enteredInput(event) {
-      Object.keys(process).find((key) => {
-        if (key === event.id) {
-          process[key] = event.value;
-        }
-      });
+      store.dispatch("process/enteredInput", event);
     }
 
     return {

@@ -1,11 +1,15 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 
+//Vuex Store
+import store from './store/index.js';
+
 //Import Router
 import router from './router.js';
 
 //Global CSS
 import "./assets/css/main.css";
+
 
 //Global components
 import TheHeader from "./components/layout/TheHeader";
@@ -17,6 +21,7 @@ import FormElement from './components/UI/FormElement';
 const app = createApp(App);
 
 app.use(router);
+app.use(store);
 
 app.component('TheHeader', TheHeader);
 app.component('TheFooter', TheFooter);
