@@ -21,26 +21,26 @@ button {
   border: none;
   padding: 0.5em 1em;
   font-size: 1em;
-  background-color: #6f59df;
+  background-color: var(--primary);
   border-radius: 3px;
   cursor: pointer;
-  color: #ffffff;
+  color: var(--background-light);
   font-weight: 300;
   transition: all 0.3s ease-in-out;
 }
 
 button:hover,
 button:focus {
-  background-color: #5c43db;
+  background-color: var(--primary-variant);
   outline: none;
   transform: translateY(-10%);
 }
 
 .secondary {
-    background-color: #221D2B;
+    background-color: var(--secondary);
 }
 
 .secondary:hover, .secondary:focus {
-    background-color: #0A080C;
+    background-color: var(--secondary-variant);
 }
 </style>

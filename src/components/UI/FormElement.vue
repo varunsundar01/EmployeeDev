@@ -42,6 +42,6 @@ input {
 textarea:focus,
 input:focus {
   outline: none;
-  box-shadow: 0 0 2pt 1pt #6f59df;
+  box-shadow: 0 0 2pt 1pt var(--primary-variant);
 }
 </style>

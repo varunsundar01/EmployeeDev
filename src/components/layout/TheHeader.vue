@@ -4,7 +4,7 @@
       <a class="nav-brand" href="/">EmployeeDev</a>
       <ul class="nav-list">
         <li class="nav-item">Process Details</li>
-        <li class="nav-item">Benefits &amp; Savings </li>
+        <li class="nav-item">Benefits &amp; Savings</li>
       </ul>
       <ul class="nav-right">
         <li class="nav-item">Hey, Varun</li>
@@ -20,7 +20,7 @@
 
 <style scoped>
 .nav-wrapper {
-  background-color: #6f59df;
+  background-color: var(--primary);
   height: 65px;
   display: flex;
   align-items: center;
@@ -28,6 +28,7 @@
   top: 0;
   left: 0;
   width: 100%;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .main-nav {
@@ -43,7 +44,7 @@
   text-decoration: none;
   font-weight: 500;
   font-size: 1.5em;
-  color: #221d2b;
+  color: var(--secondary);
 }
 
 .nav-list,

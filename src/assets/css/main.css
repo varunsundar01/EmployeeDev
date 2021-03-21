@@ -3,6 +3,15 @@
     font-family: 'Poppins', sans-serif;
 }
 
+:root {
+    --background: #F7F7F7;
+    --background-light: #FFFFFF;
+    --primary: #6F59DF;
+    --primary-variant: #5C43DB;
+    --secondary: #221D2B;
+    --secondary-variant: #0A080C;
+}
+
 html,
 body {
     margin: 0;
@@ -10,8 +19,8 @@ body {
 }
 
 body {
-    background-color: #F7F7F7;
-    color: #221d2b;
+    background-color: var(--background);
+    color: var(--secondary);
 }
 
 .main-app {
