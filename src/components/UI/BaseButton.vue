@@ -33,7 +33,7 @@ button:hover,
 button:focus {
   background-color: var(--primary-variant);
   outline: none;
-  transform: translateY(-10%);
+  transform: translateY(-5%);
 }
 
 .secondary {
