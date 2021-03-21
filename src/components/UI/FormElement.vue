@@ -3,18 +3,32 @@
     <label :for="id"><slot></slot></label>
     <textarea
       v-if="inputStyle === 'textarea'"
+      @input="enteredInput"
       :id="id"
       cols="30"
       rows="5"
       :placeholder="placeholder"
     ></textarea>
-    <input v-else :type="inputType" :placeholder="placeholder" />
+    <input
+      v-else
+      :type="inputType"
+      :placeholder="placeholder"
+      @input="enteredInput"
+    />
   </div>
 </template>
 
 <script>
 export default {
   props: ["id", "inputStyle", "inputType", "placeholder"],
+  methods: {
+    enteredInput(event) {
+      this.$emit("enteredInput", {
+        value: event.target.value,
+        id: event.path[0].id
+      });
+    }
+  },
 };
 </script>
 
