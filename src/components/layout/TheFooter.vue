@@ -1,0 +1,42 @@
+<template>
+  <div class="footer">
+    <p>&copy; {{ currentYear }} | Built by <a href="#">Varun</a></p>
+  </div>
+</template>
+
+<script>
+import { ref } from "vue";
+export default {
+  setup() {
+    const currentYear = ref(new Date().getFullYear());
+
+    return {
+      currentYear,
+    };
+  },
+};
+</script>
+
+<style scoped>
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+p {
+  font-weight: 300;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+a {
+  text-decoration: none;
+  color: var(--primary);
+  font-weight: 500;
+  transition: all 0.3s ease-in-out;
+}
+
+a:hover {
+  color: var(--secondary);
+}
+</style>

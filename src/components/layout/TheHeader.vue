@@ -7,7 +7,6 @@
         <li class="nav-item">Benefits &amp; Savings</li>
       </ul>
       <ul class="nav-right">
-        <li class="nav-item">Hey, Varun</li>
         <li class="nav-item">
           <base-button secondaryVisible="true">
             <template v-slot:secondary>Logout</template>
@@ -21,7 +20,7 @@
 <style scoped>
 .nav-wrapper {
   background-color: var(--primary);
-  height: 65px;
+  /* height: 65px; */
   display: flex;
   align-items: center;
   position: fixed;
@@ -57,10 +56,19 @@
 }
 
 .nav-item {
-  margin-left: 2em;
+  margin: auto 1em;
   font-weight: 300;
-  padding: 0;
+  padding: 0.5em 0;
   margin: 0 2em 0 0;
   font-size: 1em;
+}
+
+@media(max-width: 1024px) {
+  .nav-item {
+    margin: auto 1em;
+  }
+  .nav-list {
+    display: none;
+  }
 }
 </style>
