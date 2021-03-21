@@ -21,13 +21,14 @@
 <script>
 export default {
   props: ["id", "inputStyle", "inputType", "placeholder"],
+  emits: ["enteredInput"],
   methods: {
     enteredInput(event) {
       this.$emit("enteredInput", {
         value: event.target.value,
-        id: event.path[0].id
+        id: event.path[0].id,
       });
-    }
+    },
   },
 };
 </script>
@@ -56,6 +57,6 @@ input {
 textarea:focus,
 input:focus {
   outline: none;
-  box-shadow: 0 0 2pt 1pt var(--primary-variant);
+  box-shadow: 0 0 5pt 1pt var(--primary);
 }
 </style>
