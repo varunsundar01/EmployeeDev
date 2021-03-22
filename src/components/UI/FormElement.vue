@@ -3,7 +3,9 @@
     <label :for="id"><slot></slot></label>
     <textarea
       v-if="inputStyle === 'textarea'"
+      :class="{ 'error-input': isError }"
       @input="enteredInput"
+      @blur="removeError"
       :id="id"
       cols="30"
       rows="5"
@@ -20,15 +22,24 @@
 
 <script>
 export default {
-  props: ["id", "inputStyle", "inputType", "placeholder"],
-  emits: ["enteredInput"],
-  methods: {
-    enteredInput(event) {
-      this.$emit("enteredInput", {
+  props: ["id", "inputStyle", "inputType", "placeholder", "isError"],
+  emits: ["enteredInput", "removeError"],
+  setup(_, context) {
+    function enteredInput(event) {
+      context.emit("enteredInput", {
         value: event.target.value,
         id: event.path[0].id,
       });
-    },
+    }
+
+    function removeError() {
+      context.emit("removeError");
+    }
+
+    return {
+      enteredInput,
+      removeError,
+    };
   },
 };
 </script>
@@ -58,5 +69,14 @@ textarea:focus,
 input:focus {
   outline: none;
   box-shadow: 0 0 5pt 1pt var(--primary);
+}
+
+.error-input {
+  border: 1px solid #dc3545;
+}
+
+.error-input:focus {
+  outline: none;
+  box-shadow: 0 0 5pt 1pt #dc3545;
 }
 </style>

@@ -1,7 +1,21 @@
 export default {
-    enteredInput(state) {
-        console.log('problem: ' + state.process.problem);
-        console.log('solution: ' + state.process.solution);
-        console.log('implementation: ' + state.process.implementation);
+    enteredInput(state, payload) {
+        state.process[payload.id] = payload.value;
+    },
+    setProblemValidation(state, payload) {
+        state.processValidate['problemValidate'] = payload; //payload = true or false
+    },
+    setSolutionValidation(state, payload) {
+        state.processValidate['solutionValidate'] = payload; //payload = true or false
+    },
+    setImplementationValidation(state, payload) {
+        state.processValidate['implementationValidate'] = payload; //payload = true or false
+    },
+    submittedProcess(state, payload) {
+        state.process = payload;
+        state.errorActive = false;
+    },
+    setError(state) {
+        state.errorActive = true;
     }
 }

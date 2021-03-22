@@ -10,7 +10,13 @@ export default {
                 problem: "",
                 solution: "",
                 implementation: ""
-            }
+            },
+            processValidate: {
+                problemValidate: false,
+                solutionValidate: false,
+                implementationValidate: false
+            },
+            errorActive: false,
         };
     },
     mutations,

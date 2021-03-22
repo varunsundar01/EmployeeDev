@@ -1,13 +1,27 @@
 <template>
   <div class="button-group">
-    <button v-if="secondaryVisible" class="secondary"><slot name="secondary"></slot></button>
-    <button v-if="primaryVisible"><slot name="primary"></slot></button>
+    <button @click="toBack" v-if="secondaryVisible" class="secondary"><slot name="secondary"></slot></button>
+    <button @click="toNext" v-if="primaryVisible"><slot name="primary"></slot></button>
   </div>
 </template>
 
 <script>
 export default {
-    props: ['primaryVisible', 'secondaryVisible']
+    props: ['primaryVisible', 'secondaryVisible'],
+    emits: ['toNext', 'toBack'],
+    setup(_,context) {
+      function toNext() {
+        context.emit('toNext');
+      }
+      function toBack() {
+        context.emit('toBack');
+      }
+
+      return {
+        toNext,
+        toBack
+      }
+    }
 };
 </script>
 
