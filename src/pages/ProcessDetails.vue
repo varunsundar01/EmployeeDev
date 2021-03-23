@@ -4,40 +4,38 @@
       >All fields are required. Please complete the fields highlighted
       below</error-banner
     >
-    <form @submit.prevent>
-      <form-element
-        id="problem"
-        inputStyle="textarea"
-        :isError="problemValidate"
-        @removeError="removeError('setProblemValidation')"
-        placeholder="Describe the current problem"
-        @enteredInput="enteredInput"
-        >Problem Statement</form-element
-      >
-      <form-element
-        id="solution"
-        inputStyle="textarea"
-        :isError="solutionValidate"
-        @removeError="removeError('setSolutionValidation')"
-        placeholder="Describe your proposed solution for the above problem"
-        @enteredInput="enteredInput"
-        >Proposed Solution</form-element
-      >
-      <form-element
-        id="implementation"
-        inputStyle="textarea"
-        :isError="implementationValidate"
-        @removeError="removeError('setImplementationValidation')"
-        placeholder="Describe the implementation plan for the proposed solution"
-        @enteredInput="enteredInput"
-        >Implementation Method</form-element
-      >
-      <div class="button-group">
-        <base-button @toNext="onSubmit" primaryVisible="true">
-          <template v-slot:primary>Next</template>
-        </base-button>
-      </div>
-    </form>
+    <form-element
+      id="problem"
+      inputStyle="textarea"
+      :isError="problemValidate"
+      @removeError="removeError('setProblemValidation')"
+      placeholder="Describe the current problem"
+      @enteredInput="enteredInput"
+      >Problem Statement</form-element
+    >
+    <form-element
+      id="solution"
+      inputStyle="textarea"
+      :isError="solutionValidate"
+      @removeError="removeError('setSolutionValidation')"
+      placeholder="Describe your proposed solution for the above problem"
+      @enteredInput="enteredInput"
+      >Proposed Solution</form-element
+    >
+    <form-element
+      id="implementation"
+      inputStyle="textarea"
+      :isError="implementationValidate"
+      @removeError="removeError('setImplementationValidation')"
+      placeholder="Describe the implementation plan for the proposed solution"
+      @enteredInput="enteredInput"
+      >Implementation Method</form-element
+    >
+    <div class="button-group">
+      <base-button @toNext="onSubmit" primaryVisible="true">
+        <template v-slot:primary>Next</template>
+      </base-button>
+    </div>
   </base-card>
 </template>
 
@@ -71,7 +69,7 @@ export default {
 
       //Go to Next Page
       if (!store.getters["process/checkError"]) {
-        router.push('/benefits-savings');
+        router.push("/benefits-savings");
       }
     }
 
