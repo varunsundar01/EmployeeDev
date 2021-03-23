@@ -3,11 +3,27 @@
     <div class="main-nav">
       <a class="nav-brand" href="/">EmployeeDev</a>
       <ul class="nav-list">
-        <li class="nav-item">Process Details</li>
-        <li class="nav-item">Benefits &amp; Savings</li>
+        <li
+          class="nav-item"
+          :class="{ active: currentRoute === 'process-details' }"
+        >
+          Process Details
+        </li>
+        <li
+          class="nav-item"
+          :class="{ active: currentRoute === 'benefits-savings' }"
+        >
+          Benefits &amp; Savings
+        </li>
+        <li
+          class="nav-item"
+          :class="{ active: currentRoute === 'final-review' }"
+        >
+          Review
+        </li>
       </ul>
       <ul class="nav-right">
-        <li class="nav-item">
+        <li class="nav-item-right">
           <base-button secondaryVisible="true">
             <template v-slot:secondary>Logout</template>
           </base-button>
@@ -17,10 +33,25 @@
   </div>
 </template>
 
+<script>
+import { useRoute } from "vue-router";
+import { computed } from "vue";
+export default {
+  setup() {
+    const route = useRoute();
+    let currentRoute = computed(() => {
+      return route.name;
+    });
+    return {
+      currentRoute,
+    };
+  },
+};
+</script>
+
 <style scoped>
 .nav-wrapper {
   background-color: var(--primary);
-  /* height: 65px; */
   display: flex;
   align-items: center;
   position: fixed;
@@ -55,7 +86,8 @@
   align-items: center;
 }
 
-.nav-item {
+.nav-item,
+.nav-item-right {
   margin: auto 1em;
   font-weight: 300;
   padding: 0.5em 0;
@@ -63,12 +95,22 @@
   font-size: 1em;
 }
 
-@media(max-width: 1024px) {
+.active::after {
+  content: "";
+  display: block;
+  width: 120px;
+  height: 3px;
+  background-color: var(--secondary-variant);
+  z-index: 200;
+  border-radius: 20px;
+}
+
+@media (max-width: 1024px) {
   .nav-item {
     margin: auto 1em;
   }
-  .nav-list {
+  /* .nav-list {
     display: none;
-  }
+  } */
 }
 </style>
