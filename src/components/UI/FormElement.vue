@@ -12,17 +12,27 @@
       :placeholder="placeholder"
     ></textarea>
     <input
-      v-else
+      v-else-if="inputStyle === 'input'"
       :type="inputType"
       :placeholder="placeholder"
       @input="enteredInput"
     />
+    <div v-else-if="inputStyle === 'currency'" class="currency-input">
+      <input type="number" />
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["id", "inputStyle", "inputType", "placeholder", "isError"],
+  props: [
+    "id",
+    "inputStyle",
+    "inputType",
+    "placeholder",
+    "isError",
+    "prefixSymbol",
+  ],
   emits: ["enteredInput", "removeError"],
   setup(_, context) {
     function enteredInput(event) {
@@ -62,6 +72,7 @@ input {
   border: 1px solid rgba(0, 0, 0, 0.1);
   font-weight: 300;
   padding: 0.5em;
+  font-size: 1em;
   transition: all 0.2s ease-in-out;
 }
 
@@ -70,6 +81,35 @@ input:focus {
   outline: none;
   box-shadow: 0 0 5pt 1pt var(--primary);
 }
+
+.currency-input {
+  display: flex;
+  position: relative;
+}
+
+.currency-input input {
+  padding-left: 1.5em;
+  width: 30%
+}
+
+.currency-input::before {
+  content: "$";
+  opacity: 0.6;
+  font-weight: 300;
+  position: absolute;
+  top: 0.6em;
+  left: 0.5em;
+}
+/* 
+.prefixSymbol {
+  opacity: 0.7;
+  font-size: 1em;
+  width: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 300;
+} */
 
 .error-input {
   border: 1px solid #dc3545;
