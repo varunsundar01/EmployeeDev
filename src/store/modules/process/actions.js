@@ -6,6 +6,9 @@ export default {
             }
         });
     },
+    setProjectNameValidation(context, payload) {
+        context.commit('setProjectNameValidation', payload);
+    },
     setProblemValidation(context, payload) {
         context.commit('setProblemValidation', payload);
     },
@@ -17,11 +20,16 @@ export default {
     },
     onSubmit({ commit, getters }) {
         const process = {
+            projectName: '',
             problem: '',
             solution: '',
             implementation: ''
         };
 
+        if (getters.getProcess.projectName && getters.getProcess.projectName.trim().length > 0) {
+            commit('setProjectNameValidation', true);
+            process['projectName'] = getters.getProcess.projectName.trim();
+        }
         if (getters.getProcess.problem && getters.getProcess.problem.trim().length > 0) {
             commit('setProblemValidation', true);
             process['problem'] = getters.getProcess.problem.trim();
@@ -35,7 +43,7 @@ export default {
             process['implementation'] = getters.getProcess.implementation.trim();
         }
 
-        if (getters.getProcessValidation.problemValidate === true && getters.getProcessValidation.solutionValidate === true && getters.getProcessValidation.implementationValidate === true) {
+        if (getters.getProcessValidation.projectNameValidate === true && getters.getProcessValidation.problemValidate === true && getters.getProcessValidation.solutionValidate === true && getters.getProcessValidation.implementationValidate === true) {
             commit('submittedProcess', process);
         } else {
             commit('setError');

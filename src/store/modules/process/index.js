@@ -7,11 +7,13 @@ export default {
     state() {
         return {
             process: {
+                projectName: "",
                 problem: "",
                 solution: "",
                 implementation: ""
             },
             processValidate: {
+                projectNameValidate: false,
                 problemValidate: false,
                 solutionValidate: false,
                 implementationValidate: false

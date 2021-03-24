@@ -2,6 +2,9 @@ export default {
     enteredInput(state, payload) {
         state.process[payload.id] = payload.value;
     },
+    setProjectNameValidation(state, payload) {
+        state.processValidate['projectNameValidate'] = payload; //payload = true or false
+    },
     setProblemValidation(state, payload) {
         state.processValidate['problemValidate'] = payload; //payload = true or false
     },
