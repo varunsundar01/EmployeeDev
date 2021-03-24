@@ -12,6 +12,25 @@
       <label>Implementation Method</label>
       <p>{{ process.implementation }}</p>
     </div>
+    <div class="review-element">
+      <label>Implementation Cost</label>
+      <p>${{ benefits.implementationCost }}</p>
+    </div>
+    <div class="review-element">
+      <label>Annual Cost Savings</label>
+      <p>${{ benefits.costSavings }}</p>
+    </div>
+    <div class="review-element">
+      <label>Estimated Weeks to Completion</label>
+      <p>{{ benefits.timeToComplete }}</p>
+    </div>
+    <div class="review-element">
+      <label>Additional Comments</label>
+      <p>{{ benefits.comments }}</p>
+    </div>
+    <base-button @toNext="onSubmit" primaryVisible="true">
+      <template v-slot:primary>Submit</template>
+    </base-button>
   </base-card>
 </template>
 
@@ -25,9 +44,13 @@ export default {
     const process = computed(() => {
       return store.getters["process/getProcess"];
     });
+    const benefits = computed(() => {
+      return store.getters["benefits/getBenefits"];
+    });
 
     return {
       process,
+      benefits,
     };
   },
 };
@@ -35,19 +58,19 @@ export default {
 
 <style scoped>
 .review-element {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 2em;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2em;
 }
 
 label {
-    font-weight: 500;
-    font-size: 1.25em;
+  font-weight: 500;
+  font-size: 1.25em;
 }
 
 p {
-    font-weight: 300;
-    font-size: 1em;
-    margin: 0.25em 0 0 0;
+  font-weight: 300;
+  font-size: 1em;
+  margin: 0.25em 0 0 0;
 }
 </style>
