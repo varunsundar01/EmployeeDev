@@ -1,6 +1,7 @@
 <template>
   <div class="footer">
     <p>&copy; {{ currentYear }} | Built by <a href="#">Varun</a></p>
+    <p>Github | Twitter | LinkedIn | Email</p>
   </div>
 </template>
 
@@ -20,6 +21,7 @@ export default {
 <style scoped>
 .footer {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
