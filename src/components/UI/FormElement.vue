@@ -10,15 +10,26 @@
       cols="30"
       rows="5"
       :placeholder="placeholder"
-    ></textarea>
+      ></textarea
+    >
     <input
       v-else-if="inputStyle === 'input'"
       :type="inputType"
       :placeholder="placeholder"
       @input="enteredInput"
+      :id="id"
+      @blur="removeError"
+      :class="{ 'error-input': isError }"
     />
     <div v-else-if="inputStyle === 'currency'" class="currency-input">
-      <input type="number" />
+      <input
+        type="number"
+        @input="enteredInput"
+        :id="id"
+        :placeholder="placeholder"
+        @blur="removeError"
+        :class="{ 'error-input': isError }"
+      />
     </div>
   </div>
 </template>
@@ -30,8 +41,7 @@ export default {
     "inputStyle",
     "inputType",
     "placeholder",
-    "isError",
-    "prefixSymbol",
+    "isError"
   ],
   emits: ["enteredInput", "removeError"],
   setup(_, context) {
@@ -89,7 +99,7 @@ input:focus {
 
 .currency-input input {
   padding-left: 1.5em;
-  width: 30%
+  width: 30%;
 }
 
 .currency-input::before {
@@ -100,16 +110,6 @@ input:focus {
   top: 0.6em;
   left: 0.5em;
 }
-/* 
-.prefixSymbol {
-  opacity: 0.7;
-  font-size: 1em;
-  width: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 300;
-} */
 
 .error-input {
   border: 1px solid #dc3545;
