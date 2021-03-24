@@ -59,6 +59,7 @@ export default {
   left: 0;
   width: 100%;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+  z-index: 2;
 }
 
 .main-nav {
@@ -95,14 +96,9 @@ export default {
   font-size: 1em;
 }
 
-.active::after {
-  content: "";
-  display: block;
-  width: 120px;
-  height: 3px;
-  background-color: var(--secondary-variant);
-  z-index: 200;
-  border-radius: 20px;
+.active {
+  border-bottom: 2px solid #2a9d8f;
+  font-weight: 500;
 }
 
 @media (max-width: 1024px) {
