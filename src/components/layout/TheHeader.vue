@@ -1,7 +1,7 @@
 <template>
   <div class="nav-wrapper">
     <div class="main-nav">
-      <a class="nav-brand" href="/">EmployeeDev</a>
+      <a class="nav-brand" href="/"></a>
       <ul class="nav-list">
         <li
           class="nav-item"
@@ -72,10 +72,12 @@ export default {
 }
 
 .nav-brand {
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 1.5em;
-  color: var(--secondary);
+  padding: 0;
+  background-image: url('~@/assets/images/EmployeeDev Logo.svg');
+  height: 65px;
+  width: 200px;
+  background-repeat: no-repeat;
+  background-position: left center;
 }
 
 .nav-list,
