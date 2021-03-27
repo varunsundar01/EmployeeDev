@@ -1,6 +1,6 @@
 # EmployeeDev
 
-![logo](https://raw.githubusercontent.com/varunsundar01/EmployeeDev/main/src/assets/images/EmployeeDev%20Logo.svg?token=AMLRP6ZD3VXSRDYT4VMEVI3AL547U)
+![logo](./src/assets/images/EmployeeDev Logo.svg)
 
 My day job requires every employee to submit new ideas or processes that could improve how things are done currently. All this is handled in excel and sent over email which is quite tedious. It requires a person to dedicate a few hours every week to maintaining the system and adding up employee points.
 
