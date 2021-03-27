@@ -1,6 +1,6 @@
 # employee-dev
 
-![logo] (C:\Users\varun\Portfolio\employee-dev\src\assets\images\EmployeeDev Logo.svg)
+![logo] (https://github.com/varunsundar01/EmployeeDev/blob/main/src/assets/images/EmployeeDev%20Logo.svg)
 
 ## Project setup
 ```
