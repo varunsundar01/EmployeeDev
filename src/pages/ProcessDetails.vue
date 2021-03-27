@@ -1,11 +1,9 @@
 <template>
   <base-card>
-    <transition name="error">
-      <error-banner v-if="errorActive"
-        >All fields are required. Please complete the fields highlighted
-        below</error-banner
-      >
-    </transition>
+    <error-banner v-if="errorActive"
+      >All fields are required. Please complete the fields highlighted
+      below</error-banner
+    >
     <form-element
       id="projectName"
       inputStyle="input"
@@ -135,20 +133,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.error-enter-from,
-.error-leave-to {
-  opacity: 0;
-}
-
-.error-enter-to,
-.error-leave-from {
-  opacity: 1;
-}
-
-.error-enter-active,
-.error-leave-active {
-  transition: all 0.2s ease-in-out;
-}
-</style>
