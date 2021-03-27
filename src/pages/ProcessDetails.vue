@@ -7,8 +7,8 @@
     <form-element
       id="projectName"
       inputStyle="input"
-      :isError="projectNameValidate"
-      @removeError="removeError('setProjectNameValidation')"
+      :isError="projectNameValidation"
+      @removeError="removeError('projectNameValidation')"
       type="text"
       placeholder="Enter Project Name"
       @enteredInput="enteredInput"
@@ -17,8 +17,8 @@
     <form-element
       id="problem"
       inputStyle="textarea"
-      :isError="problemValidate"
-      @removeError="removeError('setProblemValidation')"
+      :isError="problemValidation"
+      @removeError="removeError('problemValidation')"
       @enteredInput="enteredInput"
       placeholder="Describe the current problem"
       >Problem Statement</form-element
@@ -26,8 +26,8 @@
     <form-element
       id="solution"
       inputStyle="textarea"
-      :isError="solutionValidate"
-      @removeError="removeError('setSolutionValidation')"
+      :isError="solutionValidation"
+      @removeError="removeError('solutionValidation')"
       placeholder="Describe your proposed solution for the above problem"
       @enteredInput="enteredInput"
       >Proposed Solution</form-element
@@ -35,8 +35,8 @@
     <form-element
       id="implementation"
       inputStyle="textarea"
-      :isError="implementationValidate"
-      @removeError="removeError('setImplementationValidation')"
+      :isError="implementationValidation"
+      @removeError="removeError('implementationValidation')"
       placeholder="Describe the implementation plan for the proposed solution"
       @enteredInput="enteredInput"
       >Implementation Method</form-element
@@ -65,57 +65,70 @@ export default {
     const router = useRouter();
 
     function enteredInput(event) {
-      store.dispatch("process/enteredInput", event);
+      store.dispatch("enteredInput", event);
     }
 
     function onSubmit() {
       //Reset form validation before check
-      store.dispatch("process/setProjectNameValidation", false);
-      store.dispatch("process/setProblemValidation", false);
-      store.dispatch("process/setSolutionValidation", false);
-      store.dispatch("process/setImplementationValidation", false);
+      store.dispatch("setValidation", {
+        term: "projectNameValidation",
+        value: false,
+      });
+      store.dispatch("setValidation", {
+        term: "problemValidation",
+        value: false,
+      });
+      store.dispatch("setValidation", {
+        term: "solutionValidation",
+        value: false,
+      });
+      store.dispatch("setValidation", {
+        term: "implementationValidation",
+        value: false,
+      });
 
       //Submit
-      store.dispatch("process/onSubmit");
+      store.dispatch("onSubmit", {
+        fields: store.getters.getProcess,
+        fieldsValidation: "getProcessValidation",
+      });
 
       //Go to Next Page
-      if (!store.getters["process/checkError"]) {
+      if (!store.getters.checkError) {
         router.push("/benefits-savings");
       }
     }
 
-    function removeError(fieldAction) {
-      store.dispatch(`process/${fieldAction}`, true);
+    function removeError(term) {
+      store.dispatch("setValidation", { term: term, value: true });
     }
 
     let errorActive = computed(() => {
       window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-      return store.getters["process/checkError"];
+      return store.getters.checkError;
     });
 
-    let projectNameValidate = computed(() => {
-      if (store.getters["process/checkError"]) {
-        return !store.getters["process/getProcessValidation"]
-          .projectNameValidate;
+    let projectNameValidation = computed(() => {
+      if (store.getters.checkError) {
+        return !store.getters.getProcessValidation.projectNameValidation;
       }
       return false;
     });
-    let problemValidate = computed(() => {
-      if (store.getters["process/checkError"]) {
-        return !store.getters["process/getProcessValidation"].problemValidate;
+    let problemValidation = computed(() => {
+      if (store.getters.checkError) {
+        return !store.getters.getProcessValidation.problemValidation;
       }
       return false;
     });
-    let solutionValidate = computed(() => {
-      if (store.getters["process/checkError"]) {
-        return !store.getters["process/getProcessValidation"].solutionValidate;
+    let solutionValidation = computed(() => {
+      if (store.getters.checkError) {
+        return !store.getters.getProcessValidation.solutionValidation;
       }
       return false;
     });
-    let implementationValidate = computed(() => {
-      if (store.getters["process/checkError"]) {
-        return !store.getters["process/getProcessValidation"]
-          .implementationValidate;
+    let implementationValidation = computed(() => {
+      if (store.getters.checkError) {
+        return !store.getters.getProcessValidation.implementationValidation;
       }
       return false;
     });
@@ -124,10 +137,10 @@ export default {
       enteredInput,
       onSubmit,
       errorActive,
-      projectNameValidate,
-      problemValidate,
-      solutionValidate,
-      implementationValidate,
+      projectNameValidation,
+      problemValidation,
+      solutionValidation,
+      implementationValidation,
       removeError,
     };
   },

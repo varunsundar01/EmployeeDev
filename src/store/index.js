@@ -1,14 +1,16 @@
 import { createStore } from 'vuex';
 
-import processModule from './modules/process/index.js';
-
 const store = createStore({
-    modules: {
-        process: processModule,
-    },
+    // modules: {
+    //     process: processModule,
+    // },
     state() {
         return {
             fields: {
+                projectName: "",
+                problem: "",
+                solution: "",
+                implementation: "",
                 implementationCost: null,
                 costSavings: null,
                 timeToComplete: null,
@@ -16,6 +18,10 @@ const store = createStore({
                 currentDate: null
             },
             fieldsValidate: {
+                projectNameValidation: false,
+                problemValidation: false,
+                solutionValidation: false,
+                implementationValidation: false,
                 implementationCostValidation: false,
                 costSavingsValidation: false,
                 timeToCompleteValidation: false,
@@ -26,6 +32,36 @@ const store = createStore({
         }
     },
     getters: {
+        getProcess(state) {
+            const process = {
+                projectName: "",
+                problem: "",
+                solution: "",
+                implementation: ""
+            }
+
+            process.projectName = state.fields.projectName;
+            process.problem = state.fields.problem;
+            process.solution = state.fields.solution;
+            process.implementation = state.fields.implementation;
+
+            return process;
+        },
+        getProcessValidation(state) {
+            const processValidation = {
+                projectNameValidation: false,
+                problemValidation: false,
+                solutionValidation: false,
+                implementationValidation: false
+            }
+
+            processValidation.projectNameValidation = state.fieldsValidate.projectNameValidation;
+            processValidation.problemValidation = state.fieldsValidate.problemValidation;
+            processValidation.solutionValidation = state.fieldsValidate.solutionValidation;
+            processValidation.implementationValidation = state.fieldsValidate.implementationValidation;
+
+            return processValidation;
+        },
         getBenefits(state) {
             const benefits = {
                 implementationCost: null,
@@ -99,6 +135,9 @@ const store = createStore({
             } else {
                 context.commit('onSubmit', values);
             }
+        },
+        finalSubmit(context, payload) {
+            context.commit('finalSubmit', payload);
         }
     },
     mutations: {
@@ -115,6 +154,11 @@ const store = createStore({
         onSubmit(state, payload) {
             console.log(state);
             console.log(payload);
+        },
+        finalSubmit(state, payload) {
+            console.log(state);
+            console.log(payload);
+
         }
     }
 });
