@@ -30,15 +30,4 @@ p {
   font-weight: 300;
   color: rgba(0, 0, 0, 0.5);
 }
-
-a {
-  text-decoration: none;
-  color: var(--primary);
-  font-weight: 500;
-  transition: all 0.3s ease-in-out;
-}
-
-a:hover {
-  color: var(--secondary);
-}
 </style>
