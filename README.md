@@ -1,5 +1,7 @@
 # employee-dev
 
+![logo] (C:\Users\varun\Portfolio\employee-dev\src\assets\images\EmployeeDev Logo.svg)
+
 ## Project setup
 ```
 npm install
