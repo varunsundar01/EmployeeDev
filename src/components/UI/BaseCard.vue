@@ -9,7 +9,7 @@
   background-color: var(--background-light);
   border-radius: 5px;
   padding: 1em;
-  max-width: 760px;
+  max-width: 640px;
   margin: 0 auto 2em auto;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
 }
