@@ -2,26 +2,7 @@
   <div class="nav-wrapper">
     <div class="main-nav">
       <a class="nav-brand" href="/"></a>
-      <ul class="nav-list">
-        <li
-          class="nav-item"
-          :class="{ active: currentRoute === 'process-details' }"
-        >
-          Process Details
-        </li>
-        <li
-          class="nav-item"
-          :class="{ active: currentRoute === 'benefits-savings' }"
-        >
-          Benefits &amp; Savings
-        </li>
-        <li
-          class="nav-item"
-          :class="{ active: currentRoute === 'final-review' }"
-        >
-          Review
-        </li>
-      </ul>
+      
       <ul class="nav-right">
         <li class="nav-item-right">
           <base-button secondaryVisible="true">
@@ -32,22 +13,6 @@
     </div>
   </div>
 </template>
-
-<script>
-import { useRoute } from "vue-router";
-import { computed } from "vue";
-export default {
-  setup() {
-    const route = useRoute();
-    let currentRoute = computed(() => {
-      return route.name;
-    });
-    return {
-      currentRoute,
-    };
-  },
-};
-</script>
 
 <style scoped>
 .nav-wrapper {

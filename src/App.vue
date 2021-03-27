@@ -2,6 +2,7 @@
   <div>
     <the-header></the-header>
     <div class="main-app">
+      <the-tab v-if="currentRoute !== '/'"></the-tab>
       <router-view v-slot="{ Component }">
         <transition name="main" mode="out-in">
           <keep-alive>
@@ -15,8 +16,23 @@
 </template>
 
 <script>
+import TheTab from "./components/layout/TheTab.vue";
+import { useRoute } from "vue-router";
+import { computed } from "vue";
 export default {
+  components: {
+    TheTab,
+  },
   name: "App",
+  setup() {
+    const route = useRoute();
+    let currentRoute = computed(() => {
+      return route.path;
+    });
+    return {
+      currentRoute,
+    };
+  },
 };
 </script>
 
