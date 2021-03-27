@@ -11,7 +11,7 @@
     <base-button primaryVisible="true">
       <template v-slot:primary>Sign In</template>
     </base-button>
-    <p class="auth-option">Don't have an account? Sign Up instead</p>
+    <p class="auth-option">Don't have an account? <router-link to="/process-details">Sign Up</router-link> instead</p>
   </base-card>
 </template>
 
