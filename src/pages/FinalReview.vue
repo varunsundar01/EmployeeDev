@@ -1,7 +1,7 @@
 <template>
   <base-card>
     <div class="review-element">
-      <label>Project Name <router-link to="/process-details">editicon</router-link></label>
+      <label>Project Name</label>
       <p>{{ process.projectName }}</p>
     </div>
     <div class="review-element">
