@@ -1,9 +1,11 @@
 import { createStore } from 'vuex';
 
+import authModule from './modules/auth/index.js';
+
 const store = createStore({
-    // modules: {
-    //     process: processModule,
-    // },
+    modules: {
+        auth: authModule,
+    },
     state() {
         return {
             fields: {
