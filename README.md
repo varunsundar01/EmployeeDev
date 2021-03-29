@@ -10,7 +10,7 @@ My day job requires every employee to submit new ideas or processes that could i
 
 Right before COVID, I had proposed moving the whole system to have it hosted on the web. This way every employee can sign in, enter their proposed projects, and the backend would take care of the number of points and most of the data validation. The supervisors would just have to meet once a month to go over the projects submitted by their employees. Ever since COVID this plan was kept on the back burner to focus on other direct revenue projects.
 
-## Project setup
+## Vue Project setup
 ```
 npm install
 ```
@@ -32,3 +32,8 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+## Django Setup
+```
+pipenv install
+```
