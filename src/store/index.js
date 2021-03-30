@@ -148,13 +148,14 @@ const store = createStore({
                 cost_savings: payload.costSavings,
                 time_to_complete: payload.timeToComplete
             }
-            const response = await fetch('http://127.0.0.1:8000/api/projects/', {
-                method: 'POST',
-                headers: new Headers({ 'content-type': 'application/json' }),
-                body: JSON.stringify(projectData)
-            });
-            const responseData = await response.json();
-            console.log(responseData);
+            fetch('http://127.0.0.1:8000/api/projects/', {
+                    method: 'POST',
+                    headers: new Headers({ 'content-type': 'application/json' }),
+                    body: JSON.stringify(projectData)
+                })
+                .then(response => {
+                    console.log(response);
+                })
             context.commit('finalSubmit', payload);
         }
     },
