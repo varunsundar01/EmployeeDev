@@ -1,7 +1,9 @@
 from django.db import models
+from django.utils.text import slugify
 
 class Project(models.Model):
-    project_name = models.CharField(max_length=200)
+    project_name = models.CharField(max_length=200, unique=True)
+    project_slug = models.SlugField(default='')
     problem = models.TextField()
     solution = models.TextField()
     implementation = models.TextField()
@@ -9,6 +11,10 @@ class Project(models.Model):
     cost_savings = models.FloatField()
     time_to_complete = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        self.project_slug = slugify(self.project_name)
+        super(Project, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.project_name
