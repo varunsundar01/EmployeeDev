@@ -138,7 +138,23 @@ const store = createStore({
                 context.commit('onSubmit', values);
             }
         },
-        finalSubmit(context, payload) {
+        async finalSubmit(context, payload) {
+            const projectData = {
+                project_name: payload.projectName,
+                problem: payload.problem,
+                solution: payload.solution,
+                implementation: payload.implementation,
+                implementation_cost: payload.implementationCost,
+                cost_savings: payload.costSavings,
+                time_to_complete: payload.timeToComplete
+            }
+            const response = await fetch('http://127.0.0.1:8000/api/projects/', {
+                method: 'POST',
+                headers: new Headers({ 'content-type': 'application/json' }),
+                body: JSON.stringify(projectData)
+            });
+            const responseData = await response.json();
+            console.log(responseData);
             context.commit('finalSubmit', payload);
         }
     },
@@ -160,7 +176,6 @@ const store = createStore({
         finalSubmit(state, payload) {
             console.log(state);
             console.log(payload);
-
         }
     }
 });
