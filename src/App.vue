@@ -2,7 +2,7 @@
   <div>
     <the-header></the-header>
     <div class="main-app">
-      <the-tab v-if="currentRoute !== '/'"></the-tab>
+      <the-tab v-if="currentRoute === '/process-details' || currentRoute === '/benefits-savings' || currentRoute === '/final-review'"></the-tab>
       <router-view v-slot="{ Component }">
         <transition name="main" mode="out-in">
           <keep-alive>
