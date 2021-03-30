@@ -16,5 +16,8 @@ class Project(models.Model):
         self.project_slug = slugify(self.project_name)
         super(Project, self).save(*args, **kwargs)
 
+    class Meta:
+        ordering = ['-created_at']
+
     def __str__(self):
         return self.project_name
