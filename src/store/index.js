@@ -119,7 +119,7 @@ const store = createStore({
             for (let term in fields) {
                 let checkCondition = fields[term] && fields[term].length > 0;
                 if (term === 'implementationCost' || term === 'costSavings' || term === 'timeToComplete') {
-                    checkCondition = fields[term] && fields[term] > 0;
+                    checkCondition = fields[term] && fields[term] >= 0;
                 }
 
                 if (checkCondition) {
