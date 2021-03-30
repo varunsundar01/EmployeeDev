@@ -2,8 +2,11 @@
   <div class="nav-wrapper">
     <div class="main-nav">
       <a class="nav-brand" href="/"></a>
-      
+
       <ul class="nav-right">
+        <li class="nav-item-right">
+          <router-link to="/projects">View All Projects</router-link>
+        </li>
         <li class="nav-item-right">
           <base-button secondaryVisible="true">
             <template v-slot:secondary>Logout</template>
@@ -38,7 +41,7 @@
 
 .nav-brand {
   padding: 0;
-  background-image: url('~@/assets/images/EmployeeDev Logo.svg');
+  background-image: url("~@/assets/images/EmployeeDev Logo.svg");
   height: 65px;
   width: 200px;
   background-repeat: no-repeat;
@@ -63,6 +66,27 @@
   font-size: 1em;
 }
 
+.nav-item-right a {
+  color: var(--secondary);
+  font-weight: 300;
+  transition: none;
+}
+
+.nav-item-right a::after {
+  display: block;
+  content: "";
+  border-bottom: 1.25px solid var(--secondary-variant);
+  transform: scaleX(0);
+  transition: all 0.25s ease-in-out;
+  transform-origin: 0% 50%;
+}
+
+.nav-item-right a:hover::after,
+.nav-item-right a:focus::after {
+  border-bottom: 1.25px solid var(--secondary-variant);
+  transform: scaleX(1);
+}
+
 .active {
   border-bottom: 2px solid #2a9d8f;
   font-weight: 500;
@@ -72,8 +96,5 @@
   .nav-item {
     margin: auto 1em;
   }
-  /* .nav-list {
-    display: none;
-  } */
 }
 </style>
