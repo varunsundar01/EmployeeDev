@@ -22,14 +22,14 @@
 
 <style scoped>
 .nav-wrapper {
-  background-color: var(--primary);
+  background-color: var(--background);
   display: flex;
   align-items: center;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
   z-index: 2;
 }
 

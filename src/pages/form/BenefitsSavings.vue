@@ -74,7 +74,7 @@
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { computed } from "vue";
-import ErrorBanner from "../components/UI/ErrorBanner";
+import ErrorBanner from "../../components/UI/ErrorBanner";
 
 export default {
   components: {

@@ -53,7 +53,7 @@
 import { computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import ErrorBanner from "../components/UI/ErrorBanner";
+import ErrorBanner from "../../components/UI/ErrorBanner";
 export default {
   components: {
     ErrorBanner,

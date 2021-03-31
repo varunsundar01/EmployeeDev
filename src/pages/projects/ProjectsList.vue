@@ -31,8 +31,8 @@
 
 <script>
 import { ref, computed } from "vue";
-import ListElement from "../components/UI/ListElement.vue";
-import ProjectSearch from "../components/layout/ProjectSearch.vue";
+import ListElement from "../../components/UI/ListElement.vue";
+import ProjectSearch from "../../components/layout/ProjectSearch.vue";
 export default {
   components: {
     ListElement,

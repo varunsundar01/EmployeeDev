@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 import HomePage from './pages/HomePage.vue';
-import ProcessDetails from './pages/ProcessDetails.vue';
-import BenefitsSavings from './pages/BenefitsSavings.vue';
-import FinalReview from './pages/FinalReview.vue';
-import SignUp from './pages/SignUp.vue';
-import ProjectsList from './pages/ProjectsList.vue';
-import ProjectsDetail from './pages/ProjectsDetail.vue';
+import ProcessDetails from './pages/form/ProcessDetails.vue';
+import BenefitsSavings from './pages/form/BenefitsSavings.vue';
+import FinalReview from './pages/form/FinalReview.vue';
+import SignUp from './pages/auth/SignUp.vue';
+import ProjectsList from './pages/projects/ProjectsList.vue';
+import ProjectsDetail from './pages/projects/ProjectsDetail.vue';
 
 const router = createRouter({
     history: createWebHistory(),
