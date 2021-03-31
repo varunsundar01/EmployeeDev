@@ -5,7 +5,7 @@
       autocomplete="off"
       type="text"
       placeholder="Search Projects"
-      v-model="searchTerm"
+      v-model.trim="searchTerm"
       @input="enteredInput"
       @focus="isOpen = true"
     />
@@ -27,7 +27,7 @@
 <script>
 import { ref, computed } from "vue";
 export default {
-  emits: ["searchTerm"],
+  emits: ["selectedTerm", "enteredInput"],
   setup(_, context) {
     const searchTerm = ref("");
     const projectNames = ref([]);
@@ -40,6 +40,7 @@ export default {
     }
 
     function enteredInput() {
+      context.emit('enteredInput', searchTerm.value);
       filteredProjects.value = projectNames.value.filter((project) => {
         return project.toLowerCase().includes(searchTerm.value.toLowerCase());
       });
@@ -48,7 +49,7 @@ export default {
     function selectProject(data) {
       searchTerm.value = data.target.innerHTML;
       isOpen.value = false;
-      context.emit("searchTerm", searchTerm);
+      context.emit("selectedTerm", searchTerm);
     }
 
     const isFiltered = computed(() => {
@@ -98,7 +99,11 @@ export default {
 .search-suggestions ul li {
   list-style-type: none;
   font-weight: 300;
-  margin-top: 0.5em;
+  padding: 0.5em;
   cursor: pointer;
+}
+
+.search-suggestions ul li:hover {
+  background-color: var(--background);
 }
 </style>

@@ -1,8 +1,24 @@
 <template>
   <div>
     <h1>Projects List</h1>
-    <project-search @searchTerm="filterResults"></project-search>
+    <project-search
+      @enteredInput="enteredInput"
+      @selectedTerm="filterResults"
+    ></project-search>
+    <div class="loading" v-if="isLoading">
+      <p>Loading Spinner</p>
+    </div>
     <list-element
+      v-else-if="displayFiltered"
+      v-for="project in filteredProject"
+      :key="project.id"
+      :title="project.projectName"
+      author="Placeholder Author"
+      :createdAt="project.createdAt"
+      :slug="project.projectSlug"
+    ></list-element>
+    <list-element
+      v-else-if="!displayFiltered"
       v-for="project in projects"
       :key="project.id"
       :title="project.projectName"
@@ -14,8 +30,7 @@
 </template>
 
 <script>
-// import { reactive } from "vue";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import ListElement from "../components/UI/ListElement.vue";
 import ProjectSearch from "../components/layout/ProjectSearch.vue";
 export default {
@@ -25,6 +40,9 @@ export default {
   },
   setup() {
     let projects = ref([]);
+    let isLoading = ref(true);
+    let filteredProject = ref([]);
+
     fetch("http://127.0.0.1:8000/api/projects/")
       .then((response) => response.json())
       .then((data) => {
@@ -55,16 +73,41 @@ export default {
           projects.value.push(ProjectObj);
         }
         localStorage.setItem("projects", JSON.stringify(projects));
+        isLoading.value = false;
       });
 
     function filterResults(data) {
-      console.log(data.value);
+      filteredProject.value = projects.value.filter((project) => {
+        return project.projectName === data.value;
+      });
     }
+
+    function enteredInput(data) {
+      if (data === "") {
+        filteredProject.value.length = 0;
+      }
+    }
+
+    const displayFiltered = computed(() => {
+      return !isLoading.value && filteredProject.value.length > 0;
+    });
 
     return {
       projects,
       filterResults,
+      isLoading,
+      filteredProject,
+      displayFiltered,
+      enteredInput,
     };
   },
 };
 </script>
+
+<style scoped>
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>

@@ -7,7 +7,12 @@
     <p class="project-author">
       Submitted On: <span>{{ createdAt }}</span>
     </p>
-    <button class="project-button"><router-link :to="slug">View</router-link></button>
+    <button class="project-button view">
+      <router-link :to="'/projects' + slug">View</router-link>
+    </button>
+    <button class="project-button delete">
+      <router-link to="/">Delete</router-link>
+    </button>
   </div>
 </template>
 
@@ -54,21 +59,53 @@ export default {
   cursor: pointer;
   padding: 0.5em 1em;
   font-size: 1em;
-  background-color: var(--primary);
-  color: var(--background-light);
   font-weight: 300;
   border-radius: 3px;
   transition: all 0.3s ease-in-out;
+  margin-right: 1em;
+  border: 1px solid transparent;
 }
 
-.project-button a {
-    color: var(--background-light);
-    font-weight: 300;
+.view {
+  background-color: var(--primary);
+  color: var(--background-light);
+}
+
+.view a {
+  color: var(--background-light);
+  font-weight: 300;
+}
+
+.project-button.view:hover,
+.project-button.view:focus {
+  background-color: var(--primary-variant);
+}
+
+.delete {
+  background-color: transparent;
+  border-color: #dc3545;
+  color: #dc3545;
+}
+
+.delete a {
+  color: #dc3545;
+  font-weight: 300;
+}
+
+.project-button.delete:hover,
+.project-button.delete:focus {
+  background-color: #dc3545;
+  border-color: #dc3545;
+  color: var(--background-light);
+}
+
+.project-button.delete a:hover,
+.project-button.delete a:focus {
+  color: var(--background-light);
 }
 
 .project-button:hover,
 .project-button:focus {
-  background-color: var(--primary-variant);
   outline: none;
 }
 </style>
