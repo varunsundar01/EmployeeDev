@@ -156,7 +156,6 @@ const store = createStore({
                 .then(response => {
                     console.log(response);
                 })
-            context.commit('finalSubmit', payload);
         }
     },
     mutations: {
@@ -171,10 +170,6 @@ const store = createStore({
             state.errorActive = payload;
         },
         onSubmit(state, payload) {
-            console.log(state);
-            console.log(payload);
-        },
-        finalSubmit(state, payload) {
             console.log(state);
             console.log(payload);
         }
