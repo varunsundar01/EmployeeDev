@@ -24,7 +24,10 @@
     </div>
 
     <div class="project-item">
-      <p class="meta-title">Estimated Weeks to Completion: <span class="meta-info">{{ project.timeToComplete }}</span></p>
+      <p class="meta-title">
+        Estimated Weeks to Completion:
+        <span class="meta-info">{{ project.timeToComplete }}</span>
+      </p>
     </div>
 
     <div class="project-item">
@@ -47,6 +50,7 @@ import { useRoute } from "vue-router";
 export default {
   setup() {
     const route = useRoute();
+    //GET DATA FROM DATABASE IF DOES NOT EXIST IN LOCALSTORAGE. ADD MIXIN
     const projectsObj = JSON.parse(localStorage.getItem("projects"))._value;
 
     const project = projectsObj.filter((project) => {
@@ -114,7 +118,7 @@ p {
 
 .project-numbers {
   display: grid;
-  gap: 0.5em;
+  gap: 1em;
   grid-template-columns: repeat(2, 1fr);
   margin-bottom: 1.5em;
 }
