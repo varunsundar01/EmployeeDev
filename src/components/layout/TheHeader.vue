@@ -5,6 +5,9 @@
 
       <ul class="nav-right">
         <li class="nav-item-right">
+          <router-link to="/process-details">Submit Project</router-link>
+        </li>
+        <li class="nav-item-right">
           <router-link to="/projects">View All Projects</router-link>
         </li>
         <li class="nav-item-right">
