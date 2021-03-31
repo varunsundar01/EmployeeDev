@@ -6,6 +6,7 @@ import BenefitsSavings from './pages/BenefitsSavings.vue';
 import FinalReview from './pages/FinalReview.vue';
 import SignUp from './pages/SignUp.vue';
 import ProjectsList from './pages/ProjectsList.vue';
+import ProjectsDetail from './pages/ProjectsDetail.vue';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -16,6 +17,7 @@ const router = createRouter({
         { name: 'final-review', path: '/final-review', component: FinalReview },
         { name: 'sign-up', path: '/sign-up', component: SignUp },
         { name: 'projects-list', path: '/projects', component: ProjectsList },
+        { name: 'projects-detail', path: '/projects/:slug', component: ProjectsDetail },
     ]
 });
 
