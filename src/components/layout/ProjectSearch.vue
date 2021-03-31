@@ -40,7 +40,7 @@ export default {
     }
 
     function enteredInput() {
-      context.emit('enteredInput', searchTerm.value);
+      context.emit("enteredInput", searchTerm.value);
       filteredProjects.value = projectNames.value.filter((project) => {
         return project.toLowerCase().includes(searchTerm.value.toLowerCase());
       });
@@ -53,7 +53,7 @@ export default {
     }
 
     const isFiltered = computed(() => {
-      if (filteredProjects.value.length > 0 && searchTerm.value.trim() !== "") {
+      if (filteredProjects.value.length > 0 && searchTerm.value !== "") {
         return true;
       }
       return false;
