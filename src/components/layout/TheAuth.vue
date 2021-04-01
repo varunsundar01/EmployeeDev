@@ -23,7 +23,7 @@
     </base-button>
     <p class="auth-option">
       Don't have an account?
-      <router-link to="/process-details">Sign Up</router-link> instead
+      <router-link to="/sign-up">Sign Up</router-link> instead
     </p>
   </base-card>
 </template>
