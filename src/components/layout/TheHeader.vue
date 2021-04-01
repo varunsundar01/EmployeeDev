@@ -1,7 +1,7 @@
 <template>
   <div class="nav-wrapper">
     <div class="main-nav">
-      <a class="nav-brand" href="/"></a>
+      <router-link to="/" class="nav-brand"></router-link>
 
       <ul class="nav-right">
         <li class="nav-item-right">
@@ -29,7 +29,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.1);
   z-index: 2;
 }
 
