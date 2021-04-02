@@ -28,7 +28,12 @@
       <label>Estimated Weeks to Completion</label>
       <p>{{ benefits.timeToComplete }}</p>
     </div>
-    <base-button @toNext="finalSubmit" @toBack="toBack" primaryVisible="true" secondaryVisible="true">
+    <base-button
+      @toNext="finalSubmit"
+      @toBack="toBack"
+      primaryVisible="true"
+      secondaryVisible="true"
+    >
       <template v-slot:secondary>Back</template>
       <template v-slot:primary>Submit</template>
     </base-button>
@@ -45,32 +50,33 @@ export default {
     const store = useStore();
 
     const process = computed(() => {
-      return store.getters.getProcess;
+      return JSON.parse(localStorage.getItem("process-details"));
     });
     const benefits = computed(() => {
-      return store.getters.getBenefits;
+      return JSON.parse(localStorage.getItem("benefits-savings"));
     });
 
     function finalSubmit() {
-      const process = store.getters.getProcess;
-      const benefits = store.getters.getBenefits;
+      const process = JSON.parse(localStorage.getItem("process-details"));
+      const benefits = JSON.parse(localStorage.getItem("benefits-savings"));
       delete benefits.fullName;
       delete benefits.currentDate;
 
       const finalValues = Object.assign(process, benefits);
 
-      store.dispatch('finalSubmit', finalValues);
+      store.dispatch("finalSubmit", finalValues);
+      router.push("/dashboard");
     }
 
     function toBack() {
-      router.push('/benefits-savings');
+      router.push("/benefits-savings");
     }
 
     return {
       process,
       benefits,
       finalSubmit,
-      toBack
+      toBack,
     };
   },
 };
