@@ -42,10 +42,3 @@
     </base-button>
   </base-card>
 </template>
-
-<style scoped>
-.title {
-    font-weight: 500;
-    margin: 0.5em auto 1em auto;
-}
-</style>
