@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="projects-list" v-if="displayProjects">
-      <h1>Projects List</h1>
+      <h1 class="title">Projects List</h1>
       <project-search
         @enteredInput="enteredInput"
         @selectedTerm="filterResults"
@@ -39,6 +39,7 @@
 import { ref, computed } from "vue";
 import ListElement from "../../components/UI/ListElement.vue";
 import ProjectSearch from "../../components/layout/ProjectSearch.vue";
+import axios from "axios";
 export default {
   components: {
     ListElement,
@@ -51,9 +52,12 @@ export default {
     const error = ref("");
 
     if (!localStorage.getItem("projects")) {
-      fetch("http://127.0.0.1:8000/api/projects/")
-        .then((response) => response.json())
-        .then((data) => {
+      console.log("server");
+      axios
+        .get("http://127.0.0.1:8000/api/projects/")
+        .then((response) => {
+          console.log(response);
+          const data = response.data;
           for (const value in data) {
             const year = new Date(
               Date.parse(data[value].created_at)
