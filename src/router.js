@@ -14,9 +14,9 @@ const router = createRouter({
     routes: [
         { path: '/', component: HomePage },
         { name: 'the-dashboard', path: '/dashboard', component: TheDashboard, meta: { title: 'Dashboard' } },
-        { name: 'process-details', path: '/process-details', component: ProcessDetails, meta: { title: 'Process Details' } },
-        { name: 'benefits-savings', path: '/benefits-savings', component: BenefitsSavings, meta: { title: 'Benefitss & Savings' } },
-        { name: 'final-review', path: '/final-review', component: FinalReview, meta: { title: 'Final Review' } },
+        { name: 'process-details', path: '/process-details', component: ProcessDetails, meta: { title: 'Process Details', keepAlive: true } },
+        { name: 'benefits-savings', path: '/benefits-savings', component: BenefitsSavings, meta: { title: 'Benefitss & Savings', keepAlive: true } },
+        { name: 'final-review', path: '/final-review', component: FinalReview, meta: { title: 'Final Review', keepAlive: true } },
         { name: 'sign-up', path: '/sign-up', component: SignUp, meta: { title: 'Sign Up' } },
         { name: 'projects-list', path: '/projects', component: ProjectsList, meta: { title: 'Projects' } },
         { name: 'projects-detail', path: '/projects/:slug', component: ProjectsDetail },
