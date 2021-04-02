@@ -42,3 +42,9 @@ a:hover {
     max-width: 1260px;
     margin: 5em auto 0 auto;
 }
+
+.title {
+    font-weight: 500;
+    font-size: 2.5em;
+    margin: 0.5em auto 1em auto;
+}
