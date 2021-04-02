@@ -1,4 +1,5 @@
 import { createStore } from 'vuex';
+import axios from 'axios';
 
 import authModule from './modules/auth/index.js';
 
@@ -30,7 +31,11 @@ const store = createStore({
                 fullNameValidation: false,
                 currentDateValidation: false
             },
-            errorActive: false
+            errorActive: false,
+            submitAttempt: {
+                submitted: false,
+                submitMessage: ""
+            }
         }
     },
     getters: {
@@ -98,6 +103,9 @@ const store = createStore({
         },
         checkError(state) {
             return state.errorActive;
+        },
+        checkSubmit(state) {
+            return state.submitAttempt;
         }
     },
     actions: {
@@ -132,11 +140,12 @@ const store = createStore({
                     context.commit('setError', true);
                 }
             }
-            if (store.getters.checkError === true) {
-                console.log('All required');
-            } else {
-                context.commit('onSubmit', values);
+            if (!store.getters.checkError) {
+                localStorage.setItem(payload.type, JSON.stringify(values));
             }
+        },
+        switchSubmit(context, payload) {
+            context.commit("finalSubmit", payload);
         },
         async finalSubmit(context, payload) {
             const projectData = {
@@ -148,13 +157,20 @@ const store = createStore({
                 cost_savings: payload.costSavings,
                 time_to_complete: payload.timeToComplete
             }
-            fetch('http://127.0.0.1:8000/api/projects/', {
-                    method: 'POST',
-                    headers: new Headers({ 'content-type': 'application/json' }),
-                    body: JSON.stringify(projectData)
-                })
+            axios.post("http://127.0.0.1:8000/api/projects/", projectData)
                 .then(response => {
-                    console.log(response);
+                    context.commit("finalSubmit", {
+                        message: "Project proposal submitted successfully",
+                        messageType: response.status,
+                        value: true
+                    });
+                })
+                .catch((error) => {
+                    context.commit("finalSubmit", {
+                        message: `Error encountered while submitting project proposal: ${error}`,
+                        messageType: error.status,
+                        value: true
+                    })
                 })
         }
     },
@@ -169,9 +185,15 @@ const store = createStore({
         setError(state, payload) {
             state.errorActive = payload;
         },
-        onSubmit(state, payload) {
-            console.log(state);
-            console.log(payload);
+        finalSubmit(state, payload) {
+            state.submitAttempt.submitMessage = payload.message;
+            state.submitAttempt.submitted = payload.value;
+            if (payload.messageType >= 400) {
+                state.errorActive = true;
+            } else {
+                state.errorActive = false;
+            }
+            localStorage.removeItem('projects');
         }
     }
 });
