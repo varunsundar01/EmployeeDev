@@ -1,8 +1,8 @@
 <template>
   <base-card>
-    <error-banner v-if="errorActive"
+    <the-banner v-if="errorActive"
       >All fields are required. Please complete the fields highlighted
-      below</error-banner
+      below</the-banner
     >
     <form-element
       id="projectName"
@@ -53,10 +53,10 @@
 import { computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import ErrorBanner from "../../components/UI/ErrorBanner";
+import TheBanner from "../../components/UI/TheBanner";
 export default {
   components: {
-    ErrorBanner,
+    TheBanner,
   },
   props: ["isSecondary", "isPrimary", "id", "inputType", "placeholder"],
   emits: ["enteredInput"],
@@ -70,6 +70,8 @@ export default {
 
     function onSubmit() {
       //Reset form validation before check
+
+      //Check if project name is unique in database
       store.dispatch("setValidation", {
         term: "projectNameValidation",
         value: false,
@@ -89,6 +91,7 @@ export default {
 
       //Submit
       store.dispatch("onSubmit", {
+        type: "process-details",
         fields: store.getters.getProcess,
         fieldsValidation: "getProcessValidation",
       });

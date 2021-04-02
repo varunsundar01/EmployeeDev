@@ -1,8 +1,8 @@
 <template>
   <base-card>
-    <error-banner v-if="errorActive"
+    <the-banner v-if="errorActive"
       >All fields are required. Please complete the fields highlighted
-      below</error-banner
+      below</the-banner
     >
     <form-element
       id="implementationCost"
@@ -74,11 +74,11 @@
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { computed } from "vue";
-import ErrorBanner from "../../components/UI/ErrorBanner";
+import TheBanner from "../../components/UI/TheBanner";
 
 export default {
   components: {
-    ErrorBanner,
+    TheBanner,
   },
   setup() {
     const router = useRouter();
@@ -113,6 +113,7 @@ export default {
 
       //Submit
       store.dispatch("onSubmit", {
+        type: "benefits-savings",
         fields: store.getters.getBenefits,
         fieldsValidation: "getBenefitsValidation",
       });
