@@ -1,31 +1,37 @@
 <template>
   <div>
-    <h1>Projects List</h1>
-    <project-search
-      @enteredInput="enteredInput"
-      @selectedTerm="filterResults"
-    ></project-search>
-    <div class="loading" v-if="isLoading">
-      <p>Loading Spinner</p>
+    <div class="projects-list" v-if="displayProjects">
+      <h1>Projects List</h1>
+      <project-search
+        @enteredInput="enteredInput"
+        @selectedTerm="filterResults"
+      ></project-search>
+      <div class="loading" v-if="isLoading">
+        <p>Loading Spinner</p>
+      </div>
+      <list-element
+        v-else-if="displayFiltered"
+        v-for="project in filteredProject"
+        :key="project.id"
+        :title="project.projectName"
+        author="Placeholder Author"
+        :createdAt="project.createdAt"
+        :slug="project.projectSlug"
+      ></list-element>
+      <list-element
+        v-else-if="!displayFiltered"
+        v-for="project in projects"
+        :key="project.id"
+        :title="project.projectName"
+        author="Placeholder Author"
+        :createdAt="project.createdAt"
+        :slug="project.projectSlug"
+      ></list-element>
     </div>
-    <list-element
-      v-else-if="displayFiltered"
-      v-for="project in filteredProject"
-      :key="project.id"
-      :title="project.projectName"
-      author="Placeholder Author"
-      :createdAt="project.createdAt"
-      :slug="project.projectSlug"
-    ></list-element>
-    <list-element
-      v-else-if="!displayFiltered"
-      v-for="project in projects"
-      :key="project.id"
-      :title="project.projectName"
-      author="Placeholder Author"
-      :createdAt="project.createdAt"
-      :slug="project.projectSlug"
-    ></list-element>
+    <div class="no-projects" v-else>
+      <p v-if="error" class="error">{{ error }}</p>
+      <p v-else>No Projects Found</p>
+    </div>
   </div>
 </template>
 
@@ -42,8 +48,9 @@ export default {
     let projects = ref([]);
     let isLoading = ref(true);
     let filteredProject = ref([]);
+    const error = ref("");
 
-    if (localStorage.getItem("projects")) {
+    if (!localStorage.getItem("projects")) {
       fetch("http://127.0.0.1:8000/api/projects/")
         .then((response) => response.json())
         .then((data) => {
@@ -75,11 +82,22 @@ export default {
           }
           localStorage.setItem("projects", JSON.stringify(projects));
           isLoading.value = false;
+        })
+        .catch(() => {
+          error.value = "Failed to load data from database";
+          isLoading.value = false;
         });
     } else {
       projects.value = JSON.parse(localStorage.getItem("projects"))._value;
       isLoading.value = false;
     }
+
+    const displayProjects = computed(() => {
+      if (isLoading.value === false && projects.value.length === 0) {
+        return false;
+      }
+      return true;
+    });
 
     function filterResults(data) {
       filteredProject.value = projects.value.filter((project) => {
@@ -104,6 +122,8 @@ export default {
       filteredProject,
       displayFiltered,
       enteredInput,
+      displayProjects,
+      error,
     };
   },
 };
@@ -114,5 +134,25 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.no-projects {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+}
+
+.no-projects p {
+  font-weight: 300;
+  font-size: 1em;
+  padding: 1em 5em;
+  background-color: var(--background-light);
+  border-radius: 5px;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
+}
+
+.error {
+  background-color: #f8d7da !important;
 }
 </style>
