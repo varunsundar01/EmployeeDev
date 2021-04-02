@@ -5,6 +5,9 @@
 
       <ul class="nav-right">
         <li class="nav-item-right">
+          <router-link to="/dashboard">Dashboard</router-link>
+        </li>
+        <li class="nav-item-right">
           <router-link to="/process-details">Submit Project</router-link>
         </li>
         <li class="nav-item-right">
@@ -84,8 +87,7 @@
   transform-origin: 0% 50%;
 }
 
-.nav-item-right a:hover::after,
-.nav-item-right a:focus::after {
+.nav-item-right a:hover::after {
   border-bottom: 1.25px solid var(--secondary-variant);
   transform: scaleX(1);
 }
