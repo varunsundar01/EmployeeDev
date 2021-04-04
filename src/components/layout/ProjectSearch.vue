@@ -32,11 +32,11 @@ export default {
     const searchTerm = ref("");
     const projectNames = ref([]);
     let filteredProjects = ref([]);
-    const projects = JSON.parse(localStorage.getItem("projects"))._value;
+    const projects = JSON.parse(localStorage.getItem("projects"));
     let isOpen = ref(false);
 
     for (let project in projects) {
-      projectNames.value.push(projects[project].projectName);
+      projectNames.value.push(projects[project].project_name);
     }
 
     function enteredInput() {
@@ -98,7 +98,6 @@ export default {
 
 .search-suggestions ul li {
   list-style-type: none;
-  font-weight: 300;
   padding: 0.5em;
   cursor: pointer;
 }
