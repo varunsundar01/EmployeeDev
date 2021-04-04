@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="hero-section">
-      <h1><span class="logo-first">Employee</span><span class="logo-second">Dev</span> Portal</h1>
+      <h1>Employee<span class="logo-second">Dev</span> Portal</h1>
       <p>
         Sign in to submit your proposed process improvement methods and
         strategies
@@ -34,13 +34,8 @@ export default {
 
 .hero-section p {
   font-size: 1.25em;
-  font-weight: 300;
   color: var(--secondary);
   margin: 0 auto 2em auto;
-}
-
-.logo-first {
-  font-weight: 300;
 }
 
 .logo-second {

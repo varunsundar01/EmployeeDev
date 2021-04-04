@@ -66,15 +66,15 @@
 .nav-item,
 .nav-item-right {
   margin: auto 1em;
-  font-weight: 300;
+  font-weight: 400;
   padding: 0.5em 0;
   margin: 0 2em 0 0;
-  font-size: 1em;
+  font-size: 1.1em;
 }
 
 .nav-item-right a {
   color: var(--secondary);
-  font-weight: 300;
+  font-weight: 400;
   transition: none;
 }
 

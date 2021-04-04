@@ -34,12 +34,12 @@ export default {
 button {
   border: none;
   padding: 0.5em 1em;
-  font-size: 1em;
+  font-size: 1.1em;
   background-color: var(--primary);
   border-radius: 3px;
   cursor: pointer;
   color: var(--background-light);
-  font-weight: 300;
+  font-weight: 400;
   transition: all 0.3s ease-in-out;
 }
 

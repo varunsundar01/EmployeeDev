@@ -49,7 +49,6 @@ export default {
 }
 
 .tab-item p {
-  font-weight: 300;
   font-size: 1em;
   color: var(--inactive);
   margin: 0;

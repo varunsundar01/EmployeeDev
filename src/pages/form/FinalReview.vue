@@ -91,12 +91,11 @@ export default {
 
 label {
   font-weight: 500;
-  font-size: 1.25em;
+  font-size: 1.35em;
 }
 
 p {
-  font-weight: 300;
-  font-size: 1em;
+  font-size: 1.1em;
   margin: 0.25em 0 0 0;
 }
 </style>

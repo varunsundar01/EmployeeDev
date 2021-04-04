@@ -27,7 +27,7 @@ export default {
 }
 
 p {
-  font-weight: 300;
   color: rgba(0, 0, 0, 0.5);
+  font-size: 1.1em;
 }
 </style>

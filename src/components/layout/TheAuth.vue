@@ -48,7 +48,7 @@ export default {
 
 <style scoped>
 .auth-option {
-  font-weight: 300;
+  font-weight: 400;
   text-align: center;
 }
 </style>

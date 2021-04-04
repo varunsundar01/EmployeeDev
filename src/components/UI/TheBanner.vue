@@ -52,7 +52,6 @@ export default {
 p {
   padding: 0;
   margin: 0;
-  font-weight: 300;
   font-size: 1em;
 }
 </style>
