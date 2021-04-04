@@ -1,75 +1,95 @@
 <template>
-  <div class="project-detail">
-    <h1 class="project-name">{{ project.projectName }}</h1>
-
-    <div class="project-meta">
-      <p class="meta-title author">
-        Submitted by: <span class="meta-info">Placeholder</span>
-        <!--- link to author page with projects by author --->
-      </p>
-      <p class="meta-title">
-        Submitted: <span class="meta-info">{{ project.createdAt }}</span>
-      </p>
+  <div>
+    <div v-if="isLoading" class="loading">
+      <p>Loading Spinner</p>
     </div>
+    <div v-else class="project-detail">
+      <h1 class="project-name">{{ project.project_name }}</h1>
 
-    <div class="project-numbers">
-      <div class="numbers-item">
-        <h2 class="numbers-title">Implementation Cost</h2>
-        <p>${{ project.implementationCost }}</p>
+      <div class="project-meta">
+        <p class="meta-title author">
+          Submitted by: <span class="meta-info">Placeholder</span>
+          <!--- link to author page with projects by author --->
+        </p>
+        <p class="meta-title">
+          Submitted: <span class="meta-info">{{ project.createdAt }}</span>
+        </p>
       </div>
-      <div class="numbers-item">
-        <h2 class="numbers-title">Annual Cost Savings</h2>
-        <p>${{ project.costSavings }}</p>
+
+      <div class="project-numbers">
+        <div class="numbers-item">
+          <h2 class="numbers-title">Implementation Cost</h2>
+          <p>${{ project.implementation_cost }}</p>
+        </div>
+        <div class="numbers-item">
+          <h2 class="numbers-title">Annual Cost Savings</h2>
+          <p>${{ project.cost_savings }}</p>
+        </div>
       </div>
-    </div>
 
-    <div class="project-item">
-      <p class="meta-title">
-        Estimated Weeks to Completion:
-        <span class="meta-info">{{ project.timeToComplete }}</span>
-      </p>
-    </div>
+      <div class="project-item">
+        <p class="meta-title">
+          Estimated Weeks to Completion:
+          <span class="meta-info">{{ project.time_to_complete }}</span>
+        </p>
+      </div>
 
-    <div class="project-item">
-      <h2 class="item-title">Problem Statement</h2>
-      <p>{{ project.problem }}</p>
-    </div>
-    <div class="project-item">
-      <h2 class="item-title">Proposed Solution</h2>
-      <p>{{ project.solution }}</p>
-    </div>
-    <div class="project-item">
-      <h2 class="item-title">Implementation Method</h2>
-      <p>{{ project.implementation }}</p>
+      <div class="project-item">
+        <h2 class="item-title">Problem Statement</h2>
+        <p>{{ project.problem }}</p>
+      </div>
+      <div class="project-item">
+        <h2 class="item-title">Proposed Solution</h2>
+        <p>{{ project.solution }}</p>
+      </div>
+      <div class="project-item">
+        <h2 class="item-title">Implementation Method</h2>
+        <p>{{ project.implementation }}</p>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { ref } from "vue";
 import { useRoute } from "vue-router";
+import useProjectsData from "../../hooks/useProjectsData";
 export default {
   setup() {
+    window.scrollTo(0, 0);
     const route = useRoute();
-    //GET DATA FROM DATABASE IF DOES NOT EXIST IN LOCALSTORAGE. ADD MIXIN
-    const projectsObj = JSON.parse(localStorage.getItem("projects"))._value;
+    const projectsObj = ref([]);
+    const project = ref([]);
+    let isLoading = ref(true);
 
-    const project = projectsObj.filter((project) => {
-      return project.projectSlug === `/${route.params.slug}`;
+    useProjectsData().then((data) => {
+      projectsObj.value = data;
+      project.value = projectsObj.value.filter((project) => {
+        return project.project_slug === route.params.slug;
+      })[0];
+      isLoading.value = false;
     });
 
     return {
-      project: project[0],
+      project,
+      isLoading,
     };
   },
 };
 </script>
 
 <style scoped>
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+}
+
 .project-detail {
   width: 90%;
   max-width: 800px;
   margin: auto;
-  font-weight: 300;
 }
 
 .project-item {
@@ -105,14 +125,14 @@ p {
 }
 
 .meta-info {
-  font-weight: 300;
+  font-weight: 400;
 }
 
 .author {
   background-color: var(--primary);
   color: var(--background-light);
   padding: 0.25em 1em;
-  font-weight: 300;
+  font-weight: 500;
   border-radius: 50px;
 }
 
