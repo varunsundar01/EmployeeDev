@@ -13,19 +13,23 @@
         v-else-if="displayFiltered"
         v-for="project in filteredProject"
         :key="project.id"
-        :title="project.projectName"
+        :id="project.id"
+        :title="project.project_name"
         author="Placeholder Author"
         :createdAt="project.createdAt"
-        :slug="project.projectSlug"
+        :slug="project.project_slug"
+        @deleteProject="deleteProject"
       ></list-element>
       <list-element
         v-else-if="!displayFiltered"
         v-for="project in projects"
         :key="project.id"
-        :title="project.projectName"
+        :id="project.id"
+        :title="project.project_name"
         author="Placeholder Author"
         :createdAt="project.createdAt"
-        :slug="project.projectSlug"
+        :slug="project.project_slug"
+        @deleteProject="deleteProject"
       ></list-element>
     </div>
     <div class="no-projects" v-else>
@@ -37,9 +41,10 @@
 
 <script>
 import { ref, computed } from "vue";
+import axios from "axios";
 import ListElement from "../../components/UI/ListElement.vue";
 import ProjectSearch from "../../components/layout/ProjectSearch.vue";
-import axios from "axios";
+import useProjectsData from "../../hooks/useProjectsData.js";
 export default {
   components: {
     ListElement,
@@ -51,50 +56,10 @@ export default {
     let filteredProject = ref([]);
     const error = ref("");
 
-    if (!localStorage.getItem("projects")) {
-      console.log("server");
-      axios
-        .get("http://127.0.0.1:8000/api/projects/")
-        .then((response) => {
-          console.log(response);
-          const data = response.data;
-          for (const value in data) {
-            const year = new Date(
-              Date.parse(data[value].created_at)
-            ).getFullYear();
-            const month = (
-              "0" + new Date(Date.parse(data[value].created_at)).getMonth()
-            ).slice(-2);
-            const day = (
-              "0" + new Date(Date.parse(data[value].created_at)).getDate()
-            ).slice(-2);
-            const createdDate = `${month}/${day}/${year}`;
-
-            const ProjectObj = {
-              id: data[value].id,
-              projectName: data[value].project_name,
-              projectSlug: `/${data[value].project_slug}`,
-              problem: data[value].problem,
-              solution: data[value].solution,
-              implementation: data[value].implementation,
-              implementationCost: data[value].implementation_cost,
-              costSavings: data[value].cost_savings,
-              timeToComplete: data[value].time_to_complete,
-              createdAt: createdDate,
-            };
-            projects.value.push(ProjectObj);
-          }
-          localStorage.setItem("projects", JSON.stringify(projects));
-          isLoading.value = false;
-        })
-        .catch(() => {
-          error.value = "Failed to load data from database";
-          isLoading.value = false;
-        });
-    } else {
-      projects.value = JSON.parse(localStorage.getItem("projects"))._value;
+    useProjectsData().then((data) => {
+      projects.value = data;
       isLoading.value = false;
-    }
+    });
 
     const displayProjects = computed(() => {
       if (isLoading.value === false && projects.value.length === 0) {
@@ -105,7 +70,7 @@ export default {
 
     function filterResults(data) {
       filteredProject.value = projects.value.filter((project) => {
-        return project.projectName === data.value;
+        return project.project_name === data.value;
       });
     }
 
@@ -113,6 +78,21 @@ export default {
       if (data === "") {
         filteredProject.value.length = 0;
       }
+    }
+
+    function deleteProject(data) {
+      const toDelete = projects.value.filter(project => {
+        return project.id === data;
+      })
+      const deleteIndex = projects.value.indexOf(toDelete[0]);
+      projects.value.splice(deleteIndex, 1);
+      console.log(projects.value);
+      localStorage.removeItem("projects");
+
+      axios.delete(`http://127.0.0.1:8000/api/projects/${data}`)
+      .then(data => {
+        console.log(data);
+      })
     }
 
     const displayFiltered = computed(() => {
@@ -128,6 +108,7 @@ export default {
       enteredInput,
       displayProjects,
       error,
+      deleteProject
     };
   },
 };
