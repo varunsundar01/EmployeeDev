@@ -7,18 +7,27 @@
     <p class="project-author">
       Submitted On: <span>{{ createdAt }}</span>
     </p>
-    <button class="project-button view">
-      <router-link :to="'/projects' + slug">View</router-link>
-    </button>
-    <button class="project-button delete">
-      <router-link to="/">Delete</router-link>
-    </button>
+
+    <router-link :to="'/projects/' + slug"
+      ><button class="project-button view">View</button></router-link
+    >
+    <button class="project-button delete" @click="deleteProject">Delete</button>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["title", "author", "createdAt", "slug"],
+  props: ["id", "title", "author", "createdAt", "slug"],
+  emits:["deleteProject"],
+  setup(props, context) {
+    function deleteProject() {
+      context.emit("deleteProject", props.id);
+    }
+
+    return {
+      deleteProject
+    }
+  }
 };
 </script>
 
@@ -46,12 +55,7 @@ export default {
 }
 
 .project-author span {
-  font-weight: 300;
-}
-
-.project-description {
-  font-weight: 300;
-  opacity: 0.8;
+  font-weight: 400;
 }
 
 .project-button {
@@ -59,7 +63,6 @@ export default {
   cursor: pointer;
   padding: 0.5em 1em;
   font-size: 1em;
-  font-weight: 300;
   border-radius: 3px;
   transition: all 0.3s ease-in-out;
   margin-right: 1em;
@@ -73,7 +76,7 @@ export default {
 
 .view a {
   color: var(--background-light);
-  font-weight: 300;
+  font-weight: 400;
 }
 
 .project-button.view:hover,
@@ -89,7 +92,11 @@ export default {
 
 .delete a {
   color: #dc3545;
-  font-weight: 300;
+  font-weight: 400;
+}
+
+.delete:hover a {
+  color: var(--background-light);
 }
 
 .project-button.delete:hover,
