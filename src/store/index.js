@@ -1,5 +1,6 @@
 import { createStore } from 'vuex';
 import axios from 'axios';
+import useProjectsData from '../hooks/useProjectsData.js';
 
 import authModule from './modules/auth/index.js';
 
@@ -35,7 +36,9 @@ const store = createStore({
             submitAttempt: {
                 submitted: false,
                 submitMessage: ""
-            }
+            },
+            allProjectNames: [],
+            nameError: ""
         }
     },
     getters: {
@@ -106,6 +109,9 @@ const store = createStore({
         },
         checkSubmit(state) {
             return state.submitAttempt;
+        },
+        nameError(state) {
+            return state.nameError;
         }
     },
     actions: {
@@ -118,6 +124,24 @@ const store = createStore({
         },
         setValidation(context, payload) {
             context.commit('setValidation', payload);
+        },
+        projectNameValidation(context, payload) {
+            context.rootState.allProjectNames = [];
+            useProjectsData().then(values => {
+                for (let value in values) {
+                    context.rootState.allProjectNames.push(values[value].project_name);
+                }
+                const nameMatch = context.rootState.allProjectNames.filter(name => {
+                    return name.toLowerCase() === payload.toLowerCase();
+                });
+                if (nameMatch.length > 0) {
+                    context.commit("nameError", "This name has already been taken. Choose a different project name");
+                    context.dispatch("setValidation", { term: 'projectNameValidation', value: false });
+                    return true;
+                }
+                context.commit("nameError", "");
+                return false;
+            });
         },
         onSubmit(context, payload) {
             context.commit('setError', false);
@@ -184,6 +208,9 @@ const store = createStore({
         },
         setError(state, payload) {
             state.errorActive = payload;
+        },
+        nameError(state, payload) {
+            state.nameError = payload;
         },
         finalSubmit(state, payload) {
             state.submitAttempt.submitMessage = payload.message;

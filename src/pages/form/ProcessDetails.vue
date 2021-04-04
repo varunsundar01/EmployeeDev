@@ -8,10 +8,12 @@
       id="projectName"
       inputStyle="input"
       :isError="projectNameValidation"
+      @change="nameCheck"
       @removeError="removeError('projectNameValidation')"
       type="text"
       placeholder="Enter Project Name"
       @enteredInput="enteredInput"
+      :fieldError="$store.state.nameError"
       >Project Name</form-element
     >
     <form-element
@@ -68,10 +70,17 @@ export default {
       store.dispatch("enteredInput", event);
     }
 
+    function nameCheck(event) {
+      //Check if project name is unique in database
+      store.dispatch("projectNameValidation", event.target.value);
+    }
+
+    function removeError(term) {
+      store.dispatch("setValidation", { term: term, value: true });
+    }
+
     function onSubmit() {
       //Reset form validation before check
-
-      //Check if project name is unique in database
       store.dispatch("setValidation", {
         term: "projectNameValidation",
         value: false,
@@ -96,14 +105,12 @@ export default {
         fieldsValidation: "getProcessValidation",
       });
 
-      //Go to Next Page
-      if (!store.getters.checkError) {
+      //Go to Next Page if no errors
+      if (!store.getters.checkError && store.getters.nameError === "") {
         router.push("/benefits-savings");
+      } else {
+        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
       }
-    }
-
-    function removeError(term) {
-      store.dispatch("setValidation", { term: term, value: true });
     }
 
     let errorActive = computed(() => {
@@ -145,6 +152,7 @@ export default {
       solutionValidation,
       implementationValidation,
       removeError,
+      nameCheck,
     };
   },
 };
