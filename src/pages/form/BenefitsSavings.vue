@@ -84,6 +84,8 @@ export default {
     const router = useRouter();
     const store = useStore();
 
+    window.scrollTo(0, 0);
+
     function enteredInput(event) {
       store.dispatch("enteredInput", event);
     }
