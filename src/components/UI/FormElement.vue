@@ -10,8 +10,7 @@
       cols="30"
       rows="5"
       :placeholder="placeholder"
-      ></textarea
-    >
+    ></textarea>
     <input
       v-else-if="inputStyle === 'input'"
       :type="inputType"
@@ -19,7 +18,7 @@
       @input="enteredInput"
       :id="id"
       @blur="removeError"
-      :class="{ 'error-input': isError }"
+      :class="{ 'error-input': errorActive }"
     />
     <div v-else-if="inputStyle === 'currency'" class="currency-input">
       <input
@@ -31,20 +30,30 @@
         :class="{ 'error-input': isError }"
       />
     </div>
+    <small class="field-error">{{ fieldError }}</small>
   </div>
 </template>
 
 <script>
+import { computed } from "vue";
 export default {
   props: [
     "id",
     "inputStyle",
     "inputType",
     "placeholder",
-    "isError"
+    "isError",
+    "fieldError",
   ],
   emits: ["enteredInput", "removeError"],
-  setup(_, context) {
+  setup(props, context) {
+    const errorActive = computed(() => {
+      if (props.fieldError) {
+        return props.isError || props.fieldError;
+      }
+      return props.isError;
+    });
+
     function enteredInput(event) {
       context.emit("enteredInput", {
         value: event.target.value,
@@ -59,6 +68,7 @@ export default {
     return {
       enteredInput,
       removeError,
+      errorActive
     };
   },
 };
@@ -68,21 +78,21 @@ export default {
 .form-element {
   display: flex;
   flex-direction: column;
-  margin-bottom: 1em;
+  margin-bottom: 1.5em;
 }
 
 label {
   font-weight: 500;
-  font-size: 1.25em;
+  font-size: 1.35em;
+  margin-bottom: 0.25em;
 }
 
 textarea,
 input {
   border-radius: 5px;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  font-weight: 300;
   padding: 0.5em;
-  font-size: 1em;
+  font-size: 1.1em;
   transition: all 0.2s ease-in-out;
 }
 
@@ -105,7 +115,6 @@ input:focus {
 .currency-input::before {
   content: "$";
   opacity: 0.6;
-  font-weight: 300;
   position: absolute;
   top: 0.6em;
   left: 0.5em;
@@ -118,5 +127,9 @@ input:focus {
 .error-input:focus {
   outline: none;
   box-shadow: 0 0 5pt 1pt #dc3545;
+}
+
+.field-error {
+  color: #dc3545;
 }
 </style>
