@@ -38,15 +38,15 @@ export default {
 }
 
 .error {
-  background-color: #f8d7da;
-  border-color: #f5c2c7;
-  color: #842029;
+  background-color: var(--error-background);
+  border-color: var(--error-border);
+  color: var(--error-text);
 }
 
 .success {
-  background-color: #d1e7dd;
-  border-color: #badbcc;
-  color: #0f5132;
+  background-color: var(--success-background);
+  border-color: var(--success-border);
+  color: var(--success-text);
 }
 
 p {

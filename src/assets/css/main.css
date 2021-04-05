@@ -12,6 +12,12 @@
     --secondary-variant: #0a080c;
     --active: #2a9d8f;
     --inactive: #ced4da;
+    --error-background: #f8d7da;
+    --error-border: #f5c2c7;
+    --error-text: #842029;
+    --success-background: #d1e7dd;
+    --success-border: #badbcc;
+    --success-text: #0f5132;
 }
 
 html,
