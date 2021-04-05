@@ -49,6 +49,8 @@ export default {
     const router = useRouter();
     const store = useStore();
 
+    window.scrollTo(0, 0);
+
     const process = computed(() => {
       return JSON.parse(localStorage.getItem("process-details"));
     });
