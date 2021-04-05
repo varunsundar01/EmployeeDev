@@ -25,18 +25,42 @@
 </template>
 
 <script>
-import { ref, computed } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
+import useProjectsData from "../../hooks/useProjectsData";
 export default {
+  props: ["clearData"],
   emits: ["selectedTerm", "enteredInput"],
-  setup(_, context) {
-    const searchTerm = ref("");
+  setup(props, context) {
+    let searchTerm = ref("");
     const projectNames = ref([]);
     let filteredProjects = ref([]);
-    const projects = JSON.parse(localStorage.getItem("projects"));
+    let projects = ref(JSON.parse(localStorage.getItem("projects")));
     let isOpen = ref(false);
 
-    for (let project in projects) {
-      projectNames.value.push(projects[project].project_name);
+    onMounted(() => {
+      loadProjectNames();
+    });
+
+    watch(
+      () => props.clearData,
+      () => {
+        if (props.clearData) {
+          searchTerm.value = "";
+          context.emit("enteredInput", searchTerm.value);
+          isOpen.value = false;
+          projectNames.value = [];
+          loadProjectNames();
+        }
+      }
+    );
+
+    function loadProjectNames() {
+      useProjectsData().then((data) => {
+        projects.value = data;
+        for (let project in projects.value) {
+          projectNames.value.push(projects.value[project].project_name);
+        }
+      });
     }
 
     function enteredInput() {
