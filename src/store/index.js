@@ -225,8 +225,10 @@ const store = createStore({
                 fullNameValidation: false,
                 currentDateValidation: false
             };
-            state.allProjectNames = [],
-                state.nameError = ""
+            state.allProjectNames = [];
+            state.nameError = "";
+            localStorage.removeItem('process-details');
+            localStorage.removeItem('benefits-savings');
         },
         enteredInput(state, payload) {
             state.fields[payload.id] = payload.value;
