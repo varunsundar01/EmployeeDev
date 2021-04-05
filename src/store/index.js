@@ -115,6 +115,9 @@ const store = createStore({
         }
     },
     actions: {
+        initializeValues(context) {
+            context.commit("initializeValues");
+        },
         enteredInput(context, payload) {
             Object.keys(context.state.fields).find((key) => {
                 if (key === payload.id) {
@@ -199,6 +202,32 @@ const store = createStore({
         }
     },
     mutations: {
+        initializeValues(state) {
+            state.fields = {
+                projectName: "",
+                problem: "",
+                solution: "",
+                implementation: "",
+                implementationCost: null,
+                costSavings: null,
+                timeToComplete: null,
+                fullName: "",
+                currentDate: null
+            };
+            state.fieldsValidate = {
+                projectNameValidation: false,
+                problemValidation: false,
+                solutionValidation: false,
+                implementationValidation: false,
+                implementationCostValidation: false,
+                costSavingsValidation: false,
+                timeToCompleteValidation: false,
+                fullNameValidation: false,
+                currentDateValidation: false
+            };
+            state.allProjectNames = [],
+                state.nameError = ""
+        },
         enteredInput(state, payload) {
             state.fields[payload.id] = payload.value;
         },
@@ -215,12 +244,15 @@ const store = createStore({
         finalSubmit(state, payload) {
             state.submitAttempt.submitMessage = payload.message;
             state.submitAttempt.submitted = payload.value;
-            if (payload.messageType >= 400) {
+            if (payload.messageType >= 400 || payload.messageType === undefined) {
                 state.errorActive = true;
             } else {
                 state.errorActive = false;
             }
+            this.commit("initializeValues");
             localStorage.removeItem('projects');
+            localStorage.removeItem('process-details');
+            localStorage.removeItem('benefits-savings');
         }
     }
 });
