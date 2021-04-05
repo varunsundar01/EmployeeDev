@@ -44,7 +44,7 @@
       :isError="fullNameValidation"
       @removeError="removeError('fullNameValidation')"
       placeholder="Enter Full Name"
-      >Name</form-element
+      >Full Name</form-element
     >
     <form-element
       id="currentDate"
