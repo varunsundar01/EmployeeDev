@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div v-if="isLoading" class="loading">
-      <p>Loading Spinner</p>
-    </div>
+    <the-spinner v-if="isLoading"></the-spinner>
     <div v-else class="project-detail">
       <h1 class="project-name">{{ project.project_name }}</h1>
 
@@ -79,13 +77,6 @@ export default {
 </script>
 
 <style scoped>
-.loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 70vh;
-}
-
 .project-detail {
   width: 90%;
   max-width: 800px;
