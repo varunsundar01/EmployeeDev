@@ -27,16 +27,16 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     document.title = to.meta.title || 'EmployeeDev';
 
-    if (from.meta.form && !to.meta.form && !store.getters.checkSubmit.submitted) {
-        store.dispatch("initializeValues");
-        store.dispatch("switchSubmit", {
+    if (from.meta.form && !to.meta.form && !store.getters['projects/checkSubmit'].submitted) {
+        store.dispatch("projects/initializeValues");
+        store.dispatch("projects/switchSubmit", {
             message: "",
             messageType: 201,
             value: false
         })
     }
-    if (from.fullPath === "/dashboard" && store.getters.checkSubmit.submitted) {
-        store.dispatch("switchSubmit", {
+    if (from.fullPath === "/dashboard" && store.getters['projects/checkSubmit'].submitted) {
+        store.dispatch("projects/switchSubmit", {
             message: "",
             messageType: 201,
             value: false

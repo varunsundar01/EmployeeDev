@@ -1,143 +1,108 @@
 <template>
   <div>
     <transition name="error">
-      <div class="delete-message" v-if="isDeleted">
-        <p>{{ deletedMessage }}</p>
+      <div
+        class="delete-message"
+        v-if="$store.getters['projects/getDeleteParams'].showDeleteMessage"
+      >
+        <p>{{ $store.getters["projects/getDeleteParams"].deleteMessage }}</p>
       </div>
     </transition>
-    <div class="projects-list" v-if="displayProjects">
+    <the-spinner
+      v-if="!$store.getters['projects/getAllProjectParams'].loaded"
+    ></the-spinner>
+    <div class="projects-list" v-if="projectsExist">
       <h1 class="title">Projects List</h1>
       <project-search
-        v-if="!isLoading"
-        @enteredInput="enteredInput"
-        @selectedTerm="filterResults"
-        :clearData="clearData"
+        v-if="$store.getters['projects/getAllProjectParams'].loaded"
+        @selectedTerm="selectProject"
       ></project-search>
-      <the-spinner v-if="isLoading"></the-spinner>
       <list-element
-        v-else-if="displayFiltered"
-        v-for="project in filteredProject"
+        v-for="project in $store.getters['projects/getAllProjectParams']
+          .filteredProjects"
         :key="project.id"
         :id="project.id"
         :title="project.project_name"
         author="Placeholder Author"
         :createdAt="project.createdAt"
         :slug="project.project_slug"
-        @deleteProject="deleteProject"
-      ></list-element>
-      <list-element
-        v-else-if="!displayFiltered"
-        v-for="project in projects"
-        :key="project.id"
-        :id="project.id"
-        :title="project.project_name"
-        author="Placeholder Author"
-        :createdAt="project.createdAt"
-        :slug="project.project_slug"
-        @deleteProject="deleteProject"
+        @deleteProject="deleteProjectDialog"
       ></list-element>
     </div>
     <div class="no-projects" v-else>
-      <p v-if="error" class="error">{{ error }}</p>
-      <p v-else>No Projects Found</p>
+      <p>No Projects Found</p>
     </div>
+    <base-dialog
+      :deleteProjectName="
+        $store.getters['projects/getDeleteParams'].deleteProjectName
+      "
+      :deleteProjectId="
+        $store.getters['projects/getDeleteParams'].deleteProjectId
+      "
+      @confirmDeleteProject="confirmDeleteProject"
+      @toBack="toBack"
+      v-if="dialogOpen"
+    ></base-dialog>
   </div>
 </template>
 
 <script>
 import { ref, computed, onMounted } from "vue";
-import axios from "axios";
+import { useStore } from "vuex";
 import ListElement from "../../components/UI/ListElement.vue";
-import ProjectSearch from "../../components/layout/ProjectSearch.vue";
-import useProjectsData from "../../hooks/useProjectsData.js";
+import ProjectSearch from "../../components/projects/ProjectSearch.vue";
 export default {
   components: {
     ListElement,
     ProjectSearch,
   },
   setup() {
-    let projects = ref([]);
-    let isLoading = ref(true);
-    let filteredProject = ref([]);
-    const error = ref("");
-    let isDeleted = ref(false);
-    let deletedMessage = ref("");
-    let clearData = ref(false);
+    const store = useStore();
+    let dialogOpen = ref(false);
 
     onMounted(() => {
-      loadProjects();
-    })
-
-    function loadProjects() {
-      isLoading.value = true;
-      useProjectsData().then((data) => {
-        projects.value = data;
-        isLoading.value = false;
-      });
-    }
-
-    const displayProjects = computed(() => {
-      if (isLoading.value === false && projects.value.length === 0) {
-        return false;
-      }
-      return true;
+      store.dispatch("projects/loadProjects");
     });
 
-    function filterResults(data) {
-      filteredProject.value = projects.value.filter((project) => {
-        return project.project_name === data.value;
-      });
-    }
-
-    function enteredInput(data) {
-      if (data === "") {
-        clearData.value = false;
-        filteredProject.value.length = 0;
+    const projectsExist = computed(() => {
+      if (
+        store.getters["projects/getAllProjectParams"].loaded &&
+        store.getters["projects/getAllProjectParams"].allProjects.length > 0
+      ) {
+        return true;
       }
-    }
-
-    function deleteProject(data) {
-      const toDelete = projects.value.filter((project) => {
-        return project.id === data;
-      });
-      const deleteIndex = projects.value.indexOf(toDelete[0]);
-      projects.value.splice(deleteIndex, 1);
-      localStorage.removeItem("projects");
-
-      axios
-        .delete(`http://127.0.0.1:8000/api/projects/${data}`)
-        .then((data) => {
-          if (data.status === 204) {
-            deletedMessage.value = "Project was deleted";
-          } else {
-            deletedMessage.value = "There was a problem deleting the project";
-          }
-          clearData.value = true;
-          isDeleted.value = true;
-
-          setTimeout(() => {
-            isDeleted.value = false;
-          }, 1500);
-        });
-    }
-
-    const displayFiltered = computed(() => {
-      return !isLoading.value && filteredProject.value.length > 0;
+      return false;
     });
+
+    function selectProject(projectData) {
+      store.dispatch("projects/filterProjects", {
+        type: "select",
+        value: projectData,
+      });
+    }
+
+    function toBack() {
+      dialogOpen.value = false;
+      store.dispatch("projects/resetDelete");
+    }
+
+    function deleteProjectDialog(projectId) {
+      dialogOpen.value = true;
+      store.dispatch("projects/preConfirmDelete", projectId);
+    }
+
+    function confirmDeleteProject(projectId) {
+      dialogOpen.value = false;
+      store.dispatch("projects/confirmDeleteProject", projectId);
+    }
 
     return {
-      projects,
-      filterResults,
-      isLoading,
-      filteredProject,
-      displayFiltered,
-      enteredInput,
-      displayProjects,
-      error,
-      deleteProject,
-      isDeleted,
-      deletedMessage,
-      clearData,
+      selectProject,
+      projectsExist,
+      deleteProjectDialog,
+      dialogOpen,
+      toBack,
+      confirmDeleteProject,
     };
   },
 };

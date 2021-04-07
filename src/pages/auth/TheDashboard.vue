@@ -2,7 +2,7 @@
   <div>
     <h1 class="title">Dashboard</h1>
     <the-banner v-if="displayBanner">{{
-      $store.getters.checkSubmit.submitMessage
+      $store.getters['projects/checkSubmit'].submitMessage
     }}</the-banner>
 
     <p>Projects list of current user</p>
@@ -23,7 +23,7 @@ export default {
     const submitMessage = ref("");
 
     const displayBanner = computed(() => {
-      if (store.getters.checkSubmit.submitted) {
+      if (store.getters['projects/checkSubmit'].submitted) {
         return true;
       }
       return false;

@@ -87,40 +87,40 @@ export default {
     window.scrollTo(0, 0);
 
     function enteredInput(event) {
-      store.dispatch("enteredInput", event);
+      store.dispatch("projects/enteredInput", event);
     }
 
     function onSubmit() {
       //Reset form validation before check
-      store.dispatch("setValidation", {
+      store.dispatch("projects/setValidation", {
         term: "implementationCostValidation",
         value: false,
       });
-      store.dispatch("setValidation", {
+      store.dispatch("projects/setValidation", {
         term: "costSavingsValidation",
         value: false,
       });
-      store.dispatch("setValidation", {
+      store.dispatch("projects/setValidation", {
         term: "timeToCompleteValidation",
         value: false,
       });
-      store.dispatch("setValidation", {
+      store.dispatch("projects/setValidation", {
         term: "fullNameValidation",
         value: false,
       });
-      store.dispatch("setValidation", {
+      store.dispatch("projects/setValidation", {
         term: "currentDateValidation",
         value: false,
       });
 
       //Submit
-      store.dispatch("onSubmit", {
+      store.dispatch("projects/onSubmit", {
         type: "benefits-savings",
-        fields: store.getters.getBenefits,
+        fields: store.getters['projects/getBenefits'],
         fieldsValidation: "getBenefitsValidation",
       });
 
-      if (!store.getters.checkError) {
+      if (!store.getters['projects/checkError']) {
         router.push("/final-review");
       }
     }
@@ -130,42 +130,42 @@ export default {
     }
 
     function removeError(term) {
-      store.dispatch("setValidation", { term: term, value: true });
+      store.dispatch("projects/setValidation", { term: term, value: true });
     }
 
     let errorActive = computed(() => {
       window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-      return store.getters.checkError;
+      return store.getters['projects/checkError'];
     });
 
     let implementationCostValidation = computed(() => {
-      if (store.getters.checkError) {
-        return !store.getters.getBenefitsValidation
+      if (store.getters['projects/checkError']) {
+        return !store.getters['projects/getBenefitsValidation']
           .implementationCostValidation;
       }
       return false;
     });
     let costSavingsValidation = computed(() => {
-      if (store.getters.checkError) {
-        return !store.getters.getBenefitsValidation.costSavingsValidation;
+      if (store.getters['projects/checkError']) {
+        return !store.getters['projects/getBenefitsValidation'].costSavingsValidation;
       }
       return false;
     });
     let timeToCompleteValidation = computed(() => {
-      if (store.getters.checkError) {
-        return !store.getters.getBenefitsValidation.timeToCompleteValidation;
+      if (store.getters['projects/checkError']) {
+        return !store.getters['projects/getBenefitsValidation'].timeToCompleteValidation;
       }
       return false;
     });
     let fullNameValidation = computed(() => {
-      if (store.getters.checkError) {
-        return !store.getters.getBenefitsValidation.fullNameValidation;
+      if (store.getters['projects/checkError']) {
+        return !store.getters['projects/getBenefitsValidation'].fullNameValidation;
       }
       return false;
     });
     let currentDateValidation = computed(() => {
-      if (store.getters.checkError) {
-        return !store.getters.getBenefitsValidation.currentDateValidation;
+      if (store.getters['projects/checkError']) {
+        return !store.getters['projects/getBenefitsValidation'].currentDateValidation;
       }
       return false;
     });

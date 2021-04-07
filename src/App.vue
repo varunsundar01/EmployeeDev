@@ -4,7 +4,7 @@
     <div class="main-app">
       <the-tab v-if="tabCheck"></the-tab>
       <router-view v-slot="{ Component }">
-        <keep-alive v-if="!$store.getters.checkSubmit.submitted && $route.meta.keepAlive">
+        <keep-alive v-if="!$store.getters['projects/checkSubmit'].submitted && $route.meta.keepAlive">
           <component :is="Component" />
         </keep-alive>
         <component v-else :is="Component" />
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import TheTab from "./components/layout/TheTab.vue";
+import TheTab from "./components/projects/TheTab.vue";
 import { useRoute } from "vue-router";
 import { computed } from "vue";
 export default {

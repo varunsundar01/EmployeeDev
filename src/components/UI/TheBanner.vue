@@ -14,7 +14,7 @@ export default {
     const store = useStore();
 
     const bannerType = computed(() => {
-      if (store.getters.checkError) {
+      if (store.getters['projects/checkError']) {
         return 'error';
       }
       return 'success';

@@ -13,7 +13,7 @@
       type="text"
       placeholder="Enter Project Name"
       @enteredInput="enteredInput"
-      :fieldError="$store.state.nameError"
+      :fieldError="$store.getters['projects/nameError']"
       >Project Name</form-element
     >
     <form-element
@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import TheBanner from "../../components/UI/TheBanner";
@@ -66,47 +66,51 @@ export default {
     const store = useStore();
     const router = useRouter();
 
+    onMounted(() => {
+      store.dispatch("projects/loadProjects");
+    });
+
     function enteredInput(event) {
-      store.dispatch("enteredInput", event);
+      store.dispatch("projects/enteredInput", event);
     }
 
     function nameCheck(event) {
       //Check if project name is unique in database
-      store.dispatch("projectNameValidation", event.target.value);
+      store.dispatch("projects/projectNameValidation", event.target.value);
     }
 
     function removeError(term) {
-      store.dispatch("setValidation", { term: term, value: true });
+      store.dispatch("projects/setValidation", { term: term, value: true });
     }
 
     function onSubmit() {
       //Reset form validation before check
-      store.dispatch("setValidation", {
+      store.dispatch("projects/setValidation", {
         term: "projectNameValidation",
         value: false,
       });
-      store.dispatch("setValidation", {
+      store.dispatch("projects/setValidation", {
         term: "problemValidation",
         value: false,
       });
-      store.dispatch("setValidation", {
+      store.dispatch("projects/setValidation", {
         term: "solutionValidation",
         value: false,
       });
-      store.dispatch("setValidation", {
+      store.dispatch("projects/setValidation", {
         term: "implementationValidation",
         value: false,
       });
 
       //Submit
-      store.dispatch("onSubmit", {
+      store.dispatch("projects/onSubmit", {
         type: "process-details",
-        fields: store.getters.getProcess,
+        fields: store.getters['projects/getProcess'],
         fieldsValidation: "getProcessValidation",
       });
 
       //Go to Next Page if no errors
-      if (!store.getters.checkError && store.getters.nameError === "") {
+      if (!store.getters['projects/checkError'] && store.getters['projects/nameError'] === "") {
         router.push("/benefits-savings");
       } else {
         window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -115,30 +119,30 @@ export default {
 
     let errorActive = computed(() => {
       window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-      return store.getters.checkError;
+      return store.getters['projects/checkError'];
     });
 
     let projectNameValidation = computed(() => {
-      if (store.getters.checkError) {
-        return !store.getters.getProcessValidation.projectNameValidation;
+      if (store.getters['projects/checkError']) {
+        return !store.getters['projects/getProcessValidation'].projectNameValidation;
       }
       return false;
     });
     let problemValidation = computed(() => {
-      if (store.getters.checkError) {
-        return !store.getters.getProcessValidation.problemValidation;
+      if (store.getters['projects/checkError']) {
+        return !store.getters['projects/getProcessValidation'].problemValidation;
       }
       return false;
     });
     let solutionValidation = computed(() => {
-      if (store.getters.checkError) {
-        return !store.getters.getProcessValidation.solutionValidation;
+      if (store.getters['projects/checkError']) {
+        return !store.getters['projects/getProcessValidation'].solutionValidation;
       }
       return false;
     });
     let implementationValidation = computed(() => {
-      if (store.getters.checkError) {
-        return !store.getters.getProcessValidation.implementationValidation;
+      if (store.getters['projects/checkError']) {
+        return !store.getters['projects/getProcessValidation'].implementationValidation;
       }
       return false;
     });

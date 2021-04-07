@@ -66,7 +66,7 @@ export default {
 
       const finalValues = Object.assign(process, benefits);
 
-      store.dispatch("finalSubmit", finalValues);
+      store.dispatch("projects/finalSubmit", finalValues);
       router.push("/dashboard");
     }
 

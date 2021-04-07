@@ -1,8 +1,12 @@
 <template>
   <div>
-    <the-spinner v-if="isLoading"></the-spinner>
+    <the-spinner
+      v-if="!$store.getters['projects/getAllProjectParams'].loaded"
+    ></the-spinner>
     <div v-else class="project-detail">
-      <h1 class="project-name">{{ project.project_name }}</h1>
+      <h1 class="project-name">
+        {{ $store.getters["projects/getProjectDetail"].projectName }}
+      </h1>
 
       <div class="project-meta">
         <p class="meta-title author">
@@ -10,68 +14,67 @@
           <!--- link to author page with projects by author --->
         </p>
         <p class="meta-title">
-          Submitted: <span class="meta-info">{{ project.createdAt }}</span>
+          Submitted:
+          <span class="meta-info">{{
+            $store.getters["projects/getProjectDetail"].createdAt
+          }}</span>
         </p>
       </div>
 
       <div class="project-numbers">
         <div class="numbers-item">
           <h2 class="numbers-title">Implementation Cost</h2>
-          <p>${{ project.implementation_cost }}</p>
+          <p>
+            ${{
+              $store.getters["projects/getProjectDetail"].implementationCost
+            }}
+          </p>
         </div>
         <div class="numbers-item">
           <h2 class="numbers-title">Annual Cost Savings</h2>
-          <p>${{ project.cost_savings }}</p>
+          <p>${{ $store.getters["projects/getProjectDetail"].costSavings }}</p>
         </div>
       </div>
 
       <div class="project-item">
         <p class="meta-title">
           Estimated Weeks to Completion:
-          <span class="meta-info">{{ project.time_to_complete }}</span>
+          <span class="meta-info">{{
+            $store.getters["projects/getProjectDetail"].timeToComplete
+          }}</span>
         </p>
       </div>
 
       <div class="project-item">
         <h2 class="item-title">Problem Statement</h2>
-        <p>{{ project.problem }}</p>
+        <p>{{ $store.getters["projects/getProjectDetail"].problem }}</p>
       </div>
       <div class="project-item">
         <h2 class="item-title">Proposed Solution</h2>
-        <p>{{ project.solution }}</p>
+        <p>{{ $store.getters["projects/getProjectDetail"].solution }}</p>
       </div>
       <div class="project-item">
         <h2 class="item-title">Implementation Method</h2>
-        <p>{{ project.implementation }}</p>
+        <p>{{ $store.getters["projects/getProjectDetail"].implementation }}</p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
+import { onMounted } from "vue";
+import { useStore } from "vuex";
 import { useRoute } from "vue-router";
-import useProjectsData from "../../hooks/useProjectsData";
 export default {
   setup() {
     window.scrollTo(0, 0);
+    const store = useStore();
     const route = useRoute();
-    const projectsObj = ref([]);
-    const project = ref([]);
-    let isLoading = ref(true);
 
-    useProjectsData().then((data) => {
-      projectsObj.value = data;
-      project.value = projectsObj.value.filter((project) => {
-        return project.project_slug === route.params.slug;
-      })[0];
-      isLoading.value = false;
+    onMounted(() => {
+      store.dispatch("projects/loadProjects");
+      store.dispatch("projects/loadProjectDetail", route.params.slug);
     });
-
-    return {
-      project,
-      isLoading,
-    };
   },
 };
 </script>
