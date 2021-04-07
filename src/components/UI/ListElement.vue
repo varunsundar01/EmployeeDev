@@ -58,17 +58,6 @@ export default {
   font-weight: 400;
 }
 
-.project-button {
-  border: none;
-  cursor: pointer;
-  padding: 0.5em 1em;
-  font-size: 1em;
-  border-radius: 3px;
-  transition: all 0.3s ease-in-out;
-  margin-right: 1em;
-  border: 1px solid transparent;
-}
-
 .view {
   background-color: var(--primary);
   color: var(--background-light);
@@ -86,12 +75,12 @@ export default {
 
 .delete {
   background-color: transparent;
-  border-color: #dc3545;
-  color: #dc3545;
+  border-color: var(--error-button);
+  color: var(--error-button);
 }
 
 .delete a {
-  color: #dc3545;
+  color: var(--error-button);
   font-weight: 400;
 }
 
