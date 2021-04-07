@@ -35,7 +35,6 @@ export default {
     const store = useStore();
 
     function enteredInput(data) {
-      // console.log(data);
       store.dispatch("auth/userAuth", data);
     }
 
