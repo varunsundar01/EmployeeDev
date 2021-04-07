@@ -33,7 +33,7 @@
   left: 0;
   width: 100%;
   box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.1);
-  z-index: 2;
+  z-index: 10;
 }
 
 .main-nav {
