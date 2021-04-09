@@ -148,7 +148,7 @@ export default {
                 setTimeout(() => {
                     context.commit("showDeleteMessage", false);
                     context.dispatch("resetDelete");
-                }, 1500);
+                }, 3000);
             })
             .catch(() => {
                 context.commit("confirmDelete", "There was a problem deleting the project");
