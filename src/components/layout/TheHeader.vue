@@ -14,14 +14,31 @@
           <router-link to="/projects">View All Projects</router-link>
         </li>
         <li class="nav-item-right">
-          <base-button secondaryVisible="true">
-            <template v-slot:secondary>Logout</template>
+          <base-button primaryVisible="true" @toNext="toNext">
+            <template v-slot:primary>Sign In</template>
           </base-button>
         </li>
       </ul>
     </div>
   </div>
 </template>
+
+<script>
+import {useRouter} from 'vue-router';
+export default {
+  setup() {
+    const router = useRouter();
+
+    function toNext() {
+      router.push('/sign-in');
+    }
+
+    return {
+      toNext
+    }
+  }
+}
+</script>
 
 <style scoped>
 .nav-wrapper {
