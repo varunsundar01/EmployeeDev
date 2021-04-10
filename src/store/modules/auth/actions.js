@@ -1,5 +1,5 @@
 export default {
-    userAuth(context, payload) {
+    onSubmit(context, payload) {
         console.log(context);
         console.log(payload);
     }

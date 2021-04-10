@@ -7,7 +7,11 @@ export default {
     state() {
         return {
             email: '',
-            password: '',
+            employeeNumber: null,
+            departmentName: null,
+            firstName: '',
+            lastName: '',
+            token: null,
         }
     },
     mutations,
