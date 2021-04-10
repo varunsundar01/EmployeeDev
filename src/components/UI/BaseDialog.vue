@@ -49,7 +49,7 @@ export default {
   left: 0;
   height: 100vh;
   width: 100%;
-  z-index: 3;
+  z-index: 15;
 }
 
 .base-dialog {
@@ -61,7 +61,7 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 3;
+  z-index: 15;
   overflow: hidden;
   border: 0;
   padding: 0;
