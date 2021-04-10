@@ -73,7 +73,7 @@
 <script>
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
-import { computed } from "vue";
+import { computed, reactive } from "vue";
 import TheBanner from "../../components/UI/TheBanner";
 
 export default {
@@ -84,39 +84,37 @@ export default {
     const router = useRouter();
     const store = useStore();
 
+    const benefitsFields = reactive({
+      implementationCost: null,
+      costSavings: null,
+      timeToComplete: null,
+      fullName: "",
+      currentDate: null
+    });
+
     window.scrollTo(0, 0);
 
     function enteredInput(event) {
-      store.dispatch("projects/enteredInput", event);
+      for (let field in benefitsFields) {
+        if (field === event.id) {
+          benefitsFields[field] = event.value;
+        }
+      }
     }
 
     function onSubmit() {
       //Reset form validation before check
-      store.dispatch("projects/setValidation", {
-        term: "implementationCostValidation",
-        value: false,
-      });
-      store.dispatch("projects/setValidation", {
-        term: "costSavingsValidation",
-        value: false,
-      });
-      store.dispatch("projects/setValidation", {
-        term: "timeToCompleteValidation",
-        value: false,
-      });
-      store.dispatch("projects/setValidation", {
-        term: "fullNameValidation",
-        value: false,
-      });
-      store.dispatch("projects/setValidation", {
-        term: "currentDateValidation",
-        value: false,
-      });
+      for (let field in benefitsFields) {
+        store.dispatch("projects/setValidation", {
+          term: `${field}Validation`,
+          value: false,
+        });
+      }
 
       //Submit
       store.dispatch("projects/onSubmit", {
         type: "benefits-savings",
-        fields: store.getters['projects/getBenefits'],
+        fields: benefitsFields,
         fieldsValidation: "getBenefitsValidation",
       });
 

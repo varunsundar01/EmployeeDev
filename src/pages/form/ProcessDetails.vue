@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { computed, onMounted } from "vue";
+import { computed, onMounted, reactive } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import TheBanner from "../../components/UI/TheBanner";
@@ -60,18 +60,27 @@ export default {
   components: {
     TheBanner,
   },
-  props: ["isSecondary", "isPrimary", "id", "inputType", "placeholder"],
-  emits: ["enteredInput"],
   setup() {
     const store = useStore();
     const router = useRouter();
+
+    const processFields = reactive({
+      projectName: "",
+      problem: "",
+      solution: "",
+      implementation: "",
+    })
 
     onMounted(() => {
       store.dispatch("projects/loadProjects");
     });
 
     function enteredInput(event) {
-      store.dispatch("projects/enteredInput", event);
+      for (let field in processFields) {
+        if (field === event.id) {
+          processFields[field] = event.value;
+        }
+      }
     }
 
     function nameCheck(event) {
@@ -85,27 +94,17 @@ export default {
 
     function onSubmit() {
       //Reset form validation before check
-      store.dispatch("projects/setValidation", {
-        term: "projectNameValidation",
-        value: false,
-      });
-      store.dispatch("projects/setValidation", {
-        term: "problemValidation",
-        value: false,
-      });
-      store.dispatch("projects/setValidation", {
-        term: "solutionValidation",
-        value: false,
-      });
-      store.dispatch("projects/setValidation", {
-        term: "implementationValidation",
-        value: false,
-      });
+      for (let field in processFields) {
+        store.dispatch("projects/setValidation", {
+          term: `${field}Validation`,
+          value: false,
+        });
+      }
 
       //Submit
       store.dispatch("projects/onSubmit", {
         type: "process-details",
-        fields: store.getters['projects/getProcess'],
+        fields: processFields,
         fieldsValidation: "getProcessValidation",
       });
 
