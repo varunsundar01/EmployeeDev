@@ -59,7 +59,7 @@ a:hover {
     border: none;
     cursor: pointer;
     padding: 0.5em 1em;
-    font-size: 1em;
+    font-size: 1em !important;
     border-radius: 3px;
     transition: all 0.3s ease-in-out;
     margin-right: 1em;
