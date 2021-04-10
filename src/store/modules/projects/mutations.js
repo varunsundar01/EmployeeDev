@@ -24,6 +24,7 @@ export default {
         };
         state.allProjectNames = [];
         state.nameError = "";
+        localStorage.removeItem('projects');
         localStorage.removeItem('process-details');
         localStorage.removeItem('benefits-savings');
     },
@@ -52,9 +53,6 @@ export default {
     setProjectNames(state, payload) {
         state.projectParams.allProjectNames = payload;
     },
-    enteredInput(state, payload) {
-        state.fields[payload.id] = payload.value;
-    },
     setValidation(state, payload) {
         const term = payload.term;
         state.fieldsValidate[term] = payload.value;
@@ -64,6 +62,11 @@ export default {
     },
     nameError(state, payload) {
         state.nameError = payload;
+    },
+    onSubmit(state, payload) {
+        for (let field in payload) {
+            state.fields[field] = payload[field]
+        }
     },
     finalSubmit(state, payload) {
         state.submitAttempt.submitMessage = payload.message;
@@ -94,7 +97,6 @@ export default {
     },
     confirmDelete(state, payload) {
         state.deleteParams.deleteMessage = payload;
-        // state.projectParams.allProjects.splice(state.deleteParams.deleteLoadedProjectArrayIndex, 1);
         state.projectParams.filteredProjects.splice(state.deleteParams.deleteFilteredProjectArrayIndex, 1);
         state.projectParams.allProjectNames.splice(state.deleteParams.deleteLoadedProjectArrayIndex, 1);
         state.projectParams.filteredProjectNames.splice(state.deleteParams.deleteFilteredProjectArrayIndex, 1);

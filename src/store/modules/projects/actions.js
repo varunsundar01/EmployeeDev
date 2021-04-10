@@ -4,13 +4,6 @@ export default {
     initializeValues(context) {
         context.commit("initializeValues");
     },
-    enteredInput(context, payload) {
-        Object.keys(context.state.fields).find((key) => {
-            if (key === payload.id) {
-                context.commit('enteredInput', payload);
-            }
-        });
-    },
     setValidation(context, payload) {
         context.commit('setValidation', payload);
     },
@@ -88,6 +81,7 @@ export default {
             }
         }
         if (!context.getters.checkError) {
+            context.commit("onSubmit", fields);
             localStorage.setItem(payload.type, JSON.stringify(values));
         }
     },
