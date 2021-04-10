@@ -39,7 +39,7 @@ button {
   border-radius: 3px;
   cursor: pointer;
   color: var(--background-light);
-  font-weight: 400;
+  font-weight: 300;
   transition: all 0.3s ease-in-out;
 }
 

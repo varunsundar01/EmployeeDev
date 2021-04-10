@@ -55,7 +55,7 @@ export default {
 }
 
 .project-author span {
-  font-weight: 400;
+  font-weight: 300;
 }
 
 .view {

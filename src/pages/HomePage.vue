@@ -42,5 +42,6 @@ export default {
 
 .logo-second {
   color: var(--active);
+  font-weight: inherit;
 }
 </style>

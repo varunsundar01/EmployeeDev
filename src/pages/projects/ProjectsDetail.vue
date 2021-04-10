@@ -118,10 +118,6 @@ p {
   font-weight: 500;
 }
 
-.meta-info {
-  font-weight: 400;
-}
-
 .author {
   background-color: var(--primary);
   color: var(--background-light);
@@ -152,7 +148,7 @@ p {
 }
 
 .numbers-item p {
-  font-size: 1.35em;
+  font-size: 1.45em;
   text-align: center;
 }
 
