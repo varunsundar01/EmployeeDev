@@ -72,6 +72,7 @@ import { reactive } from "vue";
 import { useStore } from "vuex";
 export default {
   setup() {
+    window.scrollTo(0, 0);
     const store = useStore();
 
     const signUp = reactive({
