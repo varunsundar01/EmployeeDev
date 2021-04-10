@@ -1,5 +1,5 @@
 <template>
-  <base-card>
+  <div>
     <form>
       <form-element
         inputStyle="input"
@@ -25,7 +25,7 @@
       Don't have an account?
       <router-link to="/sign-up">Sign Up</router-link> instead
     </p>
-  </base-card>
+  </div>
 </template>
 
 <script>
