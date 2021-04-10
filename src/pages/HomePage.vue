@@ -6,7 +6,9 @@
         Sign in to submit your proposed process improvement methods and
         strategies
       </p>
-      <the-auth></the-auth>
+      <base-card>
+        <the-auth></the-auth>
+      </base-card>
     </div>
     
   </div>
