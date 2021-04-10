@@ -13,9 +13,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-.title {
-    margin: 0.5em auto;
-}
-</style>
