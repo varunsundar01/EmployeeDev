@@ -17,21 +17,14 @@
 <script>
 import TheTab from "./components/projects/TheTab.vue";
 import { useRoute } from "vue-router";
-import { useStore } from "vuex";
-import { computed, onMounted } from "vue";
+import { computed } from "vue";
 export default {
   components: {
     TheTab,
   },
   name: "App",
   setup() {
-    const store = useStore();
     const route = useRoute();
-
-    onMounted(() => {
-      store.dispatch("projects/initializeValues");
-    })
-
 
     let tabCheck = computed(() => {
       return (

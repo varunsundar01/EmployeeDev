@@ -9,8 +9,14 @@ export default {
     },
     async loadProjects(context) {
         const projects = [];
-        if (!localStorage.getItem("projects")) {
-            await axios.get("http://127.0.0.1:8000/api/projects").then(response => {
+
+        //Get time difference between the last time projects was stored in localstorage and now
+        const lastProjectsTime = new Date(localStorage.getItem("projectsTime")).getTime(); //in milliseconds
+        const timeDifference = (new Date().getTime() - lastProjectsTime) / 1000;
+
+        //Get Projects
+        if (!localStorage.getItem("projects") || timeDifference >= 60) {
+            await axios.get(`${process.env.VUE_APP_ROOT_API}/api/projects`).then(response => {
                 const data = response.data;
                 for (let value in data) {
                     const year = new Date(Date.parse(data[value].created_at)).getFullYear();
@@ -36,6 +42,7 @@ export default {
                     projects.push(ProjectObj);
                 }
                 localStorage.setItem("projects", JSON.stringify(projects));
+                localStorage.setItem("projectsTime", new Date())
             })
         }
         context.commit("loadProjects", JSON.parse(localStorage.getItem("projects")));
@@ -98,7 +105,7 @@ export default {
             cost_savings: payload.costSavings,
             time_to_complete: payload.timeToComplete
         }
-        axios.post("http://127.0.0.1:8000/api/projects/", projectData)
+        axios.post(`${process.env.VUE_APP_ROOT_API}/api/projects/`, projectData)
             .then(response => {
                 context.commit("finalSubmit", {
                     message: "Project proposal submitted successfully",
@@ -134,7 +141,7 @@ export default {
     },
     confirmDeleteProject(context, payload) {
         axios
-            .delete(`http://127.0.0.1:8000/api/projects/${payload}`)
+            .delete(`${process.env.VUE_APP_ROOT_API}/api/projects/${payload}`)
             .then(() => {
                 context.commit("confirmDelete", `${context.getters.getDeleteParams.deleteProjectName} was deleted`)
                 context.commit("showDeleteMessage", true);
