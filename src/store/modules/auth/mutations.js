@@ -1,6 +1,9 @@
 export default {
-    onSubmit(context, payload) {
-        console.log(context);
-        console.log(payload);
+    onSubmit(state, payload) {
+        state.email = payload.email;
+        state.employeeNumber = payload.employeeNumber;
+        state.departmentName = payload.departmentName;
+        state.firstName = payload.firstName;
+        state.lastName = payload.lastName;
     }
 }
