@@ -6,6 +6,9 @@ class CustomAccountManager(BaseUserManager):
         if not email:
             raise ValueError('You must provide an email address')
 
+        if not employee_number:
+            raise ValueError('You must provide an employee number')
+
         email = self.normalize_email(email)
         user = self.model(email=email, first_name=first_name, last_name=last_name, employee_number=employee_number, department_name=department_name, **other_fields)
         user.set_password(password)
@@ -30,7 +33,7 @@ class Employee(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    employee_number = models.CharField(max_length=16)
+    employee_number = models.CharField(max_length=16, unique=True)
     department_name = models.CharField(max_length=100, choices=[
         ('Tooling Products', 'Tooling Products'), 
         ('Application Engineering', 'Application Engineering'), 
