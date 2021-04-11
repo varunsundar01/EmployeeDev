@@ -79,5 +79,24 @@ export default {
                 })
             context.commit("onSubmit", payload);
         }
+    },
+    signIn(context, payload) {
+        //Reset error message before login
+        context.commit("setError", {
+            authError: false,
+            errorMessage: ""
+        })
+
+        axios.post(`${process.env.VUE_APP_ROOT_API}/api/auth/login`, payload)
+            .then(response => console.log(response))
+            .catch(error => {
+                if ("email" in error.response.data || error.response.data.non_field_errors[0] === "Incorrect Credentials") {
+                    context.commit("setError", {
+                        authError: true,
+                        errorMessage: "Invalid login. Please check your email and password"
+                    })
+                }
+            })
+        context.commit("signIn", payload);
     }
 }

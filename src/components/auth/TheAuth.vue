@@ -18,7 +18,7 @@
         Password
       </form-element>
     </form>
-    <base-button primaryVisible="true">
+    <base-button primaryVisible="true" @toNext="signIn">
       <template v-slot:primary>Sign In</template>
     </base-button>
     <p class="auth-option">
@@ -29,17 +29,28 @@
 </template>
 
 <script>
+import {reactive} from "vue";
 import { useStore } from "vuex";
 export default {
   setup() {
     const store = useStore();
 
+    const user = reactive({
+      email: "",
+      password: ""
+    })
+
     function enteredInput(data) {
-      store.dispatch("auth/userAuth", data);
+      user[data.id] = data.value;
+    }
+
+    function signIn() {
+      store.dispatch("auth/signIn", user);
     }
 
     return {
       enteredInput,
+      signIn
     };
   },
 };

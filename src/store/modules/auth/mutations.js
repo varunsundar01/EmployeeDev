@@ -9,7 +9,6 @@ export default {
     },
     setError(state, payload) {
         state.error.authError = payload.authError;
-        console.log(state.error.authError);
         state.error.errorMessage = payload.errorMessage;
     },
     setValidation(state, payload) {
@@ -18,5 +17,10 @@ export default {
     setToken(state, payload) {
         console.log(state);
         console.log(payload);
+    },
+    signIn(state, payload) {
+        for (let term in payload) {
+            state[term] = payload[term];
+        }
     }
 }
