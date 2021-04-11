@@ -6,12 +6,26 @@ export default {
     namespaced: true,
     state() {
         return {
-            email: '',
-            employeeNumber: null,
-            departmentName: null,
-            firstName: '',
-            lastName: '',
+            email: "",
+            employeeNumber: "",
+            departmentName: "",
+            firstName: "",
+            lastName: "",
             token: null,
+            error: {
+                authError: false,
+                errorMessage: ""
+            },
+            authValidate: {
+                departmentNameValidate: false,
+                firstNameValidate: false,
+                lastNameValidate: false,
+                emailValidate: false,
+                employeeNumberValidate: false,
+                passwordValidate: false,
+                password2Validate: false
+            },
+            submitMessage: ""
         }
     },
     mutations,
