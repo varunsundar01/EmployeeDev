@@ -65,7 +65,7 @@ export default {
 
 .view a {
   color: var(--background-light);
-  font-weight: 400;
+  font-weight: 300;
 }
 
 .project-button.view:hover,
@@ -81,7 +81,7 @@ export default {
 
 .delete a {
   color: var(--error-button);
-  font-weight: 400;
+  font-weight: 300;
 }
 
 .delete:hover a {

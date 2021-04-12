@@ -25,7 +25,7 @@
   margin-top: -30px;
   margin-left: -30px;
   border-radius: 50%;
-  border: 3px solid var(--inactive);
+  border: 2px solid var(--inactive);
   border-top-color: var(--primary);
   -webkit-animation: spinner 0.7s linear infinite;
   animation: spinner-1 0.7s linear infinite;

@@ -83,7 +83,7 @@ export default {
 .nav-item,
 .nav-item-right {
   margin: auto 1em;
-  font-weight: 400;
+  font-weight: 300;
   padding: 0.5em 0;
   margin: 0 2em 0 0;
   font-size: 1.1em;
@@ -91,7 +91,7 @@ export default {
 
 .nav-item-right a {
   color: var(--secondary);
-  font-weight: 400;
+  font-weight: 300;
   transition: none;
 }
 

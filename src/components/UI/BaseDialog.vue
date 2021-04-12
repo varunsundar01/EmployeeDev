@@ -73,7 +73,7 @@ export default {
   margin: 0;
   background-color: var(--error-background);
   padding: 0.75em 0;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--secondary);
 }
 
