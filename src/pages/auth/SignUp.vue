@@ -235,6 +235,7 @@ export default {
     }
 
     function registerUser() {
+      store.dispatch("auth/resetMessages");
       submitted.value = false;
       if (
         passwordError.value === "" &&

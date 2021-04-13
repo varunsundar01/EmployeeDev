@@ -32,7 +32,9 @@ export default {
         localStorage.removeItem("token");
         localStorage.removeItem("isAuthenticated");
     },
-    destroyMesssage(state) {
+    resetMessages(state) {
         state.submitMessage = "";
+        state.error.authError = false;
+        state.error.errorMessage = "";
     }
 }

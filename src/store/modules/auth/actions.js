@@ -119,6 +119,7 @@ export default {
             .then(() => {
                 context.commit('logout');
                 router.push('/');
+                context.commit("resetMessages");
             })
             .catch(() => {
                 context.commit("setError", {
@@ -126,5 +127,8 @@ export default {
                     errorMessage: "There was a problem while logging out"
                 });
             })
+    },
+    resetMessages(context) {
+        context.commit("resetMessages");
     }
 }

@@ -38,11 +38,18 @@ router.beforeEach((to, from, next) => {
         })
     }
     if (from.fullPath === "/dashboard" && store.getters['projects/checkSubmit'].submitted) {
+        store.dispatch("auth/resetMessages");
         store.dispatch("projects/switchSubmit", {
             message: "",
             messageType: 201,
             value: false
         })
+    }
+    if (from.fullPath === "/dashboard" && store.getters['auth/getSubmitMessage'] !== "") {
+        store.dispatch("auth/resetMessages");
+    }
+    if (to.fullPath === "/sign-in" || to.fullPath === '/' || to.fullPath === "/sign-up") {
+        store.dispatch("auth/resetMessages");
     }
     next();
 });
