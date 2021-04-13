@@ -87,7 +87,7 @@
       >Confirm Password</form-element
     >
 
-    <base-button @toNext="onSubmit" primaryVisible="true">
+    <base-button @toNext="registerUser" primaryVisible="true">
       <template v-slot:primary>Create Account</template>
     </base-button>
   </base-card>
@@ -234,7 +234,7 @@ export default {
       });
     }
 
-    function onSubmit() {
+    function registerUser() {
       submitted.value = false;
       if (
         passwordError.value === "" &&
@@ -247,7 +247,7 @@ export default {
         });
 
         submitted.value = true;
-        store.dispatch("auth/onSubmit", signUp);
+        store.dispatch("auth/registerUser", signUp);
         // window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
       }
     }
@@ -270,7 +270,7 @@ export default {
       employeeNumberCheck,
       submitted,
       removeError,
-      onSubmit,
+      registerUser,
     };
   },
 };
