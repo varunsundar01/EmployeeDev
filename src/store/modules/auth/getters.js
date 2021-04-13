@@ -7,5 +7,11 @@ export default {
     },
     getSubmitMessage(state) {
         return state.submitMessage;
+    },
+    isAuthenticated(state) {
+        return state.isAuthenticated;
+    },
+    getToken(state) {
+        return state.token || localStorage.getItem("token");
     }
 }

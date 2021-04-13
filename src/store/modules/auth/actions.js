@@ -8,7 +8,7 @@ export default {
     setValidation(context, payload) {
         context.commit("setValidation", payload);
     },
-    onSubmit(context, payload) {
+    registerUser(context, payload) {
         for (let field in payload) {
             if (field !== "email" || field !== "employeeNumber") {
                 if (payload[field].trim() === "") {
@@ -88,7 +88,18 @@ export default {
         })
 
         axios.post(`${process.env.VUE_APP_ROOT_API}/api/auth/login`, payload)
-            .then(response => console.log(response))
+            .then(response => {
+                context.commit('setToken', response.data.token);
+                const employee = response.data.employee;
+                context.commit("signIn", {
+                    departmentName: employee.department_name,
+                    email: employee.email,
+                    employeeNumber: employee.employee_number,
+                    firstName: employee.first_name,
+                    lastName: employee.last_name,
+                });
+                router.push('./dashboard');
+            })
             .catch(error => {
                 if ("email" in error.response.data || error.response.data.non_field_errors[0] === "Incorrect Credentials") {
                     context.commit("setError", {
@@ -97,6 +108,23 @@ export default {
                     })
                 }
             })
-        context.commit("signIn", payload);
+    },
+    logout(context) {
+        axios.post(`${process.env.VUE_APP_ROOT_API}/api/auth/logout`, null, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Token ${context.getters.getToken}`
+                }
+            })
+            .then(() => {
+                context.commit('logout');
+                router.push('/');
+            })
+            .catch(() => {
+                context.commit("setError", {
+                    authError: true,
+                    errorMessage: "There was a problem while logging out"
+                });
+            })
     }
 }

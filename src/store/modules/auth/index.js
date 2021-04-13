@@ -25,7 +25,8 @@ export default {
                 passwordValidate: false,
                 password2Validate: false
             },
-            submitMessage: ""
+            submitMessage: "",
+            isAuthenticated: false
         }
     },
     mutations,

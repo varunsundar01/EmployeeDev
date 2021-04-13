@@ -4,7 +4,7 @@
       <router-link to="/" class="nav-brand"></router-link>
 
       <ul class="nav-right">
-        <li class="nav-item-right">
+        <li class="nav-item-right" v-if="isAuthenticated">
           <router-link to="/dashboard">Dashboard</router-link>
         </li>
         <li class="nav-item-right">
@@ -13,9 +13,14 @@
         <li class="nav-item-right">
           <router-link to="/projects">View All Projects</router-link>
         </li>
-        <li class="nav-item-right">
+        <li class="nav-item-right" v-if="!isAuthenticated">
           <base-button primaryVisible="true" @toNext="toNext">
             <template v-slot:primary>Sign In</template>
+          </base-button>
+        </li>
+        <li class="nav-item-right" v-else>
+          <base-button secondaryVisible="true" @toBack="logout">
+            <template v-slot:secondary>Logout</template>
           </base-button>
         </li>
       </ul>
@@ -24,20 +29,38 @@
 </template>
 
 <script>
-import {useRouter} from 'vue-router';
+import { useRouter } from "vue-router";
+import { computed } from "vue";
+import { useStore } from "vuex";
 export default {
   setup() {
+    const store = useStore();
     const router = useRouter();
 
     function toNext() {
-      router.push('/sign-in');
+      router.push("/sign-in");
     }
 
-    return {
-      toNext
+    function logout() {
+      store.dispatch("auth/logout");
     }
-  }
-}
+
+    let isAuthenticated = computed(() => {
+      return store.getters["auth/isAuthenticated"] || localStorage.getItem('isAuthenticated') === 'true';
+    });
+
+    const firstName = computed(() => {
+      return localStorage.getItem('firstName');
+    })
+
+    return {
+      toNext,
+      isAuthenticated,
+      firstName,
+      logout
+    };
+  },
+};
 </script>
 
 <style scoped>
@@ -110,7 +133,7 @@ export default {
 }
 
 .active {
-  border-bottom: 2px solid #2a9d8f;
+  border-bottom: 2px solid var(--active);
   font-weight: 500;
 }
 

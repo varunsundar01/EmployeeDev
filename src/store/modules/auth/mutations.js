@@ -15,12 +15,24 @@ export default {
         state.authValidate[payload.field] = payload.value;
     },
     setToken(state, payload) {
-        console.log(state);
-        console.log(payload);
+        state.token = payload;
+        localStorage.setItem("token", payload);
     },
     signIn(state, payload) {
         for (let term in payload) {
             state[term] = payload[term];
         }
+        state.isAuthenticated = true;
+        localStorage.setItem('isAuthenticated', true);
+        state.submitMessage = "Login Successful";
+    },
+    logout(state) {
+        state.token = null;
+        state.isAuthenticated = false;
+        localStorage.removeItem("token");
+        localStorage.removeItem("isAuthenticated");
+    },
+    destroyMesssage(state) {
+        state.submitMessage = "";
     }
 }
