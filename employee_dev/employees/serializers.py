@@ -7,16 +7,17 @@ Employee = get_user_model()
 class EmployeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
-        fields = ('email', 'employee_number', 'first_name', 'last_name', 'department_name')
+        fields = ('id', 'email', 'employee_number', 'first_name', 'last_name', 'department_name')
 
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
-        fields = ('email', 'password', 'employee_number', 'first_name', 'last_name', 'department_name')
+        fields = ('id', 'email', 'password', 'employee_number', 'first_name', 'last_name', 'department_name')
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
         employee = Employee.objects.create_user(
+            validated_data['id'],
             validated_data['email'],
             validated_data['password'],
             validated_data['first_name'],
