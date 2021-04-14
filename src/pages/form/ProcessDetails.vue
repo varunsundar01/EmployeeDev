@@ -1,8 +1,6 @@
 <template>
   <base-card>
-    <the-banner v-if="errorActive"
-      >All fields are required. Please complete the fields highlighted
-      below</the-banner
+    <the-banner v-if="errorActive">{{$store.getters['projects/checkError'].errorMessage}}</the-banner
     >
     <form-element
       id="projectName"
@@ -69,10 +67,14 @@ export default {
       problem: "",
       solution: "",
       implementation: "",
-    })
+    });
 
     onMounted(() => {
       store.dispatch("projects/loadProjects");
+      store.dispatch("projects/setError", {
+        errorActive: false,
+        errorMessage: ""
+      })
     });
 
     function enteredInput(event) {
@@ -109,7 +111,7 @@ export default {
       });
 
       //Go to Next Page if no errors
-      if (!store.getters['projects/checkError'] && store.getters['projects/nameError'] === "") {
+      if (!store.getters['projects/checkError'].errorActive && store.getters['projects/nameError'] === "") {
         router.push("/benefits-savings");
       } else {
         window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -118,29 +120,29 @@ export default {
 
     let errorActive = computed(() => {
       window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-      return store.getters['projects/checkError'];
+      return store.getters['projects/checkError'].errorActive;
     });
 
     let projectNameValidation = computed(() => {
-      if (store.getters['projects/checkError']) {
+      if (store.getters['projects/checkError'].errorActive) {
         return !store.getters['projects/getProcessValidation'].projectNameValidation;
       }
       return false;
     });
     let problemValidation = computed(() => {
-      if (store.getters['projects/checkError']) {
+      if (store.getters['projects/checkError'].errorActive) {
         return !store.getters['projects/getProcessValidation'].problemValidation;
       }
       return false;
     });
     let solutionValidation = computed(() => {
-      if (store.getters['projects/checkError']) {
+      if (store.getters['projects/checkError'].errorActive) {
         return !store.getters['projects/getProcessValidation'].solutionValidation;
       }
       return false;
     });
     let implementationValidation = computed(() => {
-      if (store.getters['projects/checkError']) {
+      if (store.getters['projects/checkError'].errorActive) {
         return !store.getters['projects/getProcessValidation'].implementationValidation;
       }
       return false;

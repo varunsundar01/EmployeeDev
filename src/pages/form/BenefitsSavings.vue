@@ -1,8 +1,6 @@
 <template>
   <base-card>
-    <the-banner v-if="errorActive"
-      >All fields are required. Please complete the fields highlighted
-      below</the-banner
+    <the-banner v-if="errorActive">{{$store.getters['projects/checkError'].errorMessage}}</the-banner
     >
     <form-element
       id="implementationCost"
@@ -133,36 +131,36 @@ export default {
 
     let errorActive = computed(() => {
       window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-      return store.getters['projects/checkError'];
+      return store.getters['projects/checkError'].errorActive;
     });
 
     let implementationCostValidation = computed(() => {
-      if (store.getters['projects/checkError']) {
+      if (store.getters['projects/checkError'].errorActive) {
         return !store.getters['projects/getBenefitsValidation']
           .implementationCostValidation;
       }
       return false;
     });
     let costSavingsValidation = computed(() => {
-      if (store.getters['projects/checkError']) {
+      if (store.getters['projects/checkError'].errorActive) {
         return !store.getters['projects/getBenefitsValidation'].costSavingsValidation;
       }
       return false;
     });
     let timeToCompleteValidation = computed(() => {
-      if (store.getters['projects/checkError']) {
+      if (store.getters['projects/checkError'].errorActive) {
         return !store.getters['projects/getBenefitsValidation'].timeToCompleteValidation;
       }
       return false;
     });
     let fullNameValidation = computed(() => {
-      if (store.getters['projects/checkError']) {
+      if (store.getters['projects/checkError'].errorActive) {
         return !store.getters['projects/getBenefitsValidation'].fullNameValidation;
       }
       return false;
     });
     let currentDateValidation = computed(() => {
-      if (store.getters['projects/checkError']) {
+      if (store.getters['projects/checkError'].errorActive) {
         return !store.getters['projects/getBenefitsValidation'].currentDateValidation;
       }
       return false;
