@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.text import slugify
-# from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+
+Employee = get_user_model()
 
 class Project(models.Model):
     project_name = models.CharField(max_length=200, unique=True)
@@ -12,7 +14,7 @@ class Project(models.Model):
     cost_savings = models.FloatField()
     time_to_complete = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
-    # engineer = models.ForeignKey(User, related_name = "projects", on_delete = models.CASCADE, null=True)
+    employee = models.ForeignKey(Employee, related_name = "projects", on_delete = models.CASCADE)
 
     def save(self, *args, **kwargs):
         self.project_slug = slugify(self.project_name)
