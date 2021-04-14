@@ -4,13 +4,13 @@
     <the-banner v-if="displayBanner">{{ bannerMessage }}</the-banner>
 
     <p class="dashboard-head">Hey, {{firstName}}. You can find all the projects you have submitted here.</p>
-    <p class="dashboard-head">Click <router-link to="/projects">here</router-link> to view projects submitted by your colleagues</p>
+    <p class="dashboard-head">Click <router-link to="/projects">here</router-link> to view projects submitted by all employees</p>
     <list-element
       v-for="project in $store.getters['projects/getUserProjects']"
       :key="project.id"
       :id="project.id"
       :title="project.project_name"
-      author="Placeholder Author"
+      :author="project.employee"
       :createdAt="project.createdAt"
       :slug="project.project_slug"
       @deleteProject="deleteProjectDialog"
@@ -58,27 +58,11 @@ export default {
       }
     });
 
-    // const errorBanner = computed(() => {
-    //   if (store.getters['auth/getError'].authError || store.getters['projects/checkError']) {
-    //     return true;
-    //   }
-    //   return false;
-    // });
-
-    // const errorMessage = computed(() => {
-    //   if (store.getters['auth/getError'].authError) {
-    //     return store.getters['auth/getError'].errorMessage;
-    //   }
-    //   return "";
-    // })
-
     return {
       displayBanner,
       submitMessage,
       bannerMessage,
       firstName
-      // errorBanner,
-      // errorMessage
     };
   },
 };
