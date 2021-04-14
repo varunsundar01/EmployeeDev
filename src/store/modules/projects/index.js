@@ -28,7 +28,10 @@ export default {
                 fullNameValidation: false,
                 currentDateValidation: false
             },
-            errorActive: false,
+            error: {
+                errorActive: false,
+                errorMessage: ""
+            },
             submitAttempt: {
                 submitted: false,
                 submitMessage: ""
@@ -58,7 +61,8 @@ export default {
                 problem: "",
                 solution: "",
                 implementation: ""
-            }
+            },
+            userProjects: []
         }
     },
     getters,

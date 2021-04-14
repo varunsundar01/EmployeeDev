@@ -62,7 +62,7 @@ export default {
         return benefitsValidation;
     },
     checkError(state) {
-        return state.errorActive;
+        return state.error;
     },
     checkSubmit(state) {
         return state.submitAttempt;
@@ -75,6 +75,9 @@ export default {
     },
     getProjectDetail(state) {
         return state.projectDetail;
+    },
+    getUserProjects(state) {
+        return state.userProjects;
     },
     getDeleteParams(state) {
         return {

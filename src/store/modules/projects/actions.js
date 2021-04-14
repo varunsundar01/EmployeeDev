@@ -7,7 +7,10 @@ export default {
     setValidation(context, payload) {
         context.commit('setValidation', payload);
     },
-    async loadProjects(context) {
+    setError(context, payload) {
+        context.commit('setError', payload);
+    },
+    loadProjects(context) {
         const projects = [];
 
         //Get time difference between the last time projects was stored in localstorage and now
@@ -16,7 +19,7 @@ export default {
 
         //Get Projects
         if (!localStorage.getItem("projects") || timeDifference >= 60) {
-            await axios.get(`${process.env.VUE_APP_ROOT_API}/api/projects`).then(response => {
+            axios.get(`${process.env.VUE_APP_ROOT_API}/api/projects`).then(response => {
                 const data = response.data;
                 for (let value in data) {
                     const year = new Date(Date.parse(data[value].created_at)).getFullYear();
@@ -38,14 +41,39 @@ export default {
                         cost_savings: data[value].cost_savings,
                         time_to_complete: data[value].time_to_complete,
                         createdAt: createdDate,
+                        employee: `${data[value].employee.first_name} ${data[value].employee.last_name}`
                     };
                     projects.push(ProjectObj);
                 }
+                context.commit("loadProjects", projects);
                 localStorage.setItem("projects", JSON.stringify(projects));
                 localStorage.setItem("projectsTime", new Date())
             })
         }
         context.commit("loadProjects", JSON.parse(localStorage.getItem("projects")));
+    },
+    loadUserProjects(context) {
+        axios.get(`${process.env.VUE_APP_ROOT_API}/api/userprojects`, {
+                headers: {
+                    "Authorization": `Token ${context.rootGetters["auth/getToken"]}`
+                }
+            })
+            .then(response => {
+                context.commit('setUserProjects', []);
+                const userProjects = [];
+                for (let key in response.data) {
+                    let project = response.data[key];
+                    userProjects.push(project);
+                }
+                context.commit('setUserProjects', userProjects);
+            })
+            .catch(error => {
+                console.log(error.response.data);
+                context.commit("setError", {
+                    errorActive: true,
+                    errorMessage: "Could not load projects"
+                });
+            })
     },
     loadProjectDetail(context, payload) {
         const projectDetail = context.getters.getAllProjectParams.allProjects.filter(project => {
@@ -67,7 +95,10 @@ export default {
         }
     },
     onSubmit(context, payload) {
-        context.commit('setError', false);
+        context.commit('setError', {
+            errorActive: false,
+            errorMessage: ""
+        });
         const values = {};
         const fields = payload.fields;
 
@@ -84,7 +115,10 @@ export default {
         }
         for (let term in context.getters[payload.fieldsValidation]) {
             if (context.getters[payload.fieldsValidation][term] === false) {
-                context.commit('setError', true);
+                context.commit('setError', {
+                    errorActive: true,
+                    errorMessage: "All fields are required. Please complete the fields highlighted below"
+                });
             }
         }
         if (!context.getters.checkError) {

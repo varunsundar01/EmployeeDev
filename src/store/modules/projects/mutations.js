@@ -29,16 +29,17 @@ export default {
         localStorage.removeItem('benefits-savings');
     },
     loadProjects(state, payload) {
-        state.projectParams.allProjects = payload;
-        state.projectParams.filteredProjects = payload;
-        state.projectParams.allProjectNames = [];
-        state.projectParams.filteredProjectNames = [];
-
-        for (let index in state.projectParams.allProjects) {
-            state.projectParams.allProjectNames.push(state.projectParams.allProjects[index].project_name);
-            state.projectParams.filteredProjectNames.push(state.projectParams.allProjects[index].project_name);
+        if (payload !== null) {
+            state.projectParams.allProjects = payload;
+            state.projectParams.filteredProjects = payload;
+            state.projectParams.allProjectNames = [];
+            state.projectParams.filteredProjectNames = [];
+            for (let index in state.projectParams.allProjects) {
+                state.projectParams.allProjectNames.push(state.projectParams.allProjects[index].project_name);
+                state.projectParams.filteredProjectNames.push(state.projectParams.allProjects[index].project_name);
+            }
+            state.projectParams.loaded = true;
         }
-        state.projectParams.loaded = true;
     },
     loadProjectDetail(state, payload) {
         state.projectDetail.projectName = payload.project_name;
@@ -53,12 +54,16 @@ export default {
     setProjectNames(state, payload) {
         state.projectParams.allProjectNames = payload;
     },
+    setUserProjects(state, payload) {
+        state.userProjects = payload;
+    },
     setValidation(state, payload) {
         const term = payload.term;
         state.fieldsValidate[term] = payload.value;
     },
     setError(state, payload) {
-        state.errorActive = payload;
+        state.error.errorActive = payload.errorActive;
+        state.error.errorMessage = payload.errorMessage;
     },
     nameError(state, payload) {
         state.nameError = payload;
