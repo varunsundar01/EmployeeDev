@@ -15,10 +15,10 @@ const router = createRouter({
     history: createWebHistory(),
     routes: [
         { path: '/', component: HomePage },
-        { name: 'the-dashboard', path: '/dashboard', component: TheDashboard, meta: { title: 'Dashboard' } },
-        { name: 'process-details', path: '/process-details', component: ProcessDetails, meta: { title: 'Process Details', keepAlive: true, form: true } },
-        { name: 'benefits-savings', path: '/benefits-savings', component: BenefitsSavings, meta: { title: 'Benefits & Savings', keepAlive: true, form: true } },
-        { name: 'final-review', path: '/final-review', component: FinalReview, meta: { title: 'Final Review', keepAlive: true, form: true } },
+        { name: 'the-dashboard', path: '/dashboard', component: TheDashboard, meta: { title: 'Dashboard', requiresAuth: true } },
+        { name: 'process-details', path: '/process-details', component: ProcessDetails, meta: { title: 'Process Details', keepAlive: true, form: true, requiresAuth: true } },
+        { name: 'benefits-savings', path: '/benefits-savings', component: BenefitsSavings, meta: { title: 'Benefits & Savings', keepAlive: true, form: true, requiresAuth: true } },
+        { name: 'final-review', path: '/final-review', component: FinalReview, meta: { title: 'Final Review', keepAlive: true, form: true, requiresAuth: true } },
         { name: 'sign-up', path: '/sign-up', component: SignUp, meta: { title: 'Sign Up' } },
         { name: 'sign-in', path: '/sign-in', component: SignIn, meta: { title: 'Sign In' } },
         { name: 'projects-list', path: '/projects', component: ProjectsList, meta: { title: 'Projects' } },
@@ -29,29 +29,33 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     document.title = to.meta.title || 'EmployeeDev';
 
-    if (from.meta.form && !to.meta.form && !store.getters['projects/checkSubmit'].submitted) {
+    if (to.meta.requiresAuth && !store.getters["auth/isAuthenticated"]) {
+        next("/sign-in");
+    } else if (from.meta.form && !to.meta.form && !store.getters['projects/checkSubmit'].submitted) {
         store.dispatch("projects/initializeValues");
         store.dispatch("projects/switchSubmit", {
             message: "",
             messageType: 201,
             value: false
         })
-    }
-    if (from.fullPath === "/dashboard" && store.getters['projects/checkSubmit'].submitted) {
+        next();
+    } else if (from.fullPath === "/dashboard" && store.getters['projects/checkSubmit'].submitted) {
         store.dispatch("auth/resetMessages");
         store.dispatch("projects/switchSubmit", {
             message: "",
             messageType: 201,
             value: false
         })
-    }
-    if (from.fullPath === "/dashboard" && store.getters['auth/getSubmitMessage'] !== "") {
+        next();
+    } else if (from.fullPath === "/dashboard" && store.getters['auth/getSubmitMessage'] !== "") {
         store.dispatch("auth/resetMessages");
-    }
-    if (to.fullPath === "/sign-in" || to.fullPath === '/' || to.fullPath === "/sign-up") {
+        next();
+    } else if (to.fullPath === "/sign-in" || to.fullPath === '/' || to.fullPath === "/sign-up") {
         store.dispatch("auth/resetMessages");
+        next();
+    } else {
+        next();
     }
-    next();
 });
 
 export default router;
