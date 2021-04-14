@@ -23,7 +23,7 @@
         :key="project.id"
         :id="project.id"
         :title="project.project_name"
-        author="Placeholder Author"
+        :author="project.employee"
         :createdAt="project.createdAt"
         :slug="project.project_slug"
         @deleteProject="deleteProjectDialog"
