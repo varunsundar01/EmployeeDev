@@ -7,7 +7,7 @@
         <li class="nav-item-right" v-if="isAuthenticated">
           <router-link to="/dashboard">Dashboard</router-link>
         </li>
-        <li class="nav-item-right">
+        <li class="nav-item-right" v-if="isAuthenticated">
           <router-link to="/process-details">Submit Project</router-link>
         </li>
         <li class="nav-item-right">
