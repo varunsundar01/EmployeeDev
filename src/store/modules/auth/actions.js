@@ -81,11 +81,8 @@ export default {
         }
     },
     signIn(context, payload) {
-        //Reset error message before login
-        context.commit("setError", {
-            authError: false,
-            errorMessage: ""
-        })
+        //Reset messages before login
+        context.commit("resetMessages");
 
         axios.post(`${process.env.VUE_APP_ROOT_API}/api/auth/login`, payload)
             .then(response => {
