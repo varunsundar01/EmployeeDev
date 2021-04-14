@@ -50,6 +50,7 @@ export default {
         state.projectDetail.problem = payload.problem;
         state.projectDetail.solution = payload.solution;
         state.projectDetail.implementation = payload.implementation;
+        state.projectDetail.employee = payload.employee;
     },
     setProjectNames(state, payload) {
         state.projectParams.allProjectNames = payload;

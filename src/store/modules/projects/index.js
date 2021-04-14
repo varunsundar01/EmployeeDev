@@ -60,7 +60,8 @@ export default {
                 timeToComplete: null,
                 problem: "",
                 solution: "",
-                implementation: ""
+                implementation: "",
+                employee: ""
             },
             userProjects: []
         }

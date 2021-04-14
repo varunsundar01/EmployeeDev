@@ -10,7 +10,10 @@
 
       <div class="project-meta">
         <p class="meta-title author">
-          Submitted by: <span class="meta-info">Placeholder</span>
+          Submitted by:
+          <span class="meta-info">{{
+            $store.getters["projects/getProjectDetail"].employee
+          }}</span>
           <!--- link to author page with projects by author --->
         </p>
         <p class="meta-title">
