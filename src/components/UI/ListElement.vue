@@ -11,23 +11,35 @@
     <router-link :to="'/projects/' + slug"
       ><button class="project-button view">View</button></router-link
     >
-    <button class="project-button delete" @click="deleteProject">Delete</button>
+    <button class="project-button delete" @click="deleteProject" v-if="isAuthenticated">Delete</button>
   </div>
 </template>
 
 <script>
+import { computed } from "vue";
+import {useStore} from "vuex";
 export default {
   props: ["id", "title", "author", "createdAt", "slug"],
-  emits:["deleteProject"],
+  emits: ["deleteProject"],
   setup(props, context) {
+    const store = useStore();
+
     function deleteProject() {
       context.emit("deleteProject", props.id);
     }
 
+    let isAuthenticated = computed(() => {
+      return (
+        store.getters["auth/isAuthenticated"] ||
+        localStorage.getItem("isAuthenticated") === "true"
+      );
+    });
+
     return {
-      deleteProject
-    }
-  }
+      deleteProject,
+      isAuthenticated,
+    };
+  },
 };
 </script>
 
