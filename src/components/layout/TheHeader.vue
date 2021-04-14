@@ -32,6 +32,7 @@
 import { useRouter } from "vue-router";
 import { computed } from "vue";
 import { useStore } from "vuex";
+import useCheckAuth from "../../hooks/auth.js";
 export default {
   setup() {
     const store = useStore();
@@ -44,10 +45,8 @@ export default {
     function logout() {
       store.dispatch("auth/logout");
     }
-
-    let isAuthenticated = computed(() => {
-      return store.getters["auth/isAuthenticated"] || localStorage.getItem('isAuthenticated') === 'true';
-    });
+    
+    let isAuthenticated = useCheckAuth();
 
     const firstName = computed(() => {
       return localStorage.getItem('firstName');

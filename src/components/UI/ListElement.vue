@@ -16,24 +16,17 @@
 </template>
 
 <script>
-import { computed } from "vue";
-import {useStore} from "vuex";
+import useCheckAuth from '../../hooks/auth';
 export default {
   props: ["id", "title", "author", "createdAt", "slug"],
   emits: ["deleteProject"],
   setup(props, context) {
-    const store = useStore();
 
     function deleteProject() {
       context.emit("deleteProject", props.id);
     }
 
-    let isAuthenticated = computed(() => {
-      return (
-        store.getters["auth/isAuthenticated"] ||
-        localStorage.getItem("isAuthenticated") === "true"
-      );
-    });
+    let isAuthenticated = useCheckAuth();
 
     return {
       deleteProject,
