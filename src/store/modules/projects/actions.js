@@ -1,4 +1,5 @@
 import axios from "axios";
+import createProjectsObj from "../../../hooks/cleanProjectsData.js";
 
 export default {
     initializeValues(context) {
@@ -22,28 +23,8 @@ export default {
             axios.get(`${process.env.VUE_APP_ROOT_API}/api/projects`).then(response => {
                 const data = response.data;
                 for (let value in data) {
-                    const year = new Date(Date.parse(data[value].created_at)).getFullYear();
-                    const month = (
-                        "0" + new Date(Date.parse(data[value].created_at)).getMonth()
-                    ).slice(-2);
-                    const day = (
-                        "0" + new Date(Date.parse(data[value].created_at)).getDate()
-                    ).slice(-2);
-                    const createdDate = `${month}/${day}/${year}`;
-                    const ProjectObj = {
-                        id: data[value].id,
-                        project_name: data[value].project_name,
-                        project_slug: data[value].project_slug,
-                        problem: data[value].problem,
-                        solution: data[value].solution,
-                        implementation: data[value].implementation,
-                        implementation_cost: data[value].implementation_cost,
-                        cost_savings: data[value].cost_savings,
-                        time_to_complete: data[value].time_to_complete,
-                        createdAt: createdDate,
-                        employee: `${data[value].employee.first_name} ${data[value].employee.last_name}`
-                    };
-                    projects.push(ProjectObj);
+                    let projectObj = createProjectsObj(data[value]);
+                    projects.push(projectObj);
                 }
                 context.commit("loadProjects", projects);
                 localStorage.setItem("projects", JSON.stringify(projects));
@@ -62,13 +43,12 @@ export default {
                 context.commit('setUserProjects', []);
                 const userProjects = [];
                 for (let key in response.data) {
-                    let project = response.data[key];
-                    userProjects.push(project);
+                    let projectObj = createProjectsObj(response.data[key]);
+                    userProjects.push(projectObj);
                 }
                 context.commit('setUserProjects', userProjects);
             })
-            .catch(error => {
-                console.log(error.response.data);
+            .catch(() => {
                 context.commit("setError", {
                     errorActive: true,
                     errorMessage: "Could not load projects"
