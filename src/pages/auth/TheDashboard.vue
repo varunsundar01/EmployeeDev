@@ -15,26 +15,44 @@
       :slug="project.project_slug"
       @deleteProject="deleteProjectDialog"
     ></list-element>
+    <delete-message></delete-message>
+    <base-dialog
+      :deleteProjectName="
+        $store.getters['projects/getDeleteParams'].deleteProjectName
+      "
+      :deleteProjectId="
+        $store.getters['projects/getDeleteParams'].deleteProjectId
+      "
+      @confirmDeleteProject="confirmDeleteProject"
+      @toBack="toBack"
+      v-if="dialogOpen"
+    ></base-dialog>
   </div>
 </template>
 
 <script>
 import TheBanner from "../../components/UI/TheBanner.vue";
 import ListElement from "../../components/UI/ListElement.vue";
+import DeleteMessage from "../../components/UI/DeleteMessage.vue";
+import BaseDialog from "../../components/UI/BaseDialog.vue";
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
 export default {
   components: {
     TheBanner,
     ListElement,
+    DeleteMessage,
+    BaseDialog
   },
 
   setup() {
     const store = useStore();
     const submitMessage = ref("");
+    let dialogOpen = ref(false);
     const firstName = ref(localStorage.getItem("firstName"));
 
     store.dispatch("projects/loadUserProjects");
+    store.dispatch("projects/loadProjects");
 
     const displayBanner = computed(() => {
       if (
@@ -58,11 +76,30 @@ export default {
       }
     });
 
+    function toBack() {
+      dialogOpen.value = false;
+      store.dispatch("projects/resetDelete");
+    }
+
+    function deleteProjectDialog(projectId) {
+      dialogOpen.value = true;
+      store.dispatch("projects/preConfirmDelete", projectId);
+    }
+
+    function confirmDeleteProject(projectId) {
+      dialogOpen.value = false;
+      store.dispatch("projects/confirmDeleteProject", projectId);
+    }
+
     return {
       displayBanner,
       submitMessage,
       bannerMessage,
-      firstName
+      firstName,
+      toBack,
+      deleteProjectDialog,
+      confirmDeleteProject,
+      dialogOpen
     };
   },
 };
