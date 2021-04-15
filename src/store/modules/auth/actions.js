@@ -106,6 +106,11 @@ export default {
                 }
             })
     },
+    tryLogin(context) {
+        if (localStorage.getItem("token") !== null) {
+            context.commit("setToken", localStorage.getItem("token"));
+        }
+    },
     logout(context) {
         axios.post(`${process.env.VUE_APP_ROOT_API}/api/auth/logout`, null, {
                 headers: {
@@ -115,8 +120,8 @@ export default {
             })
             .then(() => {
                 context.commit('logout');
-                router.push('/');
                 context.commit("resetMessages");
+                router.push('/');
             })
             .catch(() => {
                 context.commit("setError", {
