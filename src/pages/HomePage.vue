@@ -2,15 +2,15 @@
   <div>
     <div class="hero-section">
       <h1>Employee<span class="logo-second">Dev</span> Portal</h1>
-      <p v-if="!isAuthenticated">
+      <p v-if="!$store.getters['auth/isAuthenticated']">
         Sign in to submit your proposed process improvement methods and
         strategies
       </p>
-      <base-card v-if="!isAuthenticated">
+      <base-card v-if="!$store.getters['auth/isAuthenticated']">
         <the-auth></the-auth>
       </base-card>
-      <p v-if="isAuthenticated">Welcome back, {{ firstName }}.</p>
-      <p v-if="isAuthenticated">
+      <p v-if="$store.getters['auth/isAuthenticated']">Welcome back, {{ firstName }}.</p>
+      <p v-if="$store.getters['auth/isAuthenticated']">
         <router-link to="/process-details">Submit a project</router-link> or
         manage your projects in your
         <router-link to="/dashboard">dashboard</router-link>
@@ -22,17 +22,14 @@
 <script>
 import TheAuth from "../components/auth/TheAuth.vue";
 import { ref } from "vue";
-import useCheckAuth from "../hooks/auth.js";
 export default {
   components: {
     TheAuth,
   },
   setup() {
     const firstName = ref(localStorage.getItem("firstName"));
-    let isAuthenticated = useCheckAuth();
 
     return {
-      isAuthenticated,
       firstName,
     };
   },

@@ -4,16 +4,16 @@
       <router-link to="/" class="nav-brand"></router-link>
 
       <ul class="nav-right">
-        <li class="nav-item-right" v-if="isAuthenticated">
+        <li class="nav-item-right" v-if="$store.getters['auth/isAuthenticated']">
           <router-link to="/dashboard">Dashboard</router-link>
         </li>
-        <li class="nav-item-right" v-if="isAuthenticated">
+        <li class="nav-item-right" v-if="$store.getters['auth/isAuthenticated']">
           <router-link to="/process-details">Submit Project</router-link>
         </li>
         <li class="nav-item-right">
           <router-link to="/projects">View All Projects</router-link>
         </li>
-        <li class="nav-item-right" v-if="!isAuthenticated">
+        <li class="nav-item-right" v-if="!$store.getters['auth/isAuthenticated']">
           <base-button primaryVisible="true" @toNext="toNext">
             <template v-slot:primary>Sign In</template>
           </base-button>
@@ -32,7 +32,6 @@
 import { useRouter } from "vue-router";
 import { computed } from "vue";
 import { useStore } from "vuex";
-import useCheckAuth from "../../hooks/auth.js";
 export default {
   setup() {
     const store = useStore();
@@ -45,16 +44,13 @@ export default {
     function logout() {
       store.dispatch("auth/logout");
     }
-    
-    let isAuthenticated = useCheckAuth();
 
     const firstName = computed(() => {
-      return localStorage.getItem('firstName');
-    })
+      return localStorage.getItem("firstName");
+    });
 
     return {
       toNext,
-      isAuthenticated,
       firstName,
       logout
     };

@@ -11,12 +11,11 @@
     <router-link :to="'/projects/' + slug"
       ><button class="project-button view">View</button></router-link
     >
-    <button class="project-button delete" @click="deleteProject" v-if="isAuthenticated">Delete</button>
+    <button class="project-button delete" @click="deleteProject" v-if="$store.getters['auth/isAuthenticated']">Delete</button>
   </div>
 </template>
 
 <script>
-import useCheckAuth from '../../hooks/auth';
 export default {
   props: ["id", "title", "author", "createdAt", "slug"],
   emits: ["deleteProject"],
@@ -26,11 +25,8 @@ export default {
       context.emit("deleteProject", props.id);
     }
 
-    let isAuthenticated = useCheckAuth();
-
     return {
-      deleteProject,
-      isAuthenticated,
+      deleteProject
     };
   },
 };
