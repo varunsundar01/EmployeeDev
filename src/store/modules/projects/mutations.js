@@ -25,6 +25,7 @@ export default {
         state.allProjectNames = [];
         state.nameError = "";
         localStorage.removeItem('projects');
+        localStorage.removeItem('userProjects');
         localStorage.removeItem('process-details');
         localStorage.removeItem('benefits-savings');
     },
@@ -83,6 +84,7 @@ export default {
             state.errorActive = false;
         }
         localStorage.removeItem("projects");
+        localStorage.removeItem("userProjects");
     },
     filterProjects(state, payload) {
         const filteredProjects = [];
@@ -104,9 +106,11 @@ export default {
     confirmDelete(state, payload) {
         state.deleteParams.deleteMessage = payload;
         state.projectParams.filteredProjects.splice(state.deleteParams.deleteFilteredProjectArrayIndex, 1);
+        state.userProjects.splice(state.deleteParams.deleteFilteredProjectArrayIndex, 1);
         state.projectParams.allProjectNames.splice(state.deleteParams.deleteLoadedProjectArrayIndex, 1);
         state.projectParams.filteredProjectNames.splice(state.deleteParams.deleteFilteredProjectArrayIndex, 1);
         localStorage.removeItem("projects");
+        localStorage.removeItem("userProjects");
     },
     showDeleteMessage(state, payload) {
         state.deleteParams.showDeleteMessage = payload;
