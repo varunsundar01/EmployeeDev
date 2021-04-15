@@ -249,7 +249,6 @@ export default {
 
         submitted.value = true;
         store.dispatch("auth/registerUser", signUp);
-        // window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
       }
     }
 
