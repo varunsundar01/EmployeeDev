@@ -1,5 +1,6 @@
 import axios from "axios";
-import createProjectsObj from "../../../hooks/cleanProjectsData.js";
+import createProjectsObj from "../../../hooks/projects.js";
+import useTimeDifference from "../../../hooks/timeDifference.js";
 
 export default {
     initializeValues(context) {
@@ -15,8 +16,7 @@ export default {
         const projects = [];
 
         //Get time difference between the last time projects was stored in localstorage and now
-        const lastProjectsTime = new Date(localStorage.getItem("projectsTime")).getTime(); //in milliseconds
-        const timeDifference = (new Date().getTime() - lastProjectsTime) / 1000;
+        const timeDifference = useTimeDifference(localStorage.getItem("projectsTime"));
 
         //Get Projects
         if (!localStorage.getItem("projects") || timeDifference >= 60) {
@@ -34,26 +34,35 @@ export default {
         context.commit("loadProjects", JSON.parse(localStorage.getItem("projects")));
     },
     loadUserProjects(context) {
-        axios.get(`${process.env.VUE_APP_ROOT_API}/api/userprojects`, {
-                headers: {
-                    "Authorization": `Token ${context.rootGetters["auth/getToken"]}`
-                }
-            })
-            .then(response => {
-                context.commit('setUserProjects', []);
-                const userProjects = [];
-                for (let key in response.data) {
-                    let projectObj = createProjectsObj(response.data[key]);
-                    userProjects.push(projectObj);
-                }
-                context.commit('setUserProjects', userProjects);
-            })
-            .catch(() => {
-                context.commit("setError", {
-                    errorActive: true,
-                    errorMessage: "Could not load projects"
-                });
-            })
+        //Get time difference between the last time userProjects was stored in localstorage and now
+        const timeDifference = useTimeDifference(localStorage.getItem("userProjectsTime"));
+
+        //Get userProjects
+        if (!localStorage.getItem("userProjects") || timeDifference >= 60) {
+            axios.get(`${process.env.VUE_APP_ROOT_API}/api/userprojects`, {
+                    headers: {
+                        "Authorization": `Token ${context.rootGetters["auth/getToken"]}`
+                    }
+                })
+                .then(response => {
+                    context.commit('setUserProjects', []);
+                    const userProjects = [];
+                    for (let key in response.data) {
+                        let projectObj = createProjectsObj(response.data[key]);
+                        userProjects.push(projectObj);
+                    }
+                    localStorage.setItem("userProjects", JSON.stringify(userProjects));
+                    localStorage.setItem("userProjectsTime", new Date());
+                    context.commit('setUserProjects', userProjects);
+                })
+                .catch(() => {
+                    context.commit("setError", {
+                        errorActive: true,
+                        errorMessage: "Could not load projects"
+                    });
+                })
+        }
+        context.commit("setUserProjects", JSON.parse(localStorage.getItem("userProjects")));
     },
     loadProjectDetail(context, payload) {
         const projectDetail = context.getters.getAllProjectParams.allProjects.filter(project => {
@@ -101,7 +110,7 @@ export default {
                 });
             }
         }
-        if (!context.getters.checkError) {
+        if (!context.getters.checkError.errorActive) {
             context.commit("onSubmit", fields);
             localStorage.setItem(payload.type, JSON.stringify(values));
         }
@@ -110,23 +119,33 @@ export default {
         context.commit("finalSubmit", payload);
     },
     async finalSubmit(context, payload) {
-        const projectData = {
-            project_name: payload.projectName,
-            problem: payload.problem,
-            solution: payload.solution,
-            implementation: payload.implementation,
-            implementation_cost: payload.implementationCost,
-            cost_savings: payload.costSavings,
-            time_to_complete: payload.timeToComplete
-        }
-        axios.post(`${process.env.VUE_APP_ROOT_API}/api/projects/`, projectData)
-            .then(response => {
-                context.commit("finalSubmit", {
-                    message: "Project proposal submitted successfully",
-                    messageType: response.status,
-                    value: true
-                });
-                context.commit("initializeValues");
+        axios
+            .get(`${process.env.VUE_APP_ROOT_API}/api/auth/employee`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Token ${context.rootGetters["auth/getToken"]}`,
+                },
+            })
+            .then((response) => {
+                const projectData = {
+                    project_name: payload.projectName,
+                    problem: payload.problem,
+                    solution: payload.solution,
+                    implementation: payload.implementation,
+                    implementation_cost: payload.implementationCost,
+                    cost_savings: payload.costSavings,
+                    time_to_complete: payload.timeToComplete,
+                    employee: `${response.data.id}`
+                }
+                axios.post(`${process.env.VUE_APP_ROOT_API}/api/projectpost/`, projectData)
+                    .then(response => {
+                        context.commit("finalSubmit", {
+                            message: "Project proposal submitted successfully",
+                            messageType: response.status,
+                            value: true
+                        });
+                        context.commit("initializeValues");
+                    })
             })
             .catch((error) => {
                 context.commit("finalSubmit", {
