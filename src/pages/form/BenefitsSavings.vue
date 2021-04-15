@@ -116,7 +116,7 @@ export default {
         fieldsValidation: "getBenefitsValidation",
       });
 
-      if (!store.getters['projects/checkError']) {
+      if (!store.getters['projects/checkError'].errorActive) {
         router.push("/final-review");
       }
     }
