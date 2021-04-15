@@ -1,6 +1,6 @@
 from projects.models import Project
 from rest_framework import viewsets, permissions
-from .serializers import ProjectSerializer
+from .serializers import ProjectSerializer, ProjectPostSerializer
 from django.contrib.auth import get_user_model
 
 Employee = get_user_model()
@@ -11,6 +11,13 @@ class ProjectViewset(viewsets.ModelViewSet):
         permissions.AllowAny
     ]
     serializer_class = ProjectSerializer
+
+class ProjectPostViewset(viewsets.ModelViewSet):
+    queryset = Project.objects.all()
+    permission_classes = [
+        permissions.AllowAny
+    ]
+    serializer_class = ProjectPostSerializer
 
 class ProjectDashboardViewset(viewsets.ModelViewSet):
     permission_classes = [
