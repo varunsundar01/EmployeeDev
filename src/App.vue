@@ -18,6 +18,7 @@
 import TheTab from "./components/projects/TheTab.vue";
 import { useRoute } from "vue-router";
 import { computed } from "vue";
+import { useStore } from "vuex";
 export default {
   components: {
     TheTab,
@@ -25,6 +26,9 @@ export default {
   name: "App",
   setup() {
     const route = useRoute();
+    const store = useStore();
+
+    store.dispatch("auth/tryLogin");
 
     let tabCheck = computed(() => {
       return (
