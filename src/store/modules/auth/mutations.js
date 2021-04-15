@@ -22,17 +22,15 @@ export default {
         for (let term in payload) {
             state[term] = payload[term];
         }
-        state.isAuthenticated = true;
-        localStorage.setItem('isAuthenticated', true);
         localStorage.setItem('firstName', payload.firstName);
         state.submitMessage = "Login Successful";
     },
     logout(state) {
         state.token = null;
-        state.isAuthenticated = false;
         localStorage.removeItem("token");
-        localStorage.removeItem("isAuthenticated");
         localStorage.removeItem("firstName");
+        localStorage.removeItem("userProjects");
+        localStorage.removeItem("projects");
     },
     resetMessages(state) {
         state.submitMessage = "";
