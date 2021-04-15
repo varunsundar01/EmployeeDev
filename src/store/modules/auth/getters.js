@@ -9,7 +9,7 @@ export default {
         return state.submitMessage;
     },
     isAuthenticated(state) {
-        return state.isAuthenticated || localStorage.getItem("isAuthenticated");
+        return state.token !== null;
     },
     getToken(state) {
         return state.token || localStorage.getItem("token");
