@@ -16,7 +16,7 @@
       @deleteProject="deleteProjectDialog"
     ></list-element>
     <delete-message></delete-message>
-    <base-dialog
+    <delete-dialog
       :deleteProjectName="
         $store.getters['projects/getDeleteParams'].deleteProjectName
       "
@@ -26,7 +26,7 @@
       @confirmDeleteProject="confirmDeleteProject"
       @toBack="toBack"
       v-if="dialogOpen"
-    ></base-dialog>
+    ></delete-dialog>
   </div>
 </template>
 
@@ -34,7 +34,7 @@
 import TheBanner from "../../components/UI/TheBanner.vue";
 import ListElement from "../../components/UI/ListElement.vue";
 import DeleteMessage from "../../components/UI/DeleteMessage.vue";
-import BaseDialog from "../../components/UI/BaseDialog.vue";
+import DeleteDialog from "../../components/projects/DeleteDialog.vue";
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
 export default {
@@ -42,7 +42,7 @@ export default {
     TheBanner,
     ListElement,
     DeleteMessage,
-    BaseDialog
+    DeleteDialog
   },
 
   setup() {

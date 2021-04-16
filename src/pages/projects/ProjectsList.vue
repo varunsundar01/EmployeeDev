@@ -25,7 +25,7 @@
     <div class="no-projects" v-else>
       <p>No Projects Found</p>
     </div>
-    <base-dialog
+    <delete-dialog
       :deleteProjectName="
         $store.getters['projects/getDeleteParams'].deleteProjectName
       "
@@ -35,7 +35,7 @@
       @confirmDeleteProject="confirmDeleteProject"
       @toBack="toBack"
       v-if="dialogOpen"
-    ></base-dialog>
+    ></delete-dialog>
   </div>
 </template>
 
@@ -45,11 +45,13 @@ import { useStore } from "vuex";
 import ListElement from "../../components/UI/ListElement.vue";
 import ProjectSearch from "../../components/projects/ProjectSearch.vue";
 import DeleteMessage from "../../components/UI/DeleteMessage.vue";
+import DeleteDialog from "../../components/projects/DeleteDialog.vue";
 export default {
   components: {
     ListElement,
     ProjectSearch,
-    DeleteMessage
+    DeleteMessage,
+    DeleteDialog
   },
   setup() {
     const store = useStore();
