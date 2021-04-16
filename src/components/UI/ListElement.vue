@@ -1,17 +1,17 @@
 <template>
   <div class="list-element">
     <h2 class="project-title">{{ title }}</h2>
+    <p class="project-date">{{ createdAt }}</p>
     <p class="project-author">
       Submitted by: <span>{{ author }}</span>
     </p>
-    <p class="project-author">
-      Submitted On: <span>{{ createdAt }}</span>
-    </p>
+
+    <i class="icon-trash" @click="deleteProject" v-if="$store.getters['auth/isAuthenticated']"></i>
 
     <router-link :to="'/projects/' + slug"
       ><button class="project-button view">View</button></router-link
     >
-    <button class="project-button delete" @click="deleteProject" v-if="$store.getters['auth/isAuthenticated']">Delete</button>
+    <!-- <button class="project-button delete" @click="deleteProject" v-if="$store.getters['auth/isAuthenticated']">Delete</button> -->
   </div>
 </template>
 
@@ -39,20 +39,42 @@ export default {
   border-radius: 5px;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.05);
   margin-bottom: 1em;
+  position: relative;
+}
+
+i.icon-trash {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  color: var(--secondary);
+  opacity: 0.6;
+}
+
+i.icon-trash:hover {
+  color: var(--error-button);
+  opacity: 1;
 }
 
 .project-title {
   margin: 0;
   padding: 0;
   font-weight: 500;
-  margin-bottom: 0.25em;
+  font-size: 1.75em;
+}
+
+.project-date {
+  font-weight: 300;
+  margin: 0;
+  opacity: 0.7;
 }
 
 .project-author {
-  margin: 0;
+  margin: 0.75em 0;
   padding: 0;
   font-weight: 500;
-  margin-bottom: 1em;
+  font-size: 1.1em;
 }
 
 .project-author span {
