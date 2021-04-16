@@ -32,10 +32,22 @@
               $store.getters["projects/getProjectDetail"].implementationCost
             }}
           </p>
+          <i
+            class="icon-pencil"
+            @click="
+              editValue(
+                'Implementation Cost',
+                'implementationCost',
+                `$${$store.getters['projects/getProjectDetail'].implementationCost}`,
+                'currency'
+              )
+            "
+          ></i>
         </div>
         <div class="numbers-item">
           <h2 class="numbers-title">Annual Cost Savings</h2>
           <p>${{ $store.getters["projects/getProjectDetail"].costSavings }}</p>
+          <i class="icon-pencil"></i>
         </div>
       </div>
 
@@ -46,38 +58,83 @@
             $store.getters["projects/getProjectDetail"].timeToComplete
           }}</span>
         </p>
+        <i class="icon-pencil"></i>
       </div>
 
       <div class="project-item">
         <h2 class="item-title">Problem Statement</h2>
         <p>{{ $store.getters["projects/getProjectDetail"].problem }}</p>
+        <i class="icon-pencil"></i>
       </div>
       <div class="project-item">
         <h2 class="item-title">Proposed Solution</h2>
         <p>{{ $store.getters["projects/getProjectDetail"].solution }}</p>
+        <i class="icon-pencil"></i>
       </div>
       <div class="project-item">
         <h2 class="item-title">Implementation Method</h2>
         <p>{{ $store.getters["projects/getProjectDetail"].implementation }}</p>
+        <i class="icon-pencil"></i>
       </div>
     </div>
+
+    <edit-dialog
+      @toBack="toBack"
+      :editId="editId"
+      :editName="editName"
+      :editFieldType="editFieldType"
+      :currentValue="currentValue"
+      v-if="showEditDialog"
+    ></edit-dialog>
   </div>
 </template>
 
 <script>
-import { onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
+import EditDialog from "../../components/projects/EditDialog.vue";
 export default {
+  components: {
+    EditDialog,
+  },
   setup() {
     window.scrollTo(0, 0);
     const store = useStore();
     const route = useRoute();
 
+    let showEditDialog = ref(false);
+    let editId = ref("");
+    let editName = ref("");
+    let editFieldType = ref("input");
+    let currentValue = ref("");
+
+    function editValue(fieldName, fieldId, fieldCurrentValue, fieldType) {
+      showEditDialog.value = true;
+      editName.value = fieldName;
+      editId.value = fieldId;
+      currentValue.value = fieldCurrentValue;
+      editFieldType.value = fieldType;
+    }
+
+    function toBack() {
+      showEditDialog.value = false;
+    }
+
     onMounted(() => {
       store.dispatch("projects/loadProjects");
       store.dispatch("projects/loadProjectDetail", route.params.slug);
     });
+
+    return {
+      showEditDialog,
+      editValue,
+      editName,
+      editId,
+      editFieldType,
+      currentValue,
+      toBack,
+    };
   },
 };
 </script>
@@ -95,6 +152,7 @@ export default {
   margin: 0 auto 1em auto;
   border-radius: 5px;
   box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.05);
+  position: relative;
 }
 
 p {
@@ -141,6 +199,21 @@ p {
   padding: 1em;
   border-radius: 5px;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+i.icon-pencil {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  opacity: 0.2;
+  color: var(--secondary);
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+i.icon-pencil:hover {
+  opacity: 1;
 }
 
 .numbers-title {
