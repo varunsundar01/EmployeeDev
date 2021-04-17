@@ -6,12 +6,15 @@
       Submitted by: <span>{{ author }}</span>
     </p>
 
-    <i class="icon-trash" @click="deleteProject" v-if="$store.getters['auth/isAuthenticated']"></i>
+    <i
+      class="icon-trash"
+      @click="deleteProject"
+      v-if="$store.getters['auth/isAuthenticated']"
+    ></i>
 
     <router-link :to="'/projects/' + slug"
       ><button class="project-button view">View</button></router-link
     >
-    <!-- <button class="project-button delete" @click="deleteProject" v-if="$store.getters['auth/isAuthenticated']">Delete</button> -->
   </div>
 </template>
 
@@ -20,13 +23,12 @@ export default {
   props: ["id", "title", "author", "createdAt", "slug"],
   emits: ["deleteProject"],
   setup(props, context) {
-
     function deleteProject() {
       context.emit("deleteProject", props.id);
     }
 
     return {
-      deleteProject
+      deleteProject,
     };
   },
 };
