@@ -34,7 +34,8 @@ export default {
             },
             submitAttempt: {
                 submitted: false,
-                submitMessage: ""
+                submitMessage: "",
+                updated: false
             },
             nameError: "",
             deleteParams: {

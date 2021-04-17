@@ -17,14 +17,14 @@ export default {
     let showMessage = computed(() => {
       return (
         store.getters["projects/getDeleteParams"].showDeleteMessage ||
-        store.getters["projects/checkSubmit"].submitted
+        store.getters["projects/checkSubmit"].updated
       );
     });
 
     let className = computed(() => {
       if (store.getters["projects/getDeleteParams"].showDeleteMessage) {
         return "delete";
-      } else if (store.getters["projects/checkSubmit"].submitted) {
+      } else if (store.getters["projects/checkSubmit"].updated) {
         return "success";
       } else {
         return "";

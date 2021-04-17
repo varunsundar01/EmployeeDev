@@ -77,8 +77,8 @@ export default {
         state.error.errorActive = payload.errorActive;
         state.error.errorMessage = payload.errorMessage;
     },
-    setSubmit(state, payload) {
-        state.submitAttempt.submitted = payload.submitted;
+    setUpdate(state, payload) {
+        state.submitAttempt.updated = payload.updated;
         state.submitAttempt.submitMessage = payload.submitMessage;
     },
     nameError(state, payload) {

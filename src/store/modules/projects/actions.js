@@ -195,8 +195,8 @@ export default {
         context.commit("resetDelete");
     },
     confirmUpdate(context, payload) {
-        context.commit("setSubmit", {
-            submitted: false,
+        context.commit("setUpdate", {
+            updated: false,
             submitMessage: ""
         })
         const config = {
@@ -222,14 +222,14 @@ export default {
                         employee: employeeId,
                     })
                     .then(() => {
-                        context.commit("setSubmit", {
-                            submitted: true,
+                        context.commit("setUpdate", {
+                            updated: true,
                             submitMessage: "Updated"
                         })
 
                         setTimeout(() => {
-                            context.commit("setSubmit", {
-                                submitted: false,
+                            context.commit("setUpdate", {
+                                updated: false,
                                 submitMessage: ""
                             })
                         }, 3000);
