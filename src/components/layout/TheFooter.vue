@@ -52,4 +52,11 @@ p {
 .social-icons i:hover {
   opacity: 1;
 }
+
+.icon-twitter:hover {
+  color: #1DA1F2;
+}
+.icon-linkedin:hover {
+  color: #2867B2;
+}
 </style>
