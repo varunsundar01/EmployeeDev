@@ -7,10 +7,10 @@
       <div class="dialog-body">
         <h3 class="current-value-header">Current Entry</h3>
         <p class="current-value">{{ props.currentValue }}</p>
-        <form-element :inputStyle="props.editFieldType">New Entry</form-element>
+        <form-element :id="props.editId" :inputStyle="props.editFieldType" @enteredInput="enteredInput">New Entry</form-element>
 
         <div class="dialog-buttons">
-          <base-button primaryVisible="true">
+          <base-button primaryVisible="true" @toNext="toNext">
             <template v-slot:primary>Update</template>
           </base-button>
           <base-button secondaryVisible="true" @toBack="toBack">
@@ -33,9 +33,17 @@ export default {
     function toBack() {
       context.emit("toBack");
     }
+    function toNext() {
+      context.emit("toNext");
+    }
+    function enteredInput(data) {
+      context.emit("enteredInput", data);
+    }
 
     return {
       toBack,
+      toNext,
+      enteredInput,
       props,
     };
   },
