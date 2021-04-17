@@ -15,7 +15,7 @@
       :slug="project.project_slug"
       @deleteProject="deleteProjectDialog"
     ></list-element>
-    <delete-message></delete-message>
+    <fleeting-message></fleeting-message>
     <delete-dialog
       :deleteProjectName="
         $store.getters['projects/getDeleteParams'].deleteProjectName
@@ -33,7 +33,7 @@
 <script>
 import TheBanner from "../../components/UI/TheBanner.vue";
 import ListElement from "../../components/UI/ListElement.vue";
-import DeleteMessage from "../../components/UI/DeleteMessage.vue";
+import FleetingMessage from "../../components/UI/FleetingMessage.vue";
 import DeleteDialog from "../../components/projects/DeleteDialog.vue";
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
@@ -41,7 +41,7 @@ export default {
   components: {
     TheBanner,
     ListElement,
-    DeleteMessage,
+    FleetingMessage,
     DeleteDialog
   },
 

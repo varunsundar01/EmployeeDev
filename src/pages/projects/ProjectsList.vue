@@ -1,6 +1,6 @@
 <template>
   <div>
-    <delete-message></delete-message>
+    <fleeting-message></fleeting-message>
     <the-spinner
       v-if="!$store.getters['projects/getAllProjectParams'].loaded"
     ></the-spinner>
@@ -44,13 +44,13 @@ import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import ListElement from "../../components/UI/ListElement.vue";
 import ProjectSearch from "../../components/projects/ProjectSearch.vue";
-import DeleteMessage from "../../components/UI/DeleteMessage.vue";
+import FleetingMessage from "../../components/UI/FleetingMessage.vue";
 import DeleteDialog from "../../components/projects/DeleteDialog.vue";
 export default {
   components: {
     ListElement,
     ProjectSearch,
-    DeleteMessage,
+    FleetingMessage,
     DeleteDialog
   },
   setup() {
