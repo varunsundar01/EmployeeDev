@@ -23,11 +23,15 @@ export default {
             currentDateValidation: false
         };
         state.allProjectNames = [];
+        state.projectParams.loaded = false;
         state.nameError = "";
         localStorage.removeItem('projects');
         localStorage.removeItem('userProjects');
         localStorage.removeItem('process-details');
         localStorage.removeItem('benefits-savings');
+    },
+    setProjectLoader(state, payload) {
+        state.projectParams.loaded = payload;
     },
     loadProjects(state, payload) {
         if (payload !== null) {
@@ -43,6 +47,7 @@ export default {
         }
     },
     loadProjectDetail(state, payload) {
+        state.projectDetail.id = payload.id;
         state.projectDetail.projectName = payload.project_name;
         state.projectDetail.createdAt = payload.createdAt;
         state.projectDetail.implementationCost = payload.implementation_cost;
@@ -52,6 +57,11 @@ export default {
         state.projectDetail.solution = payload.solution;
         state.projectDetail.implementation = payload.implementation;
         state.projectDetail.employee = payload.employee;
+    },
+    updateProject(state, payload) {
+        state.projectDetail[payload.id] = payload.value;
+        localStorage.removeItem("projects");
+        localStorage.removeItem("userProjects");
     },
     setProjectNames(state, payload) {
         state.projectParams.allProjectNames = payload;
@@ -66,6 +76,10 @@ export default {
     setError(state, payload) {
         state.error.errorActive = payload.errorActive;
         state.error.errorMessage = payload.errorMessage;
+    },
+    setSubmit(state, payload) {
+        state.submitAttempt.submitted = payload.submitted;
+        state.submitAttempt.submitMessage = payload.submitMessage;
     },
     nameError(state, payload) {
         state.nameError = payload;

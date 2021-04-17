@@ -13,6 +13,7 @@ export default {
         context.commit('setError', payload);
     },
     loadProjects(context) {
+        context.commit("setProjectLoader", false);
         const projects = [];
 
         //Get time difference between the last time projects was stored in localstorage and now
@@ -123,7 +124,7 @@ export default {
             .get(`${process.env.VUE_APP_ROOT_API}/api/auth/employee`, {
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Token ${context.rootGetters["auth/getToken"]}`,
+                    "Authorization": `Token ${context.rootGetters["auth/getToken"]}`,
                 },
             })
             .then((response) => {
@@ -192,5 +193,50 @@ export default {
     },
     resetDelete(context) {
         context.commit("resetDelete");
+    },
+    confirmUpdate(context, payload) {
+        context.commit("setSubmit", {
+            submitted: false,
+            submitMessage: ""
+        })
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Token ${context.rootGetters["auth/getToken"]}`,
+            },
+        }
+
+        axios.get(`${process.env.VUE_APP_ROOT_API}/api/auth/employee`, config)
+            .then(response => {
+                const employeeId = response.data.id;
+                context.commit("updateProject", payload);
+
+                axios.put(`${process.env.VUE_APP_ROOT_API}/api/projectpost/${context.getters.getProjectDetail.id}/`, {
+                        project_name: context.getters.getProjectDetail.projectName,
+                        problem: context.getters.getProjectDetail.problem,
+                        solution: context.getters.getProjectDetail.solution,
+                        implementation: context.getters.getProjectDetail.implementation,
+                        implementation_cost: context.getters.getProjectDetail.implementationCost,
+                        cost_savings: context.getters.getProjectDetail.costSavings,
+                        time_to_complete: context.getters.getProjectDetail.timeToComplete,
+                        employee: employeeId,
+                    })
+                    .then(() => {
+                        context.commit("setSubmit", {
+                            submitted: true,
+                            submitMessage: "Updated"
+                        })
+
+                        setTimeout(() => {
+                            context.commit("setSubmit", {
+                                submitted: false,
+                                submitMessage: ""
+                            })
+                        }, 3000);
+                    })
+            })
+            .catch(error => {
+                console.log(error.response.data);
+            })
     }
 }

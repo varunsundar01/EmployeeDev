@@ -53,6 +53,7 @@ export default {
                 loaded: false
             },
             projectDetail: {
+                id: null,
                 projectName: "",
                 createdAt: null,
                 implementationCost: null,

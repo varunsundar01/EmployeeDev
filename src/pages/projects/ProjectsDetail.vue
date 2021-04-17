@@ -14,7 +14,6 @@
           <span class="meta-info">{{
             $store.getters["projects/getProjectDetail"].employee
           }}</span>
-          <!--- link to author page with projects by author --->
         </p>
         <p class="meta-title">
           Submitted:
@@ -33,6 +32,7 @@
             }}
           </p>
           <i
+            v-if="$store.getters['auth/isAuthenticated']"
             class="icon-pencil"
             @click="
               editValue(
@@ -47,7 +47,18 @@
         <div class="numbers-item">
           <h2 class="numbers-title">Annual Cost Savings</h2>
           <p>${{ $store.getters["projects/getProjectDetail"].costSavings }}</p>
-          <i class="icon-pencil"></i>
+          <i
+            v-if="$store.getters['auth/isAuthenticated']"
+            class="icon-pencil"
+            @click="
+              editValue(
+                'Annual Cost Savings',
+                'costSavings',
+                `$${$store.getters['projects/getProjectDetail'].costSavings}`,
+                'currency'
+              )
+            "
+          ></i>
         </div>
       </div>
 
@@ -58,56 +69,124 @@
             $store.getters["projects/getProjectDetail"].timeToComplete
           }}</span>
         </p>
-        <i class="icon-pencil"></i>
+        <i
+          v-if="$store.getters['auth/isAuthenticated']"
+          class="icon-pencil"
+          @click="
+            editValue(
+              'Estimated Weeks to Completion',
+              'timeToComplete',
+              `${$store.getters['projects/getProjectDetail'].timeToComplete}`,
+              'input'
+            )
+          "
+        ></i>
       </div>
 
       <div class="project-item">
         <h2 class="item-title">Problem Statement</h2>
         <p>{{ $store.getters["projects/getProjectDetail"].problem }}</p>
-        <i class="icon-pencil"></i>
+        <i
+          v-if="$store.getters['auth/isAuthenticated']"
+          class="icon-pencil"
+          @click="
+            editValue(
+              'Problem Statement',
+              'problem',
+              `${$store.getters['projects/getProjectDetail'].problem}`,
+              'textarea'
+            )
+          "
+        ></i>
       </div>
       <div class="project-item">
         <h2 class="item-title">Proposed Solution</h2>
         <p>{{ $store.getters["projects/getProjectDetail"].solution }}</p>
-        <i class="icon-pencil"></i>
+        <i
+          v-if="$store.getters['auth/isAuthenticated']"
+          class="icon-pencil"
+          @click="
+            editValue(
+              'Proposed Solution',
+              'solution',
+              `${$store.getters['projects/getProjectDetail'].solution}`,
+              'textarea'
+            )
+          "
+        ></i>
       </div>
       <div class="project-item">
         <h2 class="item-title">Implementation Method</h2>
         <p>{{ $store.getters["projects/getProjectDetail"].implementation }}</p>
-        <i class="icon-pencil"></i>
+        <i
+          v-if="$store.getters['auth/isAuthenticated']"
+          class="icon-pencil"
+          @click="
+            editValue(
+              'Implementation Method',
+              'implementation',
+              `${$store.getters['projects/getProjectDetail'].implementation}`,
+              'textarea'
+            )
+          "
+        ></i>
       </div>
     </div>
 
     <edit-dialog
       @toBack="toBack"
+      @toNext="confirmUpdate"
+      @enteredInput="enteredInput"
       :editId="editId"
       :editName="editName"
       :editFieldType="editFieldType"
       :currentValue="currentValue"
       v-if="showEditDialog"
     ></edit-dialog>
+    <fleeting-message></fleeting-message>
   </div>
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import EditDialog from "../../components/projects/EditDialog.vue";
+import FleetingMessage from "../../components/UI/FleetingMessage.vue";
 export default {
   components: {
     EditDialog,
+    FleetingMessage,
   },
   setup() {
     window.scrollTo(0, 0);
     const store = useStore();
     const route = useRoute();
 
+    onMounted(() => {
+      store.dispatch("projects/loadProjects");
+      loadProjects();
+    });
+
     let showEditDialog = ref(false);
     let editId = ref("");
     let editName = ref("");
     let editFieldType = ref("input");
     let currentValue = ref("");
+    let newValue = ref("");
+
+    watch(
+      () => store.getters["projects/getAllProjectParams"].loaded,
+      () => {
+        loadProjects();
+      }
+    );
+
+    function loadProjects() {
+      if (store.getters["projects/getAllProjectParams"].loaded) {
+        store.dispatch("projects/loadProjectDetail", route.params.slug);
+      }
+    }
 
     function editValue(fieldName, fieldId, fieldCurrentValue, fieldType) {
       showEditDialog.value = true;
@@ -117,14 +196,23 @@ export default {
       editFieldType.value = fieldType;
     }
 
+    function confirmUpdate() {
+      if (newValue.value.trim() !== "") {
+        store.dispatch("projects/confirmUpdate", {
+          id: editId.value,
+          value: newValue.value,
+        });
+        showEditDialog.value = false;
+      }
+    }
+
     function toBack() {
       showEditDialog.value = false;
     }
 
-    onMounted(() => {
-      store.dispatch("projects/loadProjects");
-      store.dispatch("projects/loadProjectDetail", route.params.slug);
-    });
+    function enteredInput(data) {
+      newValue.value = data.value;
+    }
 
     return {
       showEditDialog,
@@ -134,6 +222,8 @@ export default {
       editFieldType,
       currentValue,
       toBack,
+      confirmUpdate,
+      enteredInput,
     };
   },
 };
