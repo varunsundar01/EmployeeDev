@@ -19,8 +19,8 @@ const router = createRouter({
         { name: 'process-details', path: '/process-details', component: ProcessDetails, meta: { title: 'Process Details', keepAlive: true, form: true, requiresAuth: true } },
         { name: 'benefits-savings', path: '/benefits-savings', component: BenefitsSavings, meta: { title: 'Benefits & Savings', keepAlive: true, form: true, requiresAuth: true } },
         { name: 'final-review', path: '/final-review', component: FinalReview, meta: { title: 'Final Review', keepAlive: true, form: true, requiresAuth: true } },
-        { name: 'sign-up', path: '/sign-up', component: SignUp, meta: { title: 'Sign Up' } },
-        { name: 'sign-in', path: '/sign-in', component: SignIn, meta: { title: 'Sign In' } },
+        { name: 'sign-up', path: '/sign-up', component: SignUp, meta: { title: 'Sign Up', noAuth: true } },
+        { name: 'sign-in', path: '/sign-in', component: SignIn, meta: { title: 'Sign In', noAuth: true } },
         { name: 'projects-list', path: '/projects', component: ProjectsList, meta: { title: 'Projects' } },
         { name: 'projects-detail', path: '/projects/:slug', component: ProjectsDetail },
     ]
@@ -31,6 +31,8 @@ router.beforeEach((to, from, next) => {
 
     if (to.meta.requiresAuth && !store.getters["auth/isAuthenticated"]) {
         next("/sign-in");
+    } else if (to.meta.noAuth && store.getters["auth/isAuthenticated"]) {
+        next("/dashboard");
     } else if (from.meta.form && !to.meta.form && !store.getters['projects/checkSubmit'].submitted) {
         store.dispatch("projects/initializeValues");
         store.dispatch("projects/switchSubmit", {
