@@ -77,7 +77,8 @@
               'Estimated Weeks to Completion',
               'timeToComplete',
               `${$store.getters['projects/getProjectDetail'].timeToComplete}`,
-              'input'
+              'input',
+              'number'
             )
           "
         ></i>
@@ -140,6 +141,7 @@
       :editId="editId"
       :editName="editName"
       :editFieldType="editFieldType"
+      :editFieldStyle="editFieldStyle"
       :currentValue="currentValue"
       v-if="showEditDialog"
     ></edit-dialog>
@@ -171,7 +173,8 @@ export default {
     let showEditDialog = ref(false);
     let editId = ref("");
     let editName = ref("");
-    let editFieldType = ref("input");
+    let editFieldStyle = ref("input");
+    let editFieldType = ref("text");
     let currentValue = ref("");
     let newValue = ref("");
 
@@ -188,11 +191,12 @@ export default {
       }
     }
 
-    function editValue(fieldName, fieldId, fieldCurrentValue, fieldType) {
+    function editValue(fieldName, fieldId, fieldCurrentValue, fieldStyle, fieldType) {
       showEditDialog.value = true;
       editName.value = fieldName;
       editId.value = fieldId;
       currentValue.value = fieldCurrentValue;
+      editFieldStyle.value = fieldStyle;
       editFieldType.value = fieldType;
     }
 
@@ -220,6 +224,7 @@ export default {
       editName,
       editId,
       editFieldType,
+      editFieldStyle,
       currentValue,
       toBack,
       confirmUpdate,
