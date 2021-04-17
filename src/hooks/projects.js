@@ -1,8 +1,7 @@
 export default function createProjectsObj(project) {
     const year = new Date(Date.parse(project.created_at)).getFullYear();
     const month = (
-        "0" + new Date(Date.parse(project.created_at)).getMonth()
-    ).slice(-2);
+        "0" + (new Date(Date.parse(project.created_at)).getMonth() + 1)).slice(-2);
     const day = (
         "0" + new Date(Date.parse(project.created_at)).getDate()
     ).slice(-2);
