@@ -19,6 +19,7 @@
         :author="project.employee"
         :createdAt="project.createdAt"
         :slug="project.project_slug"
+        :empId="parseInt(project.project_employee_id)"
         @deleteProject="deleteProjectDialog"
       ></list-element>
     </div>
