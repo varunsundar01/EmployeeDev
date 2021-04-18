@@ -9,7 +9,7 @@
     <i
       class="icon-trash"
       @click="deleteProject"
-      v-if="$store.getters['auth/isAuthenticated']"
+      v-if="displayProjectOptions"
     ></i>
 
     <router-link :to="'/projects/' + slug"
@@ -19,16 +19,33 @@
 </template>
 
 <script>
+import { computed } from "vue";
+import { useStore } from "vuex";
 export default {
-  props: ["id", "title", "author", "createdAt", "slug"],
+  props: ["id", "title", "author", "createdAt", "slug", "empId"],
   emits: ["deleteProject"],
   setup(props, context) {
+    const store = useStore();
+
     function deleteProject() {
       context.emit("deleteProject", props.id);
     }
 
+    let displayProjectOptions = computed(() => {
+      if (store.getters["auth/getEmpId"] !== null) {
+        if (
+          store.getters["auth/isAuthenticated"] &&
+          props.empId === store.getters["auth/getEmpId"]
+        ) {
+          return true;
+        }
+      }
+      return false;
+    });
+
     return {
       deleteProject,
+      displayProjectOptions,
     };
   },
 };
