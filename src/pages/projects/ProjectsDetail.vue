@@ -32,7 +32,7 @@
             }}
           </p>
           <i
-            v-if="$store.getters['auth/isAuthenticated']"
+            v-if="displayProjectOptions"
             class="icon-pencil"
             @click="
               editValue(
@@ -48,7 +48,7 @@
           <h2 class="numbers-title">Annual Cost Savings</h2>
           <p>${{ $store.getters["projects/getProjectDetail"].costSavings }}</p>
           <i
-            v-if="$store.getters['auth/isAuthenticated']"
+            v-if="displayProjectOptions"
             class="icon-pencil"
             @click="
               editValue(
@@ -70,7 +70,7 @@
           }}</span>
         </p>
         <i
-          v-if="$store.getters['auth/isAuthenticated']"
+          v-if="displayProjectOptions"
           class="icon-pencil"
           @click="
             editValue(
@@ -88,7 +88,7 @@
         <h2 class="item-title">Problem Statement</h2>
         <p>{{ $store.getters["projects/getProjectDetail"].problem }}</p>
         <i
-          v-if="$store.getters['auth/isAuthenticated']"
+          v-if="displayProjectOptions"
           class="icon-pencil"
           @click="
             editValue(
@@ -104,7 +104,7 @@
         <h2 class="item-title">Proposed Solution</h2>
         <p>{{ $store.getters["projects/getProjectDetail"].solution }}</p>
         <i
-          v-if="$store.getters['auth/isAuthenticated']"
+          v-if="displayProjectOptions"
           class="icon-pencil"
           @click="
             editValue(
@@ -120,7 +120,7 @@
         <h2 class="item-title">Implementation Method</h2>
         <p>{{ $store.getters["projects/getProjectDetail"].implementation }}</p>
         <i
-          v-if="$store.getters['auth/isAuthenticated']"
+          v-if="displayProjectOptions"
           class="icon-pencil"
           @click="
             editValue(
@@ -143,6 +143,8 @@
       :editFieldType="editFieldType"
       :editFieldStyle="editFieldStyle"
       :currentValue="currentValue"
+      :isError="isError"
+      :fieldError="fieldError"
       v-if="showEditDialog"
     ></edit-dialog>
     <fleeting-message></fleeting-message>
@@ -150,7 +152,7 @@
 </template>
 
 <script>
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch, computed } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import EditDialog from "../../components/projects/EditDialog.vue";
@@ -177,6 +179,8 @@ export default {
     let editFieldType = ref("text");
     let currentValue = ref("");
     let newValue = ref("");
+    let isError = ref(false);
+    let fieldError = ref("");
 
     watch(
       () => store.getters["projects/getAllProjectParams"].loaded,
@@ -185,13 +189,30 @@ export default {
       }
     );
 
+    let displayProjectOptions = computed(() => {
+      if (
+        store.getters["auth/isAuthenticated"] &&
+        store.getters["projects/getProjectDetail"].projectEmployeeId ===
+          store.getters["auth/getEmpId"]
+      ) {
+        return true;
+      }
+      return false;
+    });
+
     function loadProjects() {
       if (store.getters["projects/getAllProjectParams"].loaded) {
         store.dispatch("projects/loadProjectDetail", route.params.slug);
       }
     }
 
-    function editValue(fieldName, fieldId, fieldCurrentValue, fieldStyle, fieldType) {
+    function editValue(
+      fieldName,
+      fieldId,
+      fieldCurrentValue,
+      fieldStyle,
+      fieldType
+    ) {
       showEditDialog.value = true;
       editName.value = fieldName;
       editId.value = fieldId;
@@ -202,16 +223,22 @@ export default {
 
     function confirmUpdate() {
       if (newValue.value.trim() !== "") {
+        fieldError.value = "";
         store.dispatch("projects/confirmUpdate", {
           id: editId.value,
           value: newValue.value,
         });
         showEditDialog.value = false;
       }
+      isError.value = true;
+      fieldError.value = "Enter some text to update";
     }
 
     function toBack() {
+      fieldError.value = "";
+      isError.value = false;
       showEditDialog.value = false;
+      newValue.value = "";
     }
 
     function enteredInput(data) {
@@ -229,6 +256,9 @@ export default {
       toBack,
       confirmUpdate,
       enteredInput,
+      displayProjectOptions,
+      fieldError,
+      isError
     };
   },
 };
