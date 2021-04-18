@@ -3,7 +3,7 @@
     <label :for="id"><slot></slot></label>
     <textarea
       v-if="inputStyle === 'textarea'"
-      :class="{ 'error-input': isError }"
+      :class="{ 'error-input': errorActive }"
       @input="enteredInput"
       @blur="removeError"
       :id="id"
@@ -27,7 +27,7 @@
         :id="id"
         :placeholder="placeholder"
         @blur="removeError"
-        :class="{ 'error-input': isError }"
+        :class="{ 'error-input': errorActive }"
       />
     </div>
     <small class="field-error">{{ fieldError }}</small>
@@ -49,7 +49,7 @@ export default {
   setup(props, context) {
     const errorActive = computed(() => {
       if (props.fieldError) {
-        return props.isError || props.fieldError;
+        return props.isError || props.fieldError !=="";
       }
       return props.isError;
     });
