@@ -5,14 +5,16 @@
 
     <p class="dashboard-head">Hey, {{firstName}}. You can find all the projects you have submitted here.</p>
     <p class="dashboard-head">Click <router-link to="/projects">here</router-link> to view projects submitted by all employees</p>
-    <list-element
-      v-for="project in $store.getters['projects/getUserProjects']"
+    <the-spinner v-if="!$store.getters['projects/getUserProjects'].loaded"></the-spinner>
+    <list-element v-else
+      v-for="project in $store.getters['projects/getUserProjects'].projects"
       :key="project.id"
       :id="project.id"
       :title="project.project_name"
       :author="project.employee"
       :createdAt="project.createdAt"
       :slug="project.project_slug"
+      :empId="parseInt(project.project_employee_id)"
       @deleteProject="deleteProjectDialog"
     ></list-element>
     <fleeting-message></fleeting-message>
@@ -35,6 +37,7 @@ import TheBanner from "../../components/UI/TheBanner.vue";
 import ListElement from "../../components/UI/ListElement.vue";
 import FleetingMessage from "../../components/UI/FleetingMessage.vue";
 import DeleteDialog from "../../components/projects/DeleteDialog.vue";
+import TheSpinner from "../../components/UI/TheSpinner.vue";
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
 export default {
@@ -42,7 +45,8 @@ export default {
     TheBanner,
     ListElement,
     FleetingMessage,
-    DeleteDialog
+    DeleteDialog,
+    TheSpinner
   },
 
   setup() {
