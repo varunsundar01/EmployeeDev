@@ -7,7 +7,7 @@
       <div class="dialog-body">
         <h3 class="current-value-header">Current Entry</h3>
         <p class="current-value">{{ props.currentValue }}</p>
-        <form-element :id="props.editId" :inputStyle="props.editFieldStyle" :inputType="props.editFieldType" @enteredInput="enteredInput">New Entry</form-element>
+        <form-element :id="props.editId" :inputStyle="props.editFieldStyle" :inputType="props.editFieldType" @enteredInput="enteredInput" :fieldError="props.fieldError">New Entry</form-element>
 
         <div class="dialog-buttons">
           <base-button primaryVisible="true" @toNext="toNext">
@@ -25,7 +25,7 @@
 <script>
 import FormElement from "../../components/UI/FormElement.vue";
 export default {
-  props: ["editId", "editName", "currentValue", "editFieldStyle", "editFieldType"],
+  props: ["editId", "editName", "currentValue", "editFieldStyle", "editFieldType", "fieldError"],
   components: {
     FormElement,
   },
