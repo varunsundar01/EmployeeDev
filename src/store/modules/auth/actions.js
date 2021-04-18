@@ -88,6 +88,7 @@ export default {
             .then(response => {
                 context.commit('setToken', response.data.token);
                 const employee = response.data.employee;
+                context.commit('setEmpId', employee.id);
                 context.commit("signIn", {
                     departmentName: employee.department_name,
                     email: employee.email,
@@ -109,6 +110,7 @@ export default {
     tryLogin(context) {
         if (localStorage.getItem("token") !== null) {
             context.commit("setToken", localStorage.getItem("token"));
+            context.commit("setEmpId", JSON.parse(localStorage.getItem("empId")));
         }
     },
     logout(context) {

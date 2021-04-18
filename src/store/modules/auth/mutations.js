@@ -18,6 +18,10 @@ export default {
         state.token = payload;
         localStorage.setItem("token", payload);
     },
+    setEmpId(state, payload) {
+        state.empId = payload;
+        localStorage.setItem("empId", payload);
+    },
     signIn(state, payload) {
         for (let term in payload) {
             state[term] = payload[term];
@@ -28,6 +32,7 @@ export default {
     logout(state) {
         state.token = null;
         localStorage.removeItem("token");
+        localStorage.removeItem("empId");
         localStorage.removeItem("firstName");
         localStorage.removeItem("userProjects");
         localStorage.removeItem("projects");
