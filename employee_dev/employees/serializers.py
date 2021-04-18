@@ -17,7 +17,6 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         employee = Employee.objects.create_user(
-            validated_data['id'],
             validated_data['email'],
             validated_data['password'],
             validated_data['first_name'],
