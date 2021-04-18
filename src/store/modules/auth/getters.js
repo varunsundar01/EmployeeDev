@@ -12,6 +12,9 @@ export default {
         return state.token !== null;
     },
     getToken(state) {
-        return state.token || localStorage.getItem("token");
+        return state.token;
+    },
+    getEmpId(state) {
+        return state.empId;
     }
 }
