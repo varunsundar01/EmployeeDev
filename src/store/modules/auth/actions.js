@@ -122,6 +122,10 @@ export default {
             .then(() => {
                 context.commit('logout');
                 context.commit("resetMessages");
+                context.dispatch("projects/setError", {
+                    errorActive: false,
+                    errorMessage: ""
+                }, { root: 'true' })
                 router.push('/');
             })
             .catch(() => {
