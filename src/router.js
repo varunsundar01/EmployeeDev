@@ -52,12 +52,14 @@ router.beforeEach((to, from, next) => {
     } else if (from.fullPath === "/dashboard" && store.getters['auth/getSubmitMessage'] !== "") {
         store.dispatch("auth/resetMessages");
         next();
-    } else if (to.fullPath === "/sign-in" || to.fullPath === '/' || to.fullPath === "/sign-up") {
-        store.dispatch("auth/resetMessages");
-        next();
     } else {
         next();
     }
 });
 
 export default router;
+
+// else if (to.fullPath === "/sign-in" || to.fullPath === '/' || to.fullPath === "/sign-up") {
+//     store.dispatch("auth/resetMessages");
+//     next();
+// }
