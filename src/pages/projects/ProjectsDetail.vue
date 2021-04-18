@@ -213,6 +213,10 @@ export default {
       fieldStyle,
       fieldType
     ) {
+      //Reset error messages before update
+      fieldError.value = "";
+      isError.value = false;
+      
       showEditDialog.value = true;
       editName.value = fieldName;
       editId.value = fieldId;
