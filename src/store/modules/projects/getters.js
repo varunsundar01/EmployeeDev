@@ -70,6 +70,12 @@ export default {
     nameError(state) {
         return state.nameError;
     },
+    fullNameError(state) {
+        return state.fullNameError;
+    },
+    currentDateError(state) {
+        return state.currentDateError;
+    },
     getAllProjectParams(state) {
         return state.projectParams;
     },

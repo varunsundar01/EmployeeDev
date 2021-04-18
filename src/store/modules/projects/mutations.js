@@ -79,6 +79,12 @@ export default {
         state.error.errorActive = payload.errorActive;
         state.error.errorMessage = payload.errorMessage;
     },
+    fullNameError(state, payload) {
+        state.fullNameError = payload;
+    },
+    currentDateError(state, payload) {
+        state.currentDateError = payload;
+    },
     setUpdate(state, payload) {
         state.submitAttempt.updated = payload.updated;
         state.submitAttempt.submitMessage = payload.submitMessage;

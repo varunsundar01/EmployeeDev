@@ -121,6 +121,7 @@ export default {
                 });
             }
         }
+
         if (!context.getters.checkError.errorActive) {
             context.commit("onSubmit", fields);
             localStorage.setItem(payload.type, JSON.stringify(values));
@@ -128,6 +129,12 @@ export default {
     },
     switchSubmit(context, payload) {
         context.commit("finalSubmit", payload);
+    },
+    fullNameError(context, payload) {
+        context.commit("fullNameError", payload);
+    },
+    currentDateError(context, payload) {
+        context.commit("currentDateError", payload);
     },
     async finalSubmit(context, payload) {
         const config = {

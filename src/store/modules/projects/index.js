@@ -38,6 +38,8 @@ export default {
                 updated: false
             },
             nameError: "",
+            fullNameError: "",
+            currentDateError: "",
             deleteParams: {
                 deleteProjectName: "",
                 deleteProjectId: null,
