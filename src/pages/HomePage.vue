@@ -27,6 +27,7 @@ export default {
     TheAuth,
   },
   setup() {
+    window.scrollTo(0, 0);
     const firstName = ref(localStorage.getItem("firstName"));
 
     return {
