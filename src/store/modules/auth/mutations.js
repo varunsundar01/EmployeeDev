@@ -35,7 +35,9 @@ export default {
         localStorage.removeItem("empId");
         localStorage.removeItem("firstName");
         localStorage.removeItem("userProjects");
+        localStorage.removeItem("userProjectsTime");
         localStorage.removeItem("projects");
+        localStorage.removeItem("projectsTime");
     },
     resetMessages(state) {
         state.submitMessage = "";
