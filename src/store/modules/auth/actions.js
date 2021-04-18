@@ -39,8 +39,7 @@ export default {
                         "Content-Type": "application/json"
                     }
                 })
-                .then(response => {
-                    context.commit("setToken", response.data.token);
+                .then(() => {
                     router.push('./sign-in');
                 })
                 .catch(error => {
