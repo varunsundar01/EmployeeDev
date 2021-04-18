@@ -57,6 +57,7 @@ export default {
         state.projectDetail.solution = payload.solution;
         state.projectDetail.implementation = payload.implementation;
         state.projectDetail.employee = payload.employee;
+        state.projectDetail.projectEmployeeId = parseInt(payload.project_employee_id);
     },
     updateProject(state, payload) {
         state.projectDetail[payload.id] = payload.value;
@@ -67,7 +68,8 @@ export default {
         state.projectParams.allProjectNames = payload;
     },
     setUserProjects(state, payload) {
-        state.userProjects = payload;
+        state.userProjects.projects = payload.projects;
+        state.userProjects.loaded = payload.loaded;
     },
     setValidation(state, payload) {
         const term = payload.term;
@@ -120,7 +122,7 @@ export default {
     confirmDelete(state, payload) {
         state.deleteParams.deleteMessage = payload;
         state.projectParams.filteredProjects.splice(state.deleteParams.deleteFilteredProjectArrayIndex, 1);
-        state.userProjects.splice(state.deleteParams.deleteFilteredProjectArrayIndex, 1);
+        state.userProjects.projects.splice(state.deleteParams.deleteFilteredProjectArrayIndex, 1);
         state.projectParams.allProjectNames.splice(state.deleteParams.deleteLoadedProjectArrayIndex, 1);
         state.projectParams.filteredProjectNames.splice(state.deleteParams.deleteFilteredProjectArrayIndex, 1);
         localStorage.removeItem("projects");

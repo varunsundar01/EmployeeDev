@@ -63,9 +63,13 @@ export default {
                 problem: "",
                 solution: "",
                 implementation: "",
-                employee: ""
+                employee: "",
+                projectEmployeeId: null
             },
-            userProjects: []
+            userProjects: {
+                projects: [],
+                loaded: false
+            }
         }
     },
     getters,

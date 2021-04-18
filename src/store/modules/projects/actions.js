@@ -46,7 +46,10 @@ export default {
                     }
                 })
                 .then(response => {
-                    context.commit('setUserProjects', []);
+                    context.commit('setUserProjects', {
+                        projects: [],
+                        loaded: false
+                    });
                     const userProjects = [];
                     for (let key in response.data) {
                         let projectObj = createProjectsObj(response.data[key]);
@@ -54,7 +57,11 @@ export default {
                     }
                     localStorage.setItem("userProjects", JSON.stringify(userProjects));
                     localStorage.setItem("userProjectsTime", new Date());
-                    context.commit('setUserProjects', userProjects);
+
+                    context.commit('setUserProjects', {
+                        projects: userProjects,
+                        loaded: true
+                    });
                 })
                 .catch(() => {
                     context.commit("setError", {
@@ -63,7 +70,10 @@ export default {
                     });
                 })
         }
-        context.commit("setUserProjects", JSON.parse(localStorage.getItem("userProjects")));
+        context.commit("setUserProjects", {
+            projects: JSON.parse(localStorage.getItem("userProjects")),
+            loaded: true
+        });
     },
     loadProjectDetail(context, payload) {
         const projectDetail = context.getters.getAllProjectParams.allProjects.filter(project => {
@@ -120,13 +130,14 @@ export default {
         context.commit("finalSubmit", payload);
     },
     async finalSubmit(context, payload) {
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Token ${context.rootGetters["auth/getToken"]}`,
+            },
+        }
         axios
-            .get(`${process.env.VUE_APP_ROOT_API}/api/auth/employee`, {
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Token ${context.rootGetters["auth/getToken"]}`,
-                },
-            })
+            .get(`${process.env.VUE_APP_ROOT_API}/api/auth/employee`, config)
             .then((response) => {
                 const projectData = {
                     project_name: payload.projectName,
@@ -138,7 +149,7 @@ export default {
                     time_to_complete: payload.timeToComplete,
                     employee: `${response.data.id}`
                 }
-                axios.post(`${process.env.VUE_APP_ROOT_API}/api/projectpost/`, projectData)
+                axios.post(`${process.env.VUE_APP_ROOT_API}/api/projectpost/`, projectData, config)
                     .then(response => {
                         context.commit("finalSubmit", {
                             message: "Project proposal submitted successfully",
@@ -220,7 +231,7 @@ export default {
                         cost_savings: context.getters.getProjectDetail.costSavings,
                         time_to_complete: context.getters.getProjectDetail.timeToComplete,
                         employee: employeeId,
-                    })
+                    }, config)
                     .then(() => {
                         context.commit("setUpdate", {
                             updated: true,
