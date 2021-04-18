@@ -18,7 +18,8 @@ export default function createProjectsObj(project) {
         cost_savings: project.cost_savings,
         time_to_complete: project.time_to_complete,
         createdAt: createdAt,
-        employee: `${project.employee.first_name} ${project.employee.last_name}`
+        employee: `${project.employee.first_name} ${project.employee.last_name}`,
+        project_employee_id: `${project.employee.id}`
     };
 
     return projectObj;
