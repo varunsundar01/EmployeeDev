@@ -1,6 +1,10 @@
 from rest_framework import serializers
+from rest_framework.exceptions import AuthenticationFailed
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.encoding import smart_str, force_str, smart_bytes, DjangoUnicodeDecodeError
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
 Employee = get_user_model()
 
@@ -35,3 +39,37 @@ class LoginSerializer(serializers.Serializer):
         if employee and employee.is_active:
             return employee
         raise serializers.ValidationError('Incorrect Credentials')
+
+class ResetPasswordSerializer(serializers.Serializer):
+    email=serializers.EmailField()
+
+    class Meta:
+        fields=['email']
+
+class SetNewPasswordSerializer(serializers.Serializer):
+    password=serializers.CharField(write_only=True)
+    token=serializers.CharField(write_only=True)
+    uidb64=serializers.CharField(write_only=True)
+
+    class Meta:
+        fields=['password', 'token', 'uidb64']
+
+    def validate(self, attrs):
+        try:
+            password=attrs.get('password')
+            token=attrs.get('token')
+            uidb64=attrs.get('uidb64')
+
+            employee_id=force_str(urlsafe_base64_decode(uidb64))
+            employee=Employee.objects.get(id=employee_id)
+
+            if not default_token_generator.check_token(employee, token):
+                raise AuthenticationFailed('The password reset link is invalid', 401)
+
+            employee.set_password(password)
+            employee.save()
+            return employee
+        except:
+            raise AuthenticationFailed('The password reset link is invalid', 401)
+
+        return super().validate(attrs)
