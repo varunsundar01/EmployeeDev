@@ -8,7 +8,7 @@ urlpatterns = [
     path('auth/login', LoginAPI.as_view()),
     path('auth/employee', EmployeeAPI.as_view()),
     path('auth/request-reset-password', RequestPasswordResetAPI.as_view(), name="request-reset-password"),
-    path('auth/password-reset/<uidb64>/<token>', PasswordTokenCheckAPI.as_view(), name="password-reset-confirm"),
+    path('auth/password-reset-confirm/<uidb64>/<token>', PasswordTokenCheckAPI.as_view(), name="password-reset-confirm"),
     path('auth/password-reset-complete', SetNewPasswordAPI.as_view(), name="password-reset-complete"),
     path('auth/logout', knox_views.LogoutView().as_view(), name="knox_logout"),
 ]
