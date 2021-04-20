@@ -7,6 +7,8 @@ import BenefitsSavings from './pages/form/BenefitsSavings.vue';
 import FinalReview from './pages/form/FinalReview.vue';
 import SignUp from './pages/auth/SignUp.vue';
 import SignIn from './pages/auth/SignIn.vue';
+import ForgotPassword from './pages/auth/ForgotPassword.vue';
+import ForgotPasswordConfirm from './pages/auth/ForgotPasswordConfirm.vue';
 import ProjectsList from './pages/projects/ProjectsList.vue';
 import ProjectsDetail from './pages/projects/ProjectsDetail.vue';
 import store from './store';
@@ -21,6 +23,8 @@ const router = createRouter({
         { name: 'final-review', path: '/final-review', component: FinalReview, meta: { title: 'Final Review', keepAlive: true, form: true, requiresAuth: true } },
         { name: 'sign-up', path: '/sign-up', component: SignUp, meta: { title: 'Sign Up', noAuth: true } },
         { name: 'sign-in', path: '/sign-in', component: SignIn, meta: { title: 'Sign In', noAuth: true } },
+        { name: 'forgot-password', path: '/forgot-password', component: ForgotPassword, meta: { title: 'Forgot Password', noAuth: true } },
+        { name: 'forgot-password-confirm', path: '/forgot-password-confirm', component: ForgotPasswordConfirm, meta: { title: 'Forgot Password Confirm', forgotPasswordConfirm: true } },
         { name: 'projects-list', path: '/projects', component: ProjectsList, meta: { title: 'Projects' } },
         { name: 'projects-detail', path: '/projects/:slug', component: ProjectsDetail },
     ]

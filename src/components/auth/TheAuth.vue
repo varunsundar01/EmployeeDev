@@ -26,6 +26,7 @@
       Don't have an account?
       <router-link to="/sign-up">Sign Up</router-link> instead
     </p>
+    <router-link class="auth-option-link" to="/forgot-password">Forgot Password?</router-link>
   </div>
 </template>
 
@@ -87,6 +88,11 @@ export default {
 <style scoped>
 .auth-option {
   font-weight: 300;
+  text-align: center;
+}
+
+.auth-option-link {
+  display: block;
   text-align: center;
 }
 </style>
