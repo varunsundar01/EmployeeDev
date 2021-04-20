@@ -60,9 +60,10 @@ class RequestPasswordResetAPI(generics.GenericAPIView):
             employee=Employee.objects.get(email=email)
             uidb64=urlsafe_base64_encode(smart_bytes(employee.id))
             token=default_token_generator.make_token(user=employee)
-            current_site=get_current_site(request=request).domain
-            relativeLink=reverse('password-reset-confirm', kwargs={'uidb64':uidb64, 'token':token})
-            absurl='http://'+current_site+relativeLink
+            # current_site=get_current_site(request=request).domain
+            # relativeLink=reverse('password-reset-confirm', kwargs={'uidb64':uidb64, 'token':token})
+            # absurl='http://'+current_site+relativeLink
+            absurl='http://127.0.0.1:8080/forgot-password-confirm?req_u='+uidb64+'&reset='+token
 
             html_content = render_to_string('forgot_password_email.html', {'title': 'Reset Password', 'link': absurl})
             text_content = strip_tags(html_content)
