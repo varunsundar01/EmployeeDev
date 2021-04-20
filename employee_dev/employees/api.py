@@ -63,15 +63,13 @@ class RequestPasswordResetAPI(generics.GenericAPIView):
             current_site=get_current_site(request=request).domain
             relativeLink=reverse('password-reset-confirm', kwargs={'uidb64':uidb64, 'token':token})
             absurl='http://'+current_site+relativeLink
-            # email_body='Click on the link below to reset your password\n'+absurl
 
             html_content = render_to_string('forgot_password_email.html', {'title': 'Reset Password', 'link': absurl})
             text_content = strip_tags(html_content)
 
             email=EmailMultiAlternatives(subject="EmployeeDev Password Reset Request",body=text_content,from_email=settings.EMAIL_HOST_USER, to=[employee.email])
             email.attach_alternative(html_content, "text/html")
-            email.send()            
-            # send_mail(subject='EmployeeDev Password Reset Request',message=email_body,from_email='vsundar.3101@gmail.com',recipient_list=[employee.email])
+            email.send()
 
         return Response({'success': 'Link sent to reset password'}, status=status.HTTP_200_OK)
 
