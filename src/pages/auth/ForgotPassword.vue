@@ -7,7 +7,7 @@
         <p class="reset-text">
           Enter the Email address associated with your account
         </p>
-        <form @submit.prevent="forgotPassword">
+        <form @submit.prevent="requestPasswordReset">
           <form-element
             inputStyle="input"
             inputType="email"
@@ -23,9 +23,7 @@
         </form>
       </div>
       <div class="confirm" v-else>
-        <p>
-          An email has been sent to you with the password reset instructions
-        </p>
+        <p>An email has been sent to you with the password reset instructions</p>
       </div>
     </base-card>
   </div>
@@ -33,8 +31,11 @@
 
 <script>
 import { ref, computed } from "vue";
+import {useStore} from "vuex";
 export default {
   setup() {
+    const store = useStore();
+
     let submitted = ref(false);
     const enteredEmail = ref("");
     const fieldError = ref("");
@@ -47,12 +48,13 @@ export default {
       enteredEmail.value = data.value;
     }
 
-    function forgotPassword() {
+    function requestPasswordReset() {
       if (
         enteredEmail.value.trim().length > 0 &&
         enteredEmail.value.includes("@")
       ) {
         submitted.value = true;
+        store.dispatch("auth/requestPasswordReset", enteredEmail.value);
       } else {
         fieldError.value = "Enter a valid email";
       }
@@ -60,7 +62,7 @@ export default {
 
     return {
       enteredInput,
-      forgotPassword,
+      requestPasswordReset,
       submitted,
       isError,
       fieldError,

@@ -135,6 +135,28 @@ export default {
                 });
             })
     },
+    requestPasswordReset(_, payload) {
+        axios.post(`${process.env.VUE_APP_ROOT_API}/api/auth/request-reset-password`, {
+            "email": payload
+        })
+    },
+    confirmPasswordReset(context, payload) {
+        axios.patch(`${process.env.VUE_APP_ROOT_API}/api/auth/password-reset-complete`, {
+                "uidb64": payload.uidb64,
+                "token": payload.token,
+                "password": payload.password
+            })
+            .then(() => {
+                context.commit("setSubmitMessage", "Password was reset successfully. Login with you new credentials")
+                router.push("/sign-in");
+            })
+            .catch(error => {
+                context.commit("setError", {
+                    authError: true,
+                    errorMessage: error.response.data.detail
+                })
+            })
+    },
     resetMessages(context) {
         context.commit("resetMessages");
     }

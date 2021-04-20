@@ -22,6 +22,9 @@ export default {
         state.empId = payload;
         localStorage.setItem("empId", payload);
     },
+    setSubmitMessage(state, payload) {
+        state.submitMessage = payload;
+    },
     signIn(state, payload) {
         for (let term in payload) {
             state[term] = payload[term];
