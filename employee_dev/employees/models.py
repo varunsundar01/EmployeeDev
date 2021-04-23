@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 
 class CustomAccountManager(BaseUserManager):
-    def create_user(self, email, password, first_name, last_name, employee_number, department_name, **other_fields):
+    def create_user(self, email, password, first_name, last_name, employee_number, department_name, is_verified, **other_fields):
         if not email:
             raise ValueError('You must provide an email address')
 
@@ -10,12 +10,12 @@ class CustomAccountManager(BaseUserManager):
             raise ValueError('You must provide an employee number')
 
         email = self.normalize_email(email)
-        user = self.model(email=email, first_name=first_name, last_name=last_name, employee_number=employee_number, department_name=department_name, **other_fields)
+        user = self.model(email=email, first_name=first_name, last_name=last_name, employee_number=employee_number, department_name=department_name, is_verified=is_verified **other_fields)
         user.set_password(password)
         user.save()
         return user
 
-    def create_superuser(self, email, password, first_name, last_name, employee_number, department_name, **other_fields):
+    def create_superuser(self, email, password, first_name, last_name, employee_number, department_name, is_verified, **other_fields):
         other_fields.setdefault('is_staff', True)
         other_fields.setdefault('is_superuser', True)
         other_fields.setdefault('is_active', True)
@@ -26,7 +26,7 @@ class CustomAccountManager(BaseUserManager):
         if other_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must be assigned to is_superuser==True')
 
-        return self.create_user(email, password, first_name, last_name, employee_number, department_name, **other_fields)
+        return self.create_user(email, password, first_name, last_name, employee_number, department_name, is_verified, **other_fields)
 
 class Employee(AbstractBaseUser, PermissionsMixin):
     id = models.AutoField(primary_key=True)
@@ -40,6 +40,7 @@ class Employee(AbstractBaseUser, PermissionsMixin):
         ('Machine Engineering', 'Machine Engineering'), 
         ('Manufacturing & Assembly', 'Manufacturing & Assembly')]
         )
+    is_verified = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
