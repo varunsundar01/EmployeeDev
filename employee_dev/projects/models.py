@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 Employee = get_user_model()
 
 class Project(models.Model):
+    id=models.AutoField(primary_key=True)
     project_name = models.CharField(max_length=200, unique=True)
     project_slug = models.SlugField(default='')
     problem = models.TextField()
