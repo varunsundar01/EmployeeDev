@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'employeedev';
-  src: url('../font/employeedev.eot?14267167');
-  src: url('../font/employeedev.eot?14267167#iefix') format('embedded-opentype'),
-       url('../font/employeedev.woff2?14267167') format('woff2'),
-       url('../font/employeedev.woff?14267167') format('woff'),
-       url('../font/employeedev.ttf?14267167') format('truetype'),
-       url('../font/employeedev.svg?14267167#employeedev') format('svg');
+  src: url('../font/employeedev.eot?37010595');
+  src: url('../font/employeedev.eot?37010595#iefix') format('embedded-opentype'),
+       url('../font/employeedev.woff2?37010595') format('woff2'),
+       url('../font/employeedev.woff?37010595') format('woff'),
+       url('../font/employeedev.ttf?37010595') format('truetype'),
+       url('../font/employeedev.svg?37010595#employeedev') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -15,7 +15,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'employeedev';
-    src: url('../font/employeedev.svg?14267167#employeedev') format('svg');
+    src: url('../font/employeedev.svg?37010595#employeedev') format('svg');
   }
 }
 */
@@ -58,7 +58,7 @@
 .icon-pencil:before { content: '\e800'; } /* '' */
 .icon-twitter:before { content: '\f099'; } /* '' */
 .icon-github-circled:before { content: '\f09b'; } /* '' */
+.icon-menu:before { content: '\f0c9'; } /* '' */
 .icon-mail-alt:before { content: '\f0e0'; } /* '' */
 .icon-linkedin:before { content: '\f0e1'; } /* '' */
-.icon-ellipsis-vert:before { content: '\f142'; } /* '' */
 .icon-trash:before { content: '\f1f8'; } /* '' */
