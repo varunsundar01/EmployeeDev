@@ -30,6 +30,40 @@ class RegisterSerializer(serializers.ModelSerializer):
         )
         return employee
 
+class SendAccountVerificationSerializer(serializers.ModelSerializer):
+    email=serializers.EmailField()
+
+    class Meta:
+        fields=['email']
+
+class ActivateEmployeeSerializer(serializers.ModelSerializer):
+    uidb64=serializers.CharField(write_only=True)
+    token=serializers.CharField(write_only=True)
+
+    class Meta:
+        model=Employee
+        fields=['uidb64', 'token']
+
+    def validate(self, attrs):
+        try:
+            uidb64=attrs.get('uidb64')
+            token=attrs.get('token')
+
+            employee_id=force_str(urlsafe_base64_decode(uidb64))
+            employee=Employee.objects.get(id=employee_id)
+
+            if not default_token_generator.check_token(employee, token):
+                raise AuthenticationFailed('Account verification link is invalid', 401)
+
+            employee.is_verified=True
+            employee.save()
+            return employee
+        except:
+            raise AuthenticationFailed('Account Verification link is invalid', 401)
+
+        return super().validate(attrs)
+
+
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField()

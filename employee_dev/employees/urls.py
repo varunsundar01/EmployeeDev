@@ -1,10 +1,12 @@
 from django.urls import path, include
-from .api import RegisterAPI, LoginAPI, EmployeeAPI, PasswordTokenCheckAPI, RequestPasswordResetAPI, SetNewPasswordAPI
+from .api import RegisterAPI, LoginAPI, EmployeeAPI, PasswordTokenCheckAPI, RequestPasswordResetAPI, SetNewPasswordAPI, SendAccountVerificationAPI, ActivateEmployeeAPI
 from knox import views as knox_views
 
 urlpatterns = [
     path('auth', include('knox.urls')),
     path('auth/register', RegisterAPI.as_view()),
+    path('auth/send-account-verification', SendAccountVerificationAPI.as_view(), name="send-account-verification"),
+    path('auth/activate-employee', ActivateEmployeeAPI.as_view(), name="activate-employee"),
     path('auth/login', LoginAPI.as_view()),
     path('auth/employee', EmployeeAPI.as_view()),
     path('auth/request-reset-password', RequestPasswordResetAPI.as_view(), name="request-reset-password"),

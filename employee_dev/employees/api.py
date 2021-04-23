@@ -1,19 +1,18 @@
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from knox.models import AuthToken
-from .serializers import EmployeeSerializer, RegisterSerializer, LoginSerializer, ResetPasswordSerializer, SetNewPasswordSerializer
+from .serializers import EmployeeSerializer, RegisterSerializer, LoginSerializer, ResetPasswordSerializer, SetNewPasswordSerializer, SendAccountVerificationSerializer, ActivateEmployeeSerializer
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import smart_str, force_str, smart_bytes, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.contrib.sites.shortcuts import get_current_site
-from django.urls import reverse
 from django.contrib.auth import get_user_model
-from django.core.mail import EmailMultiAlternatives
+from django.core.mail import EmailMultiAlternatives, send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.conf import settings
 
 Employee=get_user_model()
+frontend_root='http://127.0.0.1:8080/'
 
 class RegisterAPI(generics.GenericAPIView):
     serializer_class = RegisterSerializer
@@ -22,10 +21,40 @@ class RegisterAPI(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         employee = serializer.save()
+            
         return Response({
             "employee": EmployeeSerializer(employee, context=self.get_serializer_context()).data,
             "token": AuthToken.objects.create(employee)[1]
         })
+
+
+class SendAccountVerificationAPI(generics.GenericAPIView):
+    serializer_class=SendAccountVerificationSerializer
+
+    def post(self, request):
+        serializer=self.serializer_class(data=request.data)
+        email=request.data['email']
+        employee=Employee.objects.get(email=email)
+
+        uidb64=urlsafe_base64_encode(smart_bytes(employee.id))
+        token=default_token_generator.make_token(user=employee)
+        link=frontend_root+'verify-account/?req_u='+uidb64+'&reset='+token
+
+        html_content=render_to_string('account_verification.html', {'title': 'Verify Account', 'link': link, 'first_name':employee.first_name})
+        text_content=strip_tags(html_content)
+
+        email=EmailMultiAlternatives(subject='Activate your EmployeeDev Account', body=text_content,from_email=settings.EMAIL_HOST_USER,to=[employee.email])
+        email.attach_alternative(html_content, "text/html")
+        email.send()
+        return Response({'success': 'Account Verification Email Sent'}, status=status.HTTP_200_OK)
+
+class ActivateEmployeeAPI(generics.GenericAPIView):
+    serializer_class=ActivateEmployeeSerializer
+
+    def patch(self, request):
+        serializer=self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response({'success': 'Account Verified successfully'}, status=status.HTTP_200_OK)
 
 class LoginAPI(generics.GenericAPIView):
     serializer_class = LoginSerializer
@@ -60,10 +89,7 @@ class RequestPasswordResetAPI(generics.GenericAPIView):
             employee=Employee.objects.get(email=email)
             uidb64=urlsafe_base64_encode(smart_bytes(employee.id))
             token=default_token_generator.make_token(user=employee)
-            # current_site=get_current_site(request=request).domain
-            # relativeLink=reverse('password-reset-confirm', kwargs={'uidb64':uidb64, 'token':token})
-            # absurl='http://'+current_site+relativeLink
-            absurl='http://127.0.0.1:8080/forgot-password-confirm?req_u='+uidb64+'&reset='+token
+            absurl=frontend_root+'forgot-password-confirm?req_u='+uidb64+'&reset='+token
 
             html_content = render_to_string('forgot_password_email.html', {'title': 'Reset Password', 'link': absurl})
             text_content = strip_tags(html_content)
