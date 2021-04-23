@@ -6,6 +6,7 @@ import ProcessDetails from './pages/form/ProcessDetails.vue';
 import BenefitsSavings from './pages/form/BenefitsSavings.vue';
 import FinalReview from './pages/form/FinalReview.vue';
 import SignUp from './pages/auth/SignUp.vue';
+import VerifyAccount from './pages/auth/VerifyAccount.vue';
 import SignIn from './pages/auth/SignIn.vue';
 import ForgotPassword from './pages/auth/ForgotPassword.vue';
 import ForgotPasswordConfirm from './pages/auth/ForgotPasswordConfirm.vue';
@@ -22,6 +23,7 @@ const router = createRouter({
         { name: 'benefits-savings', path: '/benefits-savings', component: BenefitsSavings, meta: { title: 'Benefits & Savings', keepAlive: true, form: true, requiresAuth: true } },
         { name: 'final-review', path: '/final-review', component: FinalReview, meta: { title: 'Final Review', keepAlive: true, form: true, requiresAuth: true } },
         { name: 'sign-up', path: '/sign-up', component: SignUp, meta: { title: 'Sign Up', noAuth: true } },
+        { name: 'verify-account', path: '/verify-account', component: VerifyAccount, meta: { title: 'Verify Your Account', noAuth: true } },
         { name: 'sign-in', path: '/sign-in', component: SignIn, meta: { title: 'Sign In', noAuth: true } },
         { name: 'forgot-password', path: '/forgot-password', component: ForgotPassword, meta: { title: 'Forgot Password', noAuth: true } },
         { name: 'forgot-password-confirm', path: '/forgot-password-confirm', component: ForgotPasswordConfirm, meta: { title: 'Forgot Password Confirm', forgotPasswordConfirm: true } },
