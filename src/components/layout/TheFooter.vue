@@ -38,12 +38,15 @@ p {
 
 .social-icons {
   margin: 0 auto 2em auto;
+  width: 60%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
 .social-icons i {
   color: var(--secondary);
   opacity: 0.5;
-  margin: 0 1em;
   font-size: 1.75em;
   cursor: pointer;
   transition: all 0.3s ease-in-out;

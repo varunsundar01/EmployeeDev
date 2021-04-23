@@ -58,4 +58,17 @@ export default {
   color: var(--secondary) !important;
   border-bottom: 2px solid var(--active);
 }
+
+@media(max-width: 768px) {
+  .tabs {
+    justify-content: space-evenly;
+  }
+  .tab-item {
+    margin: auto 1em;
+    text-align: center;
+  }
+  .tab-item p {
+    font-size: 0.85em;
+  }
+}
 </style>

@@ -75,6 +75,7 @@ export default {
   box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
   max-width: 800px;
   overflow: hidden;
+  max-width: 90%;
 }
 
 .dialog-header {

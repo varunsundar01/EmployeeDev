@@ -325,7 +325,7 @@ p {
 
 .numbers-item {
   background-color: var(--background-light);
-  padding: 1em;
+  padding: 1.85em 1em 1em 1em;
   border-radius: 5px;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.05);
   position: relative;
@@ -361,5 +361,14 @@ i.icon-pencil:hover {
   font-size: 1.5em;
   font-weight: 500;
   margin: 0 auto 0.5em auto;
+}
+
+@media(max-width: 768px) {
+  .project-meta {
+    flex-direction: column;
+  }
+  .project-numbers {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
