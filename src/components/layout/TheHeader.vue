@@ -206,6 +206,7 @@ i {
     right: 0px;
     font-size: 1.35em;
     color: var(--secondary);
+    cursor: pointer;
   }
 }
 </style>
