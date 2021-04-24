@@ -122,9 +122,9 @@ export default {
         .then((response) => {
           const employeeName = `${response.data.first_name} ${response.data.last_name}`;
           const dateCheck =
-            new Date().getUTCDate() ===
+            new Date().getDate() ===
               new Date(benefitsFields.currentDate).getUTCDate() &&
-            new Date().getUTCMonth() ===
+            new Date().getMonth() ===
               new Date(benefitsFields.currentDate).getUTCMonth() &&
             new Date().getFullYear() ===
               new Date(benefitsFields.currentDate).getFullYear();
