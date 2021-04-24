@@ -3,10 +3,19 @@
     <h1 class="title">Dashboard</h1>
     <the-banner v-if="displayBanner">{{ bannerMessage }}</the-banner>
 
-    <p class="dashboard-head">Hey, {{firstName}}. You can find all the projects you have submitted here.</p>
-    <p class="dashboard-head">Click <router-link to="/projects">here</router-link> to view projects submitted by all employees</p>
-    <the-spinner v-if="!$store.getters['projects/getUserProjects'].loaded"></the-spinner>
-    <list-element v-else
+    <p class="dashboard-head">
+      Hey, {{ firstName }}. You can find all the projects you have submitted
+      here.
+    </p>
+    <p class="dashboard-head">
+      Click <router-link to="/projects">here</router-link> to view projects
+      submitted by all employees
+    </p>
+    <the-spinner
+      v-if="!$store.getters['projects/getUserProjects'].loaded"
+    ></the-spinner>
+    <list-element
+      v-else
       v-for="project in $store.getters['projects/getUserProjects'].projects"
       :key="project.id"
       :id="project.id"
@@ -38,7 +47,7 @@ import ListElement from "../../components/UI/ListElement.vue";
 import FleetingMessage from "../../components/UI/FleetingMessage.vue";
 import DeleteDialog from "../../components/projects/DeleteDialog.vue";
 import TheSpinner from "../../components/UI/TheSpinner.vue";
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 export default {
   components: {
@@ -46,7 +55,7 @@ export default {
     ListElement,
     FleetingMessage,
     DeleteDialog,
-    TheSpinner
+    TheSpinner,
   },
 
   setup() {
@@ -55,8 +64,12 @@ export default {
     let dialogOpen = ref(false);
     const firstName = ref(localStorage.getItem("firstName"));
 
-    store.dispatch("projects/loadUserProjects");
-    store.dispatch("projects/loadProjects");
+    onMounted(() => {
+      store.dispatch("projects/initializeValues");
+      store.dispatch("projects/loadProjects");
+      store.dispatch("projects/loadUserProjects");
+      window.scrollTo(0, 0);
+    });
 
     const displayBanner = computed(() => {
       if (
@@ -103,7 +116,7 @@ export default {
       toBack,
       deleteProjectDialog,
       confirmDeleteProject,
-      dialogOpen
+      dialogOpen,
     };
   },
 };
