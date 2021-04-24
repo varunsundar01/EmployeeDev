@@ -25,8 +25,6 @@ export default {
         state.allProjectNames = [];
         state.projectParams.loaded = false;
         state.nameError = "";
-        localStorage.removeItem('projects');
-        localStorage.removeItem('userProjects');
         localStorage.removeItem('process-details');
         localStorage.removeItem('benefits-savings');
     },
@@ -143,5 +141,12 @@ export default {
         state.deleteParams.deleteProjectId = null;
         state.deleteParams.deleteLoadedProjectArrayIndex = null;
         state.deleteParams.deleteMessage = "";
+    },
+    resetMessages(state) {
+        state.errorActive = false;
+        state.errorMessage = "";
+        state.submitAttempt.submitMessage = "";
+        state.submitAttempt.submitted = false;
+        state.submitAttempt.updated = false;
     }
 }

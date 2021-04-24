@@ -1,6 +1,7 @@
 import axios from "axios";
 import createProjectsObj from "../../../hooks/projects.js";
 import useTimeDifference from "../../../hooks/timeDifference.js";
+import router from "../../../router.js";
 
 export default {
     initializeValues(context) {
@@ -69,11 +70,12 @@ export default {
                         errorMessage: "Could not load projects"
                     });
                 })
+        } else {
+            context.commit("setUserProjects", {
+                projects: JSON.parse(localStorage.getItem("userProjects")),
+                loaded: true
+            });
         }
-        context.commit("setUserProjects", {
-            projects: JSON.parse(localStorage.getItem("userProjects")),
-            loaded: true
-        });
     },
     loadProjectDetail(context, payload) {
         const projectDetail = context.getters.getAllProjectParams.allProjects.filter(project => {
@@ -136,7 +138,7 @@ export default {
     currentDateError(context, payload) {
         context.commit("currentDateError", payload);
     },
-    async finalSubmit(context, payload) {
+    finalSubmit(context, payload) {
         const config = {
             headers: {
                 "Content-Type": "application/json",
@@ -163,7 +165,6 @@ export default {
                             messageType: response.status,
                             value: true
                         });
-                        context.commit("initializeValues");
                     })
             })
             .catch((error) => {
@@ -172,8 +173,8 @@ export default {
                     messageType: error.status,
                     value: true
                 });
-                context.commit("initializeValues");
             })
+        router.push('/dashboard');
     },
     filterProjects(context, payload) {
         const filteredProjects = context.getters.getAllProjectParams.allProjects.filter(project => {
@@ -195,6 +196,8 @@ export default {
         axios
             .delete(`${process.env.VUE_APP_ROOT_API}/api/projects/${payload}`)
             .then(() => {
+                context.commit("resetMessages");
+                context.dispatch("auth/resetMessages", null, { root: 'true' });
                 context.commit("confirmDelete", `${context.getters.getDeleteParams.deleteProjectName} was deleted`)
                 context.commit("showDeleteMessage", true);
 
