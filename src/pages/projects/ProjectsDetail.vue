@@ -325,7 +325,7 @@ p {
 
 .numbers-item {
   background-color: var(--background-light);
-  padding: 1.85em 1em 1em 1em;
+  padding: 1.85em 1em;
   border-radius: 5px;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.05);
   position: relative;
