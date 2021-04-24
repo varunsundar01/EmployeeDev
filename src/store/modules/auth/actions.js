@@ -40,9 +40,15 @@ export default {
                     }
                 })
                 .then(() => {
-                    router.push('./sign-in');
+                    axios.post(`${process.env.VUE_APP_ROOT_API}/api/auth/send-account-verification`, {
+                            "email": payload.email
+                        })
+                        .then(() => {
+                            router.push('./sign-in');
+                        })
                 })
                 .catch(error => {
+                    console.log(error.response.data);
                     if ('email' in error.response.data && 'employee_number' in error.response.data) {
                         context.commit('setError', {
                             authError: true,
@@ -79,6 +85,16 @@ export default {
             context.commit("onSubmit", payload);
         }
     },
+    verifyUser(context, payload) {
+        axios.patch(`${process.env.VUE_APP_ROOT_API}/api/auth/activate-employee`, {
+                "uidb64": payload.uidb64,
+                "token": payload.token
+            })
+            .then(() => {
+                context.commit("setSubmitMessage", "Account verified successfully. Sign in with your credentials");
+                router.push('/sign-in');
+            })
+    },
     signIn(context, payload) {
         //Reset messages before login
         context.commit("resetMessages");
@@ -98,7 +114,12 @@ export default {
                 router.push('./dashboard');
             })
             .catch(error => {
-                if ("email" in error.response.data || error.response.data.non_field_errors[0] === "Incorrect Credentials") {
+                if ('verification-error' in error.response.data) {
+                    context.commit('setError', {
+                        authError: true,
+                        errorMessage: error.response.data['verification-error'][0]
+                    })
+                } else if ("email" in error.response.data || error.response.data.non_field_errors[0] === "Incorrect Credentials") {
                     context.commit("setError", {
                         authError: true,
                         errorMessage: "Invalid login. Please check your email and password"

@@ -5,7 +5,7 @@ export default {
         state.departmentName = payload.departmentName;
         state.firstName = payload.firstName;
         state.lastName = payload.lastName;
-        state.submitMessage = "Account created successfully. Sign in with your credentials";
+        state.submitMessage = "Account verification email was sent. Follow the instructions in the email to verify your account and sign in";
     },
     setError(state, payload) {
         state.error.authError = payload.authError;
