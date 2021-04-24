@@ -90,16 +90,21 @@
     <base-button @toNext="registerUser" primaryVisible="true">
       <template v-slot:primary>Create Account</template>
     </base-button>
+    <div class="spinner-container" v-if="showSpinner">
+      <the-spinner></the-spinner>
+    </div>
   </base-card>
 </template>
 
 <script>
-import { ref, reactive, computed } from "vue";
+import { ref, reactive, computed, watch } from "vue";
 import { useStore } from "vuex";
 import TheBanner from "../../components/UI/TheBanner.vue";
+import TheSpinner from "../../components/UI/TheSpinner.vue";
 export default {
   components: {
     TheBanner,
+    TheSpinner,
   },
   setup() {
     window.scrollTo(0, 0);
@@ -119,6 +124,14 @@ export default {
     let emailError = ref("");
     let employeeNumberError = ref("");
     let submitted = ref(false);
+
+    watch(
+      () => store.getters["auth/getError"].authError, () => {
+        if (store.getters["auth/getError"].authError) {
+          window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+        }
+      }
+    );
 
     let emailValidate = computed(() => {
       return (
@@ -158,6 +171,16 @@ export default {
         submitted.value &&
         !store.getters["auth/getValidation"].password2Validate
       );
+    });
+
+    let showSpinner = computed(() => {
+      if (submitted.value) {
+        return (
+          store.getters["auth/getSubmitMessage"] === "" ||
+          !store.getters["auth/getError"].authError
+        );
+      }
+      return false;
     });
 
     function enteredInput(data) {
@@ -271,6 +294,7 @@ export default {
       submitted,
       removeError,
       registerUser,
+      showSpinner,
     };
   },
 };
@@ -313,5 +337,15 @@ select:focus {
 .error-input:focus {
   outline: none;
   box-shadow: 0 0 5pt 1pt #dc3545;
+}
+
+.spinner-container {
+  position: fixed;
+  height: 100vh;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.1);
+  z-index: 15;
 }
 </style>
