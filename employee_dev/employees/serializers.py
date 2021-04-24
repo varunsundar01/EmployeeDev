@@ -71,7 +71,10 @@ class LoginSerializer(serializers.Serializer):
     def validate(self, data):
         employee = authenticate(**data)
         if employee and employee.is_active:
-            return employee
+            if employee.is_verified:
+                return employee
+            else:
+                raise serializers.ValidationError({'verification-error':'Verify your account before signing in. A verification email was sent to you after registration'})
         raise serializers.ValidationError('Incorrect Credentials')
 
 class ResetPasswordSerializer(serializers.Serializer):
