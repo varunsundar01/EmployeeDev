@@ -168,7 +168,7 @@ export default {
                 "password": payload.password
             })
             .then(() => {
-                context.commit("setSubmitMessage", "Password was reset successfully. Login with you new credentials")
+                context.commit("setSubmitMessage", "Password was reset successfully. Login with your new credentials")
                 router.push("/sign-in");
             })
             .catch(error => {
