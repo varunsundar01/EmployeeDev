@@ -2,7 +2,7 @@
   <div class="nav-wrapper">
     <div class="main-nav">
       <div class="nav-brand-wrapper">
-        <router-link to="/" class="nav-brand"></router-link>
+        <router-link to="/" class="nav-brand" @click="hideNav"></router-link>
         <i @click="showNavBar" class="icon-menu"></i>
       </div>
 
