@@ -1,6 +1,6 @@
 <template>
   <div class="footer">
-    <p>&copy; {{ currentYear }} | Built by <a href="https://varunsundar.co/">Varun</a></p>
+    <p>&copy; {{ currentYear }} | Built by <a href="https://varunsundar.co/" target="_blank">Varun</a></p>
     <div class="social-icons">
       <a href="https://github.com/varunsundar01" target="_blank"><i class="icon-github-circled"></i></a>
       <a href="https://twitter.com/varunsundar31" target="_blank"><i class="icon-twitter"></i></a>
