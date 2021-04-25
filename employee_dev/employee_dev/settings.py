@@ -29,7 +29,10 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['empdevserver.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = [
+    'empdevserver.herokuapp.com', 
+    # '127.0.0.1',
+    ]
 
 
 # Application definition
@@ -61,6 +64,7 @@ PASSWORD_HASHERS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -137,13 +141,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8080",
-    "http://127.0.0.1:8080",
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
+    # "http://127.0.0.1:8000",
+    # "http://127.0.0.1:8080",
+    # "http://localhost:8000",
+    # "http://localhost:8080",
+    "https://employee-dev.netlify.app/",
+    "https://employeedev.varunsundar.co/"
 ]
 
 AUTH_USER_MODEL = 'employees.Employee'
