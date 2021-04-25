@@ -12,6 +12,7 @@ import ForgotPassword from './pages/auth/ForgotPassword.vue';
 import ForgotPasswordConfirm from './pages/auth/ForgotPasswordConfirm.vue';
 import ProjectsList from './pages/projects/ProjectsList.vue';
 import ProjectsDetail from './pages/projects/ProjectsDetail.vue';
+import NotFound from './pages/NotFound.vue';
 import store from './store';
 
 const router = createRouter({
@@ -29,6 +30,7 @@ const router = createRouter({
         { name: 'forgot-password-confirm', path: '/forgot-password-confirm', component: ForgotPasswordConfirm, meta: { title: 'Forgot Password Confirm', forgotPasswordConfirm: true } },
         { name: 'projects-list', path: '/projects', component: ProjectsList, meta: { title: 'Projects' } },
         { name: 'projects-detail', path: '/projects/:slug', component: ProjectsDetail },
+        { path: '/:notFound(.*)', component: NotFound },
     ]
 });
 
