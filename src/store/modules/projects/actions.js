@@ -18,10 +18,10 @@ export default {
         const projects = [];
 
         //Get time difference between the last time projects was stored in localstorage and now
-        const timeDifference = useTimeDifference(localStorage.getItem("projectsTime"));
+        const timeDifference = useTimeDifference(localStorage.getItem("empDev-projectsTime"));
 
         //Get Projects
-        if (!localStorage.getItem("projects") || timeDifference >= 60) {
+        if (!localStorage.getItem("empDev-projects") || timeDifference >= 60) {
             axios.get(`${process.env.VUE_APP_ROOT_API}/api/projects`).then(response => {
                 const data = response.data;
                 for (let value in data) {
@@ -29,18 +29,18 @@ export default {
                     projects.push(projectObj);
                 }
                 context.commit("loadProjects", projects);
-                localStorage.setItem("projects", JSON.stringify(projects));
-                localStorage.setItem("projectsTime", new Date())
+                localStorage.setItem("empDev-projects", JSON.stringify(projects));
+                localStorage.setItem("empDev-projectsTime", new Date())
             })
         }
-        context.commit("loadProjects", JSON.parse(localStorage.getItem("projects")));
+        context.commit("loadProjects", JSON.parse(localStorage.getItem("empDev-projects")));
     },
     loadUserProjects(context) {
         //Get time difference between the last time userProjects was stored in localstorage and now
-        const timeDifference = useTimeDifference(localStorage.getItem("userProjectsTime"));
+        const timeDifference = useTimeDifference(localStorage.getItem("empDev-userProjectsTime"));
 
         //Get userProjects
-        if (!localStorage.getItem("userProjects") || timeDifference >= 60) {
+        if (!localStorage.getItem("empDev-userProjects") || timeDifference >= 60) {
             axios.get(`${process.env.VUE_APP_ROOT_API}/api/userprojects`, {
                     headers: {
                         "Authorization": `Token ${context.rootGetters["auth/getToken"]}`
@@ -56,8 +56,8 @@ export default {
                         let projectObj = createProjectsObj(response.data[key]);
                         userProjects.push(projectObj);
                     }
-                    localStorage.setItem("userProjects", JSON.stringify(userProjects));
-                    localStorage.setItem("userProjectsTime", new Date());
+                    localStorage.setItem("empDev-userProjects", JSON.stringify(userProjects));
+                    localStorage.setItem("empDev-userProjectsTime", new Date());
 
                     context.commit('setUserProjects', {
                         projects: userProjects,
@@ -72,7 +72,7 @@ export default {
                 })
         } else {
             context.commit("setUserProjects", {
-                projects: JSON.parse(localStorage.getItem("userProjects")),
+                projects: JSON.parse(localStorage.getItem("empDev-userProjects")),
                 loaded: true
             });
         }
@@ -126,7 +126,7 @@ export default {
 
         if (!context.getters.checkError.errorActive) {
             context.commit("onSubmit", fields);
-            localStorage.setItem(payload.type, JSON.stringify(values));
+            localStorage.setItem(`empDev-${payload.type}`, JSON.stringify(values));
         }
     },
     switchSubmit(context, payload) {
@@ -256,8 +256,11 @@ export default {
                         }, 3000);
                     })
             })
-            .catch(error => {
-                console.log(error.response.data);
+            .catch(() => {
+                context.commit("setError", {
+                    errorActive: true,
+                    errorMessage: "Error while updating"
+                })
             })
     }
 }

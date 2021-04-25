@@ -25,8 +25,8 @@ export default {
         state.allProjectNames = [];
         state.projectParams.loaded = false;
         state.nameError = "";
-        localStorage.removeItem('process-details');
-        localStorage.removeItem('benefits-savings');
+        localStorage.removeItem('empDev-process-details');
+        localStorage.removeItem('empDev-benefits-savings');
     },
     setProjectLoader(state, payload) {
         state.projectParams.loaded = payload;
@@ -59,8 +59,8 @@ export default {
     },
     updateProject(state, payload) {
         state.projectDetail[payload.id] = payload.value;
-        localStorage.removeItem("projects");
-        localStorage.removeItem("userProjects");
+        localStorage.removeItem("empDev-projects");
+        localStorage.removeItem("empDev-userProjects");
     },
     setProjectNames(state, payload) {
         state.projectParams.allProjectNames = payload;
@@ -103,8 +103,8 @@ export default {
         } else {
             state.errorActive = false;
         }
-        localStorage.removeItem("projects");
-        localStorage.removeItem("userProjects");
+        localStorage.removeItem("empDev-projects");
+        localStorage.removeItem("empDev-userProjects");
     },
     filterProjects(state, payload) {
         const filteredProjects = [];
@@ -129,8 +129,8 @@ export default {
         state.userProjects.projects.splice(state.deleteParams.deleteFilteredProjectArrayIndex, 1);
         state.projectParams.allProjectNames.splice(state.deleteParams.deleteLoadedProjectArrayIndex, 1);
         state.projectParams.filteredProjectNames.splice(state.deleteParams.deleteFilteredProjectArrayIndex, 1);
-        localStorage.removeItem("projects");
-        localStorage.removeItem("userProjects");
+        localStorage.removeItem("empDev-projects");
+        localStorage.removeItem("empDev-userProjects");
     },
     showDeleteMessage(state, payload) {
         state.deleteParams.showDeleteMessage = payload;

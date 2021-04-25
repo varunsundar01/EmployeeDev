@@ -16,11 +16,11 @@ export default {
     },
     setToken(state, payload) {
         state.token = payload;
-        localStorage.setItem("token", payload);
+        localStorage.setItem("empDev-token", payload);
     },
     setEmpId(state, payload) {
         state.empId = payload;
-        localStorage.setItem("empId", payload);
+        localStorage.setItem("empDev-empId", payload);
     },
     setSubmitMessage(state, payload) {
         state.submitMessage = payload;
@@ -29,18 +29,18 @@ export default {
         for (let term in payload) {
             state[term] = payload[term];
         }
-        localStorage.setItem('firstName', payload.firstName);
+        localStorage.setItem('empDev-firstName', payload.firstName);
         state.submitMessage = "Login Successful";
     },
     logout(state) {
         state.token = null;
-        localStorage.removeItem("token");
-        localStorage.removeItem("empId");
-        localStorage.removeItem("firstName");
-        localStorage.removeItem("userProjects");
-        localStorage.removeItem("userProjectsTime");
-        localStorage.removeItem("projects");
-        localStorage.removeItem("projectsTime");
+        localStorage.removeItem("empDev-token");
+        localStorage.removeItem("empDev-empId");
+        localStorage.removeItem("empDev-firstName");
+        localStorage.removeItem("empDev-userProjects");
+        localStorage.removeItem("empDev-userProjectsTime");
+        localStorage.removeItem("empDev-projects");
+        localStorage.removeItem("empDev-projectsTime");
     },
     resetMessages(state) {
         state.submitMessage = "";

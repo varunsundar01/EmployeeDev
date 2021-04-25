@@ -139,9 +139,9 @@ export default {
             })
     },
     tryLogin(context) {
-        if (localStorage.getItem("token") !== null) {
-            context.commit("setToken", localStorage.getItem("token"));
-            context.commit("setEmpId", JSON.parse(localStorage.getItem("empId")));
+        if (localStorage.getItem("empDev-token") !== null) {
+            context.commit("setToken", localStorage.getItem("empDev-token"));
+            context.commit("setEmpId", JSON.parse(localStorage.getItem("empDev-empId")));
         }
     },
     logout(context) {

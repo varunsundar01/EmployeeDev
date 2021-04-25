@@ -62,7 +62,7 @@ export default {
     const store = useStore();
     const submitMessage = ref("");
     let dialogOpen = ref(false);
-    const firstName = ref(localStorage.getItem("firstName"));
+    const firstName = ref(localStorage.getItem("empDev-firstName"));
 
     onMounted(() => {
       store.dispatch("projects/initializeValues");

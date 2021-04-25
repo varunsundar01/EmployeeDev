@@ -52,15 +52,15 @@ export default {
     window.scrollTo(0, 0);
 
     const process = computed(() => {
-      return JSON.parse(localStorage.getItem("process-details"));
+      return JSON.parse(localStorage.getItem("empDev-process-details"));
     });
     const benefits = computed(() => {
-      return JSON.parse(localStorage.getItem("benefits-savings"));
+      return JSON.parse(localStorage.getItem("empDev-benefits-savings"));
     });
 
     function finalSubmit() {
-      const process = JSON.parse(localStorage.getItem("process-details"));
-      const benefits = JSON.parse(localStorage.getItem("benefits-savings"));
+      const process = JSON.parse(localStorage.getItem("empDev-process-details"));
+      const benefits = JSON.parse(localStorage.getItem("empDev-benefits-savings"));
       delete benefits.fullName;
       delete benefits.currentDate;
 
