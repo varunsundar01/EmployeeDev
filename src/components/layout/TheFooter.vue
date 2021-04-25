@@ -1,11 +1,11 @@
 <template>
   <div class="footer">
-    <p>&copy; {{ currentYear }} | Built by <a href="#">Varun</a></p>
+    <p>&copy; {{ currentYear }} | Built by <a href="https://varunsundar.co/">Varun</a></p>
     <div class="social-icons">
-      <i class="icon-github-circled"></i>
-      <i class="icon-twitter"></i>
-      <i class="icon-linkedin"></i>
-      <i class="icon-mail-alt"></i>
+      <a href="https://github.com/varunsundar01" target="_blank"><i class="icon-github-circled"></i></a>
+      <a href="https://twitter.com/varunsundar31" target="_blank"><i class="icon-twitter"></i></a>
+      <a href="https://www.linkedin.com/in/varunsundar93/" target="_blank"><i class="icon-linkedin"></i></a>
+      <a href="mailto:vsundar.3101@gmail.com" target="_blank"><i class="icon-mail-alt"></i></a>
     </div>
   </div>
 </template>
