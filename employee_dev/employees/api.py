@@ -12,7 +12,8 @@ from django.utils.html import strip_tags
 from django.conf import settings
 
 Employee=get_user_model()
-frontend_root='http://127.0.0.1:8080/'
+frontend_root='https://employeedev.varunsundar.co/'
+# frontend_root='http://127.0.0.1:8080/'
 
 class RegisterAPI(generics.GenericAPIView):
     serializer_class = RegisterSerializer
@@ -47,6 +48,20 @@ class SendAccountVerificationAPI(generics.GenericAPIView):
         email.attach_alternative(html_content, "text/html")
         email.send()
         return Response({'success': 'Account Verification Email Sent'}, status=status.HTTP_200_OK)
+
+class AccountVerificationCheckAPI(generics.GenericAPIView):
+    def get(self, request, uidb64, token):
+        try:
+            employee_id=smart_str(urlsafe_base64_decode(uidb64))
+            employee=Employee.objects.get(id=employee_id)
+            
+            if not default_token_generator.check_token(employee, token):
+                return Response({'error':'This link has expired'}, status=status.HTTP_401_UNAUTHORIZED)
+
+            return Response({'success':True, 'message':'Credentials Validated', 'uidb64':uidb64, 'token': token}, status=status.HTTP_200_OK)
+
+        except DjangoUnicodeDecodeError:
+            return Response({'error':'This link has expired'}, status=status.HTTP_401_UNAUTHORIZED)
 
 class ActivateEmployeeAPI(generics.GenericAPIView):
     serializer_class=ActivateEmployeeSerializer
