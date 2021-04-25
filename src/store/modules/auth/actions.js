@@ -86,14 +86,24 @@ export default {
         }
     },
     verifyUser(context, payload) {
-        axios.patch(`${process.env.VUE_APP_ROOT_API}/api/auth/activate-employee`, {
-                "uidb64": payload.uidb64,
-                "token": payload.token
-            })
+        axios.get(`${process.env.VUE_APP_ROOT_API}/api/auth/account-verification-confirm/${payload.uidb64}/${payload.token}`)
             .then(() => {
-                context.commit("setSubmitMessage", "Account verified successfully. Sign in with your credentials");
-                router.push('/sign-in');
+                axios.patch(`${process.env.VUE_APP_ROOT_API}/api/auth/activate-employee`, {
+                        "uidb64": payload.uidb64,
+                        "token": payload.token
+                    })
+                    .then(() => {
+                        context.commit("setSubmitMessage", "Account verified successfully. Sign in with your credentials");
+                        router.push('/sign-in');
+                    })
             })
+            .catch(() => {
+                context.commit("setError", {
+                    authError: true,
+                    errorMessage: "This link is invalid"
+                })
+            })
+
     },
     signIn(context, payload) {
         //Reset messages before login
@@ -114,6 +124,7 @@ export default {
                 router.push('./dashboard');
             })
             .catch(error => {
+                console.log(error.response.data);
                 if ('verification-error' in error.response.data) {
                     context.commit('setError', {
                         authError: true,
@@ -162,19 +173,25 @@ export default {
         })
     },
     confirmPasswordReset(context, payload) {
-        axios.patch(`${process.env.VUE_APP_ROOT_API}/api/auth/password-reset-complete`, {
-                "uidb64": payload.uidb64,
-                "token": payload.token,
-                "password": payload.password
-            })
-            .then(() => {
-                context.commit("setSubmitMessage", "Password was reset successfully. Login with your new credentials")
-                router.push("/sign-in");
+        axios.get(`${process.env.VUE_APP_ROOT_API}/api/auth/password-reset-confirm/${payload.uidb64}/${payload.token}`)
+            .then(response => {
+                console.log(response);
+                axios.patch(`${process.env.VUE_APP_ROOT_API}/api/auth/password-reset-complete`, {
+                        "uidb64": payload.uidb64,
+                        "token": payload.token,
+                        "password": payload.password
+                    })
+                    .then(() => {
+                        context.commit("setSubmitMessage", "Password was reset successfully. Login with your new credentials")
+                        router.push("/sign-in");
+                    })
+
             })
             .catch(error => {
+                console.log(error.response.data);
                 context.commit("setError", {
                     authError: true,
-                    errorMessage: error.response.data.detail
+                    errorMessage: error.response.data.error
                 })
             })
     },
