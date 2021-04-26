@@ -28,7 +28,7 @@ export default {
   },
   setup() {
     window.scrollTo(0, 0);
-    const firstName = ref(localStorage.getItem("firstName"));
+    const firstName = ref(localStorage.getItem("empDev-firstName"));
 
     return {
       firstName,
